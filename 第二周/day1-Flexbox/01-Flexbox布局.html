@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Week2 Day1 - Flexbox</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: sans-serif; }
+    h1 { text-align: center; padding: 20px; }
+    .section { border: 1px solid #ddd; margin: 20px; padding: 15px; border-radius: 4px; }
+    .code { background: #f5f5f5; padding: 8px; margin: 8px 0; font-size: 13px; border-radius: 3px; }
+    .item { background: #3498db; color: #fff; padding: 15px; text-align: center; margin: 5px; border-radius: 3px; }
+    .demo { border: 2px dashed #ccc; min-height: 60px; }
+  </style>
+</head>
+<body>
+  <h1>Week2 Day1：Flexbox 布局</h1>
+  <div class="section">
+    <h2>1. justify-content</h2>
+    <div class="code">display: flex; justify-content: space-between;</div>
+    <div class="demo" style="display:flex;justify-content:space-between;">
+      <div class="item">Logo</div><div class="item">Home</div><div class="item">About</div><div class="item">Contact</div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>2. align-items</h2>
+    <div class="demo" style="display:flex;align-items:center;height:120px;">
+      <div class="item" style="height:40px;">矮</div>
+      <div class="item" style="height:80px;">中</div>
+      <div class="item" style="height:60px;">高</div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>3. flex-wrap</h2>
+    <div class="demo" style="display:flex;flex-wrap:wrap;width:350px;">
+      <div class="item" style="width:100px;">1</div><div class="item" style="width:100px;">2</div>
+      <div class="item" style="width:100px;">3</div><div class="item" style="width:100px;">4</div>
+      <div class="item" style="width:100px;">5</div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>4. 完美居中</h2>
+    <div class="code">display: flex; justify-content: center; align-items: center;</div>
+    <div class="demo" style="display:flex;justify-content:center;align-items:center;height:150px;">
+      <div class="item">居中</div>
+    </div>
+  </div>
+  <div class="section"><h2>练习题 — 给 div 补 style</h2></div>
+  <div class="section">
+    <h2>题1：导航栏</h2>
+    <div id="nav" class="demo" style="padding:0;display: flex;justify-content: space-between;">
+      <div class="item" style="background:#2c3e50;">Logo</div>
+      <div class="item" style="background:#2c3e50;">首页</div>
+      <div class="item" style="background:#2c3e50;">产品</div>
+      <div class="item" style="background:#2c3e50;">关于</div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>题2：卡片列表</h2>
+    <div id="cards" class="demo" style="display:flex; flex-wrap:wrap;justify-content: space-around;">
+      <div class="item" style="min-width:150px;">卡1</div><div class="item" style="min-width:150px;">卡2</div>
+      <div class="item" style="min-width:150px;">卡3</div><div class="item" style="min-width:150px;">卡4</div>
+      <div class="item" style="min-width:150px;">卡5</div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>题3：居中文字</h2>
+    <div id="center" class="demo" style="height:120px;display: flex;justify-content:center;align-items: center;"><span>让我居中</span></div>
+  </div>
+  <script>
+    // CSS 题，在 div 的 style 里补：
+    // nav:    display:flex; justify-content:space-between;
+    // cards:  display:flex; flex-wrap:wrap; justify-content:space-around; gap:10px;
+    // center: display:flex; justify-content:center; align-items:center;
+  </script>
+</body>
+</html>

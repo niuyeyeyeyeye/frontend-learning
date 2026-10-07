@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day3-3 移动优先 GitHub 用户卡片页</title>
+  <style>
+    /* ========================================
+       今日综合练习：移动优先（Mobile First）
+       写法顺序：
+       1. 先写手机端样式（默认样式，最简单）
+       2. 再用 @media (min-width: ...) 逐级增强：平板 → 桌面
+       好处：手机用户只加载基础样式，性能好；也逼你先想清楚核心内容
+       ======================================== */
+
+    /* ---------- 0. 基础重置 ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+      background: #f6f8fa;
+      color: #24292f;
+      line-height: 1.6;
+    }
+
+    /* ---------- 1. 手机端（默认，≤ 599px） ---------- */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* 顶栏：手机上是品牌名 + 全宽搜索框（竖着排） */
+    .header {
+      background: #24292f;
+      color: #fff;
+      padding: clamp(1px,4vw,2000px);
+    }
+
+    .header-inner {
+      display: flex;
+      flex-direction: column;   /* 手机：上下排列 */
+      gap: 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .brand span {
+      color: #58a6ff;
+    }
+
+    #search-input {
+      width: 100%;              /* 手机：占满整行，好点按 */
+      padding: 10px 14px;
+      font-size: 16px;          /* ≥16px 防止 iOS 聚焦时自动放大页面 */
+      border: none;
+      border-radius: 6px;
+    }
+
+    /* 卡片列表：手机 1 列 */
+    .card-list {
+      display: grid;
+      grid-template-columns: 1fr;   /* 复习 day2 的 Grid */
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #58a6ff;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .card-info h3 {
+      font-size: clamp(16px,2vw,20px);
+      margin-bottom: 4px;
+    }
+
+    .card-info .bio {
+      font-size: 14px;
+      color: #57606a;
+      margin-bottom: 8px;
+    }
+
+    .card-info .meta {
+      font-size: 13px;
+      color: #57606a;
+      display: flex;
+      flex-wrap: wrap;          /* 复习 day1 的 Flexbox */
+      gap: 12px;
+    }
+
+    /* 空状态提示 */
+    .empty {
+      text-align: center;
+      color: #57606a;
+      padding: 40px 0;
+      display: none;
+    }
+
+    /* ---------- 2. 平板增强（≥ 600px） ---------- */
+    @media (min-width: 768px) {
+      .header-inner {
+        flex-direction: row;          /* 顶栏变成横排 */
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #search-input {
+        width: 320px;
+      }
+
+      .card-list {
+        grid-template-columns: repeat(2, 1fr);  /* 2 列 */
+      }
+    }
+
+    /* ---------- 3. 桌面增强（≥ 960px） ---------- */
+    @media (min-width: 1024px) {
+      .card-list {
+        grid-template-columns: repeat(3, 1fr);  /* 3 列 */
+      }
+
+      .container {
+        padding: 24px;
+      }
+
+      .brand {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 顶栏 -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="brand">GitHub <span>用户卡片</span></div>
+      <input type="search" id="search-input" placeholder="搜索用户名...（试试输入 ga / tj / oz）">
+    </div>
+  </header>
+
+  <!-- 卡片列表 -->
+  <main class="container">
+    <div class="card-list" id="card-list">
+      <!-- 卡片由 JS 生成 -->
+    </div>
+    <div class="empty" id="empty">没有匹配的用户 😅</div>
+  </main>
+
+  <script>
+    // ========================================
+    // 模拟数据（真实场景下这是 fetch 请求 GitHub API 的返回）
+    // ========================================
+    const users = [
+      { name: 'gaearon',  bio: 'React 作者，工作于 Meta', repos: 142, followers: 120000, color: '#6e40c9' },
+      { name: 'tj',       bio: 'Node 生态大神，写过 Express 等', repos: 1200, followers: 65000, color: '#2ea44f' },
+      { name: 'oz',       bio: 'Noop' , repos: 89, followers: 5200, color: '#d29922' },
+      { name: 'sindresorhus', bio: '开源狂人，写过 1000+ 项目', repos: 1100, followers: 98000, color: '#cf222e' },
+      { name: 'yyx990803', bio: 'Vue.js 作者，Evan You', repos: 310, followers: 88000, color: '#8250df' },
+      { name: 'torvalds', bio: 'Linux 和 Git 之父', repos: 6, followers: 230000, color: '#1f883d' },
+    ]
+
+    const list = document.getElementById('card-list')
+    const empty = document.getElementById('empty')
+
+    // 渲染卡片（复习第一周：DOM 操作 + 模板字符串）
+    function renderCards(data) {
+      list.innerHTML = ''
+      data.forEach(user => {
+        const card = document.createElement('div')
+        card.className = 'card'
+        card.innerHTML = `
+          <div class="avatar" style="background:${user.color}">${user.name[0].toUpperCase()}</div>
+          <div class="card-info">
+            <h3>${user.name}</h3>
+            <p class="bio">${user.bio}</p>
+            <div class="meta">
+              <span>📦 ${user.repos} 仓库</span>
+              <span>⭐ ${user.followers.toLocaleString()} 粉丝</span>
+            </div>
+          </div>
+        `
+        list.appendChild(card)
+      })
+      // 空状态处理
+      empty.style.display = data.length === 0 ? 'block' : 'none'
+    }
+
+    renderCards(users)
+
+    // 搜索过滤（复习第一周：事件 + 数组 filter）
+    const input = document.getElementById('search-input')
+    input.addEventListener('input', () => {
+      const keyword = input.value.trim().toLowerCase()
+      const filtered = users.filter(u => u.name.toLowerCase().includes(keyword))
+      renderCards(filtered)
+    })
+
+    // ========================================
+    // 今日练习（做完勾掉）
+    // ========================================
+    // [ ] 1. 用设备模拟器依次看 375px / 768px / 1280px 三种宽度，确认
+    //        顶栏布局、卡片列数、字号都按预期变化
+    // [ ] 2. 把断点改成 768px 和 1024px，观察效果差异，理解断点怎么选
+    // [ ] 3. 用 02 文件学的 clamp() 给 .card h3 加流式字号
+    //        → font-size: clamp(16px, 2vw, 20px)
+    // [ ] 4. 挑战：把 .header 的 padding 改成 clamp，让上下留白随屏幕变化
+    // [ ] 5. 挑战：用 fetch 换成真实 GitHub API（可选）
+    //        fetch('https://api.github.com/search/users?q=vue')
+    //        然后取 items 渲染 —— 不懂就先跳过，第四周会正式学
+  </script>
+</body>
+</html>

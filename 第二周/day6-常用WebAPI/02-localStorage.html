@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day6-2 localStorage</title>
+  <style>
+    body { font-family: "Microsoft YaHei", sans-serif; padding: 20px; line-height: 1.8; }
+    table { border-collapse: collapse; margin: 12px 0; }
+    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+    th { background: #f0f0f0; }
+    code { background: #eee; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Day6-2：本地存储（localStorage）</h1>
+  <p>打开控制台（F12）看输出；也可以在 <b>Application → Local Storage</b> 面板里实时看到数据</p>
+
+  <h2>三种存储方式对比（面试常问）</h2>
+  <table>
+    <tr><th>特性</th><th>localStorage</th><th>sessionStorage</th><th>cookie</th></tr>
+    <tr><td>生命周期</td><td>永久（除非手动删）</td><td>关闭标签页就没了</td><td>可设过期时间</td></tr>
+    <tr><td>容量</td><td>约 5MB</td><td>约 5MB</td><td>约 4KB</td></tr>
+    <tr><td>随请求发送到服务器</td><td>否</td><td>否</td><td><b>是</b>（每个请求都带）</td></tr>
+    <tr><td>作用域</td><td>同源共享（所有标签页）</td><td>仅当前标签页</td><td>同源 + 路径</td></tr>
+    <tr><td>常用场景</td><td>历史记录、主题、草稿</td><td>一次性表单、临时登录态</td><td>登录凭证（配合 HttpOnly）</td></tr>
+  </table>
+
+  <script>
+    // ========================================
+    // 1. 基本 API：存 / 取 / 删 / 清空
+    // ========================================
+    console.log('=== 1. 基本 API ===')
+
+    localStorage.setItem('name', '小明')          // 存
+    console.log('读取 name：', localStorage.getItem('name'))       // 小明
+    console.log('读取不存在的 key：', localStorage.getItem('nobody')) // null（不是 undefined！）
+
+    localStorage.removeItem('name')               // 删单个
+    console.log('删除后再读：', localStorage.getItem('name'))       // null
+
+    // localStorage.clear()                        // 清空全部（慎用！）
+
+    // ========================================
+    // 2. 只能存字符串：存对象必须 JSON 序列化
+    // ========================================
+    console.log('=== 2. 存对象 ===')
+
+    localStorage.setItem('num', 123)
+    console.log('存进去 123，取出来是：', typeof localStorage.getItem('num'))   // string！
+    // 所以数字、布尔、对象、数组，取出来都会变成字符串
+
+    const user = { name: '小明', age: 18, tags: ['前端', '实习生'] }
+
+    // 错误写法：存进去变成 "[object Object]"
+    localStorage.setItem('userBad', user)
+    console.log('直接存对象的结果：', localStorage.getItem('userBad'))   // [object Object]
+
+    // 正确写法：JSON.stringify 存，JSON.parse 取
+    localStorage.setItem('user', JSON.stringify(user))
+    const raw = localStorage.getItem('user')
+    console.log('取出来的字符串：', raw)
+    const parsed = JSON.parse(raw)
+    console.log('解析后的对象：', parsed)
+    console.log('能用里面的属性：', parsed.tags[0])
+
+    // ========================================
+    // 3. 遍历：key() 和 length
+    // ========================================
+    console.log('=== 3. 遍历所有 key ===')
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      console.log('  ' + key + ' = ' + localStorage.getItem(key))
+    }
+
+    // ========================================
+    // 4. 封装成工具对象（项目里直接用这个，别每次写 JSON）
+    // ========================================
+    console.log('=== 4. 封装 storage 工具 ===')
+
+    const storage = {
+      set(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value))
+        } catch (e) {
+          console.warn('存储失败（可能超出 5MB 限制）：', e)
+        }
+      },
+      get(key, defaultValue = null) {
+        const raw = localStorage.getItem(key)
+        if (raw === null) return defaultValue
+        try {
+          return JSON.parse(raw)
+        } catch (e) {
+          return raw          // 不是 JSON 就原样返回
+        }
+      },
+      remove(key) {
+        localStorage.removeItem(key)
+      },
+      clear() {
+        localStorage.clear()
+      },
+    }
+
+    storage.set('history', ['vue', 'react', 'typescript'])
+    console.log('工具读数组：', storage.get('history'))
+    console.log('带默认值：', storage.get('不存在的key', []))       // []
+    storage.remove('history')
+
+    // ========================================
+    // 5. 常见坑（面试和实战都会踩）
+    // ========================================
+    // ① 存 undefined → 会变成字符串 "undefined"，取出来 JSON.parse 报错
+    //    解决：存之前判断，或只存合法值
+    // ② 循环引用对象 JSON.stringify 会直接报错
+    // ③ localStorage 是同步的，存大对象会阻塞主线程（几 MB 就会卡）
+    // ④ 隐私模式 / 禁用 cookie 时访问可能直接抛错 → 生产环境要 try/catch 包起来
+    // ⑤ 不要存密码、token 明文（XSS 能直接偷走）；敏感数据用 HttpOnly cookie
+    // ⑥ 不同标签页之间不会自动同步 → 可用 window.addEventListener('storage', ...) 监听
+
+    console.log('=== 5. 坑的演示 ===')
+    localStorage.setItem('bad', undefined)
+    console.log('存 undefined 的结果：', localStorage.getItem('bad'))   // "undefined" 字符串
+    localStorage.removeItem('bad')
+
+    const circular = { name: '自引用' }
+    circular.self = circular
+    try {
+      JSON.stringify(circular)
+    } catch (e) {
+      console.log('循环引用序列化报错：', e.message)
+    }
+
+    // 顺手清掉演示数据，保持干净
+    localStorage.removeItem('num')
+    localStorage.removeItem('userBad')
+    localStorage.removeItem('user')
+
+    // ========================================
+    // 6. 练习题
+    // ========================================
+    // 练习1：用 storage 工具实现一个"上次访问时间"记录，刷新页面看变化
+    // 思考
+    // storage.set('visit', Date.now())
+    // console.log('上次访问时间：'+storage.get('visit'))
+    // 看过答案后的代码
+    
+    const lastVisit = storage.get('lastVisit')
+    if(lastVisit){
+      console.log('上次访问'+Date(lastVisit))
+    }else{
+      console.log('欢迎首次访问！')
+    }
+    storage.set('lastVisit',Date.now())
+
+    // 卡住再看 ↓
+    // const lastVisit = storage.get('lastVisit')
+    // if (lastVisit) console.log('上次访问：' + new Date(lastVisit).toLocaleString())
+    // else console.log('欢迎首次访问！')
+    // storage.set('lastVisit', Date.now())
+
+    // 练习2：实现 addHistory(keyword)，去重 + 最新在前 + 最多 10 条
+    // 思考
+    // function addHistory(keyword){
+    //   const history = storage.get(keyword)
+    //   if(!history){
+    //     storage.set(keyword,keyword)
+    //   }else{
+    //     storage.remove(keyword)
+    //     storage.set(keyword,keyword)
+    //   }
+    //   if(localStorage.length>10){
+    //     storage.remove(localStorage(11))//错误localStorage没有顺序，且localStorage不是函数,且在之前就有其他东西
+    //   }
+    // }
+    // 看完答案后的代码
+    function addEventListener(keyword){
+      const list = storage.get(history,[])
+      const next = [keyword,...list.filtr(n=>n !== keyword)].slice(0,9)//不包含9
+      storage.set('history',next)
+      return next
+    }
+
+
+
+
+
+
+
+
+
+    // 卡住再看 ↓
+    // function addHistory(keyword) {
+    //   const list = storage.get('history', [])
+    //   const next = [keyword, ...list.filter(k => k !== keyword)].slice(0, 10)
+    //   storage.set('history', next)
+    //   return next
+    // }
+
+
+    
+
+    // 练习3：把第一周待办列表练习的数据用 localStorage 持久化（刷新不丢）
+
+    // 练习4（口答）：为什么登录 token 通常不放 localStorage？
+    // 答案：localStorage 能被任意 JS 读取，一旦 XSS 就被偷；
+    //       HttpOnly cookie 无法被 JS 读取，相对安全
+  </script>
+</body>
+</html>

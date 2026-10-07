@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day3-2 rem与vw单位</title>
+  <style>
+    /* ========================================
+       1. px / rem / vw 的区别
+       px：固定像素，任何屏幕都一样大 —— 不响应
+       rem：相对根元素(html)的 font-size —— 改一处，全站缩放
+       vw：视口宽度单位，1vw = 屏幕宽度的 1% —— 直接跟随屏幕
+       ======================================== */
+
+    /* 根字号：浏览器默认是 16px
+       1rem = 16px；2rem = 32px；0.5rem = 8px */
+    html {
+      font-size: 20px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 { margin-bottom: 8px; }
+    .tip { color: #666; margin-bottom: 20px; }
+
+    /* ========================================
+       2. rem 演示：改 html 的 font-size，全站跟着变
+       把下面的 16px 改成 20px 刷新看看 → 所有 rem 尺寸等比放大
+       ======================================== */
+    .rem-box {
+      /* 1rem = 16px → 这里的 2rem = 32px */
+      font-size: 1.25rem;   /* = 20px */
+      padding: 1rem;        /* = 16px */
+      margin-bottom: 2rem;  /* = 32px */
+      background: #3498db;
+      color: #fff;
+      border-radius: 0.5rem; /* = 8px */
+    }
+
+    /* 媒体查询 + rem 组合：小屏把根字号调小，所有 rem 尺寸一起缩小 */
+    @media (max-width: 600px) {
+      html {
+        font-size: 14px;  /* 1rem 从 16px 变成 14px，整站自动缩小 */
+      }
+    }
+
+    /* ========================================
+       3. vw 演示：直接跟随视口宽度
+       1vw = 视口宽度的 1%。屏幕 375px 时 1vw = 3.75px
+       ======================================== */
+    .vw-box {
+      width: 80vw;              /* 永远是视口宽度的 80% */
+      background: #e67e22;
+      color: #fff;
+      padding: 2vw;
+      border-radius: 1vw;
+      margin-bottom: 20px;
+      font-size: 4vw;           /* 文字大小跟随屏幕宽度！ */
+    }
+
+    /* 注意：4vw 在小屏(375px) = 15px，在大屏(1440px) = 57.6px
+       太大时会失控，所以常用 clamp() 限制范围，见下面 */
+
+    /* ========================================
+       4. clamp()：流式大小 + 上下限
+       clamp(最小值, 理想值, 最大值)
+       ======================================== */
+    .clamp-box {
+      font-size: clamp(14px, 3vw, 24px);
+      /* 结果 = 3vw，但最小不低于 14px，最大不超过 24px */
+      padding: clamp(8px, 2vw, 24px);
+      background: #2ecc71;
+      color: #fff;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    /* ========================================
+       5. 什么时候用哪个？（面试常问）
+       - 固定不变的东西（1px 边框、头像尺寸）→ px
+       - 希望随页面整体缩放 → rem
+       - 希望直接跟随屏幕宽度的流式效果 → vw / clamp()
+       - 移动端常用套路：根字号 px + 内部全部 rem，断点处调根字号
+       ======================================== */
+  </style>
+</head>
+<body>
+  <h1>Day3-2：rem 与 vw 单位</h1>
+  <p class="tip">拖动窗口宽度，观察下面三个板块的差异</p>
+
+  <div class="rem-box">我用 rem：整体随 html 根字号缩放（改 style 里 html 的 font-size 试试）</div>
+
+  <div class="vw-box">我用 vw：宽度、内边距、文字全部跟着屏幕走</div>
+
+  <div class="clamp-box">我用 clamp(14px, 3vw, 24px)：随屏幕变化但有上下限，不会失控</div>
+
+  <script>
+    // ========================================
+    // 练习题（在控制台里算，或写进下面）
+    // ========================================
+    // 1. 屏幕宽度 375px 时，1vw = 多少 px？  答：3.75px
+    // 2. html font-size = 16px 时，2.5rem = 多少 px？ 答：40px
+    // 3. 写一个 clamp：文字在 12px ~ 20px 之间，理想值是 2.5vw
+    //    → clamp(12px, 2.5vw, 20px)
+
+    // 4. 挑战：把 01 文件里的 .card 改用 rem 重写
+    //    .card { font-size: 1rem; padding: 1rem; }
+    //    然后在 media query 里把 html font-size 调小，看整站效果
+  </script>
+</body>
+</html>

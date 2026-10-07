@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day4-4 this指向</title>
+</head>
+<body>
+  <h1>Day4-4：this 指向</h1>
+  <p>打开控制台（F12 → Console）。<b>先在心里预测输出，再看结果对答案。</b></p>
+  <button id="btn">点我看 this</button>
+
+  <script>
+    // ========================================
+    // 核心口诀
+    // this 指向是【调用时】决定的，不是定义时决定的
+    // 判断顺序：箭头函数？ → new？ → call/apply/bind？ → obj.fn()？ → 默认
+    // ========================================
+
+    // ========================================
+    // 1. 默认绑定：普通函数直接调用
+    // ========================================
+    console.log('=== 1. 默认绑定 ===')
+
+    function f1() {
+      console.log('普通 script 里直接调用，this =', this === window ? 'window' : this)
+    }
+    f1()   // 非严格模式 → window；严格模式或模块里 → undefined
+
+    // ========================================
+    // 2. 隐式绑定：谁调用，this 就是谁
+    // ========================================
+    console.log('=== 2. 隐式绑定 ===')
+
+    const user = {
+      name: '小明',
+      say() {
+        console.log('obj.say() 里的 this.name =', this.name)
+      },
+    }
+    user.say()   // 小明（因为是小明在"调用"它）
+
+    // 嵌套对象的坑：this 只看"紧挨着点的那个对象"
+    const company = {
+      name: '公司',
+      user: {
+        name: '小红',
+        say() { console.log('company.user.say() 的 this.name =', this.name) },
+      },
+    }
+    company.user.say()   // 小红（是 user 调用的，不是 company）
+
+    // ========================================
+    // 3. 隐式丢失（最高频的坑！）
+    // ========================================
+    console.log('=== 3. 隐式丢失 ===')
+
+    const say = user.say
+    say()   // this 回到默认绑定 → 打印空字符串（window.name 默认是 ''，不是 user.name）
+
+    // 看得更明白一点：
+    function checkThis() { console.log('单独调用时 this === window ？', this === window) }
+    checkThis()   // true（普通 script 的非严格模式下）
+
+    setTimeout(user.say, 100)               // this 也是 window → 拿不到 user.name
+    setTimeout(() => user.say(), 100)       // 小明 ✅（箭头包一层，保住调用者）
+
+    // 绑定到事件上：this 是触发事件的那个元素
+    document.querySelector('#btn').addEventListener('click', function () {
+      console.log('事件回调里的 this =', this.tagName)   // BUTTON
+    })
+    document.querySelector('#btn').addEventListener('click', () => {
+      console.log('箭头函数事件回调里的 this =', this === window ? 'window（不是按钮！）' : this)
+    })
+
+    // ========================================
+    // 4. 显式绑定：call / apply / bind
+    // ========================================
+    console.log('=== 4. 显式绑定 ===')
+
+    const other = { name: '小刚' }
+
+    user.say.call(other)    // 小刚 —— call：立刻调用，参数逐个传
+    user.say.apply(other)   // 小刚 —— apply：立刻调用，参数用数组传
+    const boundSay = user.say.bind(other)
+    boundSay()              // 小刚 —— bind：不调用，返回一个永久绑定的新函数
+
+    // call / apply 参数区别：
+    function introduce(age, city) {
+      console.log(this.name + '，' + age + ' 岁，来自 ' + city)
+    }
+    introduce.call(other, 20, '北京')          // 逐个传参
+    introduce.apply(other, [20, '北京'])       // 数组传参
+
+    // ========================================
+    // 5. new 绑定：this 是新建的那个对象
+    // ========================================
+    console.log('=== 5. new 绑定 ===')
+
+    function Person(name) {
+      this.name = name           // this = 刚刚 new 出来的空对象
+    }
+    const p = new Person('小美')
+    console.log('new Person 之后 p.name =', p.name)
+
+    // ========================================
+    // 6. 箭头函数：没有自己的 this（词法 this）
+    // ========================================
+    console.log('=== 6. 箭头函数 ===')
+
+    const arrowObj = {
+      name: '箭头对象',
+      say: () => {
+        // 箭头函数的 this 取"定义时外层的 this"，也就是这个 script 顶层的 window
+        // 所以这里拿不到 arrowObj.name
+        console.log('对象里用箭头函数，this.name =', this.name)
+      },
+    }
+    arrowObj.say()   // 空字符串（this 是 window，拿不到 arrowObj.name）
+
+    // 正确姿势：对象方法用普通函数，回调里需要保住 this 才用箭头函数
+    const fixedObj = {
+      name: '正确示范',
+      say() {
+        setTimeout(() => {
+          console.log('箭头函数保住了 this.name =', this.name)   // 正确示范
+        }, 100)
+      },
+    }
+    fixedObj.say()
+
+    // ========================================
+    // 7. 优先级：new > bind > 隐式 > 默认
+    // ========================================
+    console.log('=== 7. 优先级 ===')
+    const hardBound = user.say.bind(other)
+    const obj2 = { name: '想抢 this 的对象', say: hardBound }
+    obj2.say()   // 小刚 —— bind 之后，谁都抢不走（只有 new 能覆盖）
+
+    // ========================================
+    // 8. 和我们今天学的模块化的关系
+    // ========================================
+    // 在 <script type="module"> 里：
+    //   顶层 this = undefined（不是 window）
+    //   而且自动严格模式 → 普通函数直接调用时 this 也是 undefined
+    // 这就是为什么模块化代码里，显式绑定和箭头函数用得更多
+
+    // ========================================
+    // 9. 预测练习（先写答案，再看控制台）
+    // ========================================
+    console.log('=== 9. 预测练习 ===')
+
+    const shop = {
+      goods: '键盘',
+      show() {
+        console.log('题目A：', this.goods)
+      },
+    }
+    const show = shop.show
+    show()
+    // 答案：undefined（隐式丢失）
+
+    const shop2 = {
+      goods: '鼠标',
+      show() {
+        const inner = () => console.log('题目B：', this.goods)
+        inner()
+      },
+    }
+    shop2.show()
+    // 答案：鼠标（箭头函数继承 show 的 this = shop2）
+
+    const shop3 = {
+      goods: '显示器',
+      show() {
+        function inner() {
+          console.log('题目C：', this.goods)
+        }
+        inner()
+      },
+    }
+    shop3.show()
+    // 答案：undefined（普通函数 inner 是直接调用，this 回到默认绑定）
+
+    function Point() {
+      this.x = 1
+      return { x: 2 }
+    }
+    console.log('题目D：', new Point().x)
+    // 答案：2（构造函数 return 一个对象时，new 的结果就是那个对象）
+
+    // 挑战（口答）：
+    // 1. 为什么 setTimeout(user.say, 100) 会丢 this？怎么修？
+    // 2. 对象方法用箭头函数会怎样？为什么？
+    // 3. 事件的回调里，function 和箭头函数拿到的 this 有什么不同？
+  </script>
+</body>
+</html>

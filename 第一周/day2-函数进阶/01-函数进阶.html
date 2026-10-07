@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day2 - 函数进阶</title>
+</head>
+<body>
+  <h1>Day2：函数进阶</h1>
+  <p>打开控制台（F12 → Console）查看输出</p>
+
+  <script>
+    // ========================================
+    // 1. 高阶函数：函数作为参数
+    // ========================================
+
+    console.log('=== 1. 高阶函数：函数作为参数 ===')
+
+    function forEach(arr, fn) {
+      for (let i = 0; i < arr.length; i++) {
+        fn(arr[i], i)
+      }
+    }
+
+    const nums = [1, 2, 3, 4, 5]
+
+    forEach(nums, (item, index) => {
+      console.log('第' + index + '个：' + item)
+    })
+
+    console.log('--- 平方 ---')
+    forEach(nums, item => {
+      console.log(item * item)
+    })
+
+    // ========================================
+    // 2. 回调函数（Callback）
+    // ========================================
+
+    console.log('=== 2. 回调函数 ===')
+
+    function fetchData(callback) {
+      console.log('开始请求数据...')
+      setTimeout(() => {
+        const data = { name: '张三', age: 25 }
+        callback(data)
+      }, 1500)
+    }
+
+    console.log('等待 1.5 秒...')
+    fetchData((result) => {
+      console.log('收到数据：', result)
+    })
+
+    // ========================================
+    // 3. 高阶函数：函数作为返回值
+    // ========================================
+
+    console.log('=== 3. 函数作为返回值 ===')
+
+    function createAdder(x) {
+      return function(y) {
+        return x + y
+      }
+    }
+
+    const add5 = createAdder(5)
+    const add10 = createAdder(10)
+
+    console.log('add5(3) =', add5(3))
+    console.log('add10(3) =', add10(3))
+
+    // ========================================
+    // 4. 闭包（Closure）
+    // ========================================
+
+    console.log('=== 4. 闭包 ===')
+
+    function createCounter() {
+      let count = 0
+      return function() {
+        count++
+        return count
+      }
+    }
+
+    const counter = createCounter()
+    console.log(counter())  // 1
+    console.log(counter())  // 2
+    console.log(counter())  // 3
+
+    // 闭包的实际用途：私有变量
+    function createPerson(name) {
+      return {
+        getName() { return name },
+        setName(newName) { name = newName }
+      }
+    }
+
+    const person = createPerson('小明')
+    console.log(person.getName())   // 小明
+    person.setName('小红')
+    console.log(person.getName())   // 小红
+
+    // ========================================
+    // 5. 递归
+    // ========================================
+
+    console.log('=== 5. 递归 ===')
+
+    function factorial(n) {
+      if (n <= 1) return 1
+      return n * factorial(n - 1)
+    }
+
+    console.log('5! =', factorial(5))  // 120
+
+    function fibonacci(n) {
+      if (n <= 2) return 1
+      return fibonacci(n - 1) + fibonacci(n - 2)
+    }
+
+    console.log('斐波那契第6项：', fibonacci(6))  // 8
+
+    // ========================================
+    // 练习题
+    // ========================================
+    console.log('=== 练习题 ===')
+
+    // 练习1：手写 map 函数
+    // map 和 forEach 类似，但 map 会返回一个新数组
+    function myMap(arr, fn) {
+      // TODO: 补全代码
+      // 创建新数组，遍历 arr，把 fn 处理后的结果 push 进去
+      const result = []
+      for (let index=0;index<arr.length;index++) {
+        result.push(fn(arr[index]))
+      }
+      return result
+    }
+    console.log(myMap([1, 2, 3], x => x * 2))  // 期望 [2, 4, 6]
+
+    // 练习2：手写 filter 函数
+    // filter 过滤数组，只保留 fn 返回 true 的元素
+    function myFilter(arr, fn) {
+      // TODO: 补全代码
+       const result = []
+       for (let i=0;i<arr.length;i++) {
+         if (fn(arr[i])) {
+          result.push(arr[i])
+        }
+       }
+       return result
+    }
+     console.log(myFilter([1, 2, 3, 4, 5, 6], x => x % 2 === 0))  // 期望 [2, 4, 6]
+
+    // 练习3：用递归求数组所有元素的和
+    function recursiveSum(arr) {
+      //  TODO: 补全代码
+      //  终止条件：数组为空时返回 0
+      // 递归：第一个元素 + 剩余元素的和
+       if (arr.length==0) return 0
+       return arr[0] + recursiveSum(arr.slice(1))
+    }
+     console.log(recursiveSum([1, 2, 3, 4, 5]))  // 期望 15
+
+    // 练习4：用闭包实现"累加器"
+    function createAccumulator() {
+      // TODO: 补全代码
+      let total = 0
+      return function(n) {
+        total+=n
+        return total
+      }
+    }
+    const acc = createAccumulator()
+    console.log(acc(10))  // 期望 10
+    console.log(acc(20))  // 期望 30
+    console.log(acc(5))   // 期望 35
+
+    // 练习5：写一个 createMultiplier 函数
+    // 参考 createAdder 的模式：接收倍数 n，返回一个函数
+    function createMultiplier(n) {
+      return function(m){
+        return m*n
+      }
+    }
+    const triple = createMultiplier(3)
+    console.log(triple(5))  // 期望 15
+  </script>
+</body>
+</html>

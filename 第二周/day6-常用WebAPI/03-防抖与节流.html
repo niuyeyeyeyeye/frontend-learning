@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day6-3 防抖与节流</title>
+</head>
+<body>
+  <h1>Day6-3：防抖（debounce）与节流（throttle）</h1>
+  <p>打开控制台（F12 → Console）。<b>这两个手写函数是大厂面试高频题，必须能默写。</b></p>
+
+  <script>
+    // ========================================
+    // 0. 为什么需要它们？
+    // ========================================
+    // 搜索框：用户每敲一个字母都发请求 → 10 个字母发 10 次请求，浪费且会乱序
+    // 滚动/resize：一秒触发几十上百次 → 页面卡顿
+    // 解决思路：降低触发频率
+    //   防抖 debounce：等你"停下来"才执行（只执行最后一次）—— 适合搜索框
+    //   节流 throttle：固定时间内最多执行一次（均匀执行）—— 适合滚动/resize
+
+    // ========================================
+    // 1. 防抖 debounce（基础版）
+    // ========================================
+    // 核心：每次触发都清掉上一个定时器，只留最后一次
+
+    function debounce(fn, delay = 300) {
+      let timer = null                  // 闭包保存定时器 id（Day4 学过的闭包）
+      return function (...args) {
+        if (timer) clearTimeout(timer)
+        timer = setTimeout(() => {
+          fn.apply(this, args)          // 透传 this 和参数（Day4 学的 apply）
+        }, delay)
+      }
+    }
+
+    //     function debounce(fn,delay = 300){
+    //   timer =null;
+    //   return function(...args){
+    //     if(timer){
+    //       clearTimeout(timer)
+    //     }
+    //     timer = setTimeout(() => {
+    //     }, delay);
+    //   }
+    // }
+
+    // ========================================
+    // 2. 防抖（立即执行版，leading）
+    // ========================================
+    // 场景：按钮防连点（第一次立刻响应，之后一段时间内不再响应）
+
+    function debounceImmediate(fn, delay = 300) {
+      let timer = null
+      return function (...args) {
+        if (timer) {
+          clearTimeout(timer)
+        } else {
+          fn.apply(this, args)          // 第一次立即执行
+        }
+        timer = setTimeout(() => {
+          timer = null                  // delay 之后解锁
+        }, delay)
+      }
+    }
+
+    // ========================================
+    // 3. 节流 throttle（时间戳版：首次立即执行）
+    // ========================================
+
+    function throttle(fn, interval = 300) {
+      let last = 0
+      return function (...args) {
+        const now = Date.now()
+        if (now - last >= interval) {
+          last = now
+          fn.apply(this, args)
+        }
+      }
+    }
+
+    //     function throttle(fn,interval=300){
+    //   let last = 0
+    //   return function(...args){
+    //   let now = Date.now()
+    //   if(now-last>interval){
+    //     setTimeout(() => {
+    //       fn.apply(this,args)
+    //     }, timeout);
+    //     last = now
+    //   }else{
+    //     return
+    //   }
+    //   }
+    // }
+    // ========================================
+    // 4. 节流（定时器版：保证最后一次也执行）
+    // ========================================
+
+    function throttleTimer(fn, interval = 300) {
+      let timer = null
+      return function (...args) {
+        if (timer) return                // 还在冷却中，直接忽略
+        timer = setTimeout(() => {
+          fn.apply(this, args)
+          timer = null
+        }, interval)
+      }
+    }
+
+    // ========================================
+    // 5. 对比实验：1 秒内触发 10 次，看各自执行几次
+    // ========================================
+    console.log('=== 对比实验开始（约 2 秒后出结果）===')
+    console.log('规则：每 100ms 触发一次，共 10 次；防抖/节流间隔都是 500ms')
+
+    let rawCount = 0
+    let debounceCount = 0
+    let throttleCount = 0
+    let throttleTimerCount = 0
+
+    const raw = () => { rawCount++ }
+    const debounced = debounce(() => { debounceCount++ }, 500)
+    const throttled = throttle(() => { throttleCount++ }, 500)
+    const throttledTimer = throttleTimer(() => { throttleTimerCount++ }, 500)
+
+    let ticks = 0
+    const spread = setInterval(() => {
+      raw(); debounced(); throttled(); throttledTimer()
+      console.log('  第 ' + (ticks + 1) + ' 次触发')
+      if (++ticks === 10) clearInterval(spread)
+    }, 100)
+
+    setTimeout(() => {
+      console.log('=== 对比结果 ===')
+      console.log('不处理（每次触发都执行）：', rawCount, '次')                  // 10
+      console.log('防抖 debounce：', debounceCount, '次  ← 只执行最后一次')     // 1（最后一次触发后再等 500ms）
+      console.log('节流 throttle（时间戳版）：', throttleCount, '次  ← 均匀执行') // 2（t=0 和 t=500 各一次）
+      console.log('节流 throttle（定时器版）：', throttleTimerCount, '次')       // 2
+      console.log('')
+      console.log('结论：防抖 = 等你安静下来；节流 = 每隔一段时间放行一次')
+    }, 1800)   // ← 必须 > 最后一次触发(900ms) + 防抖延迟(500ms)，否则防抖还没执行就打印了
+
+    // ========================================
+    // 6. 使用场景对照（面试答题用）
+    // ========================================
+    // 防抖 debounce：
+    //   搜索框输入联想、表单校验、窗口 resize 结束后重排、按钮防连点
+    // 节流 throttle：
+    //   滚动加载（scroll）、拖拽（mousemove）、鼠标跟随、游戏射击（固定射速）
+    //
+    // 记忆口诀：
+    //   防抖：最后一次说了算（连续触发只认最后一击）
+    //   节流：固定频率放行（像水龙头滴水，稳定输出）
+
+    // ========================================
+    // 7. 练习题（面试要求：5 分钟内在纸上写出来）
+    // ========================================
+    // 练习1：合上文件，凭记忆默写 debounce，然后对比上面的实现
+
+    function debounce(fn,delay = 300){
+      timer =null;
+      return function(...args){
+        if(timer){
+          clearTimeout(timer)
+        }
+        timer = setTimeout((args) => {
+
+        }, delay);
+      }
+    }
+
+
+
+    // 练习2：默写 throttle 时间戳版
+
+    function throttle(fn,interval=300){
+      let last = 0
+      return function(...args){
+      let now = Date.now()
+      if(now-last>interval){
+        setTimeout(() => {
+          fn.apply(this,args)
+        }, timeout);
+        last = now
+      }else{
+        return
+      }
+      }
+    }
+
+
+
+    // 练习3：实现一个 throttle，要求"首次立即执行 + 最后一次也执行"（两个版本合一）
+
+    // function throttle(fn,interval = 300){
+    //   let last = 0
+    //   let timer =null
+    //   return function(...args){
+    //     const now =Date.now()
+    //     if(now - last>= interval||last ===0){
+    //       fn.apply(this,args)
+    //       last = now
+    //       clearTimeout(timer)
+    //     }else{
+    //       clearTimeout(timer)
+    //       timer = setTimeout(()=>{
+    //         fn.apply(this,args)
+    //         last =Date.now()
+    //       },interval-(now-last))
+    //     }
+    //   }
+    // }
+
+    
+
+
+
+    卡住再看 ↓
+    function throttleFull(fn, interval = 300) {
+      let last = 0
+      let timer = null
+      return function (...args) {
+        const now = Date.now()
+        const remaining = interval - (now - last)
+        if (remaining <= 0) {
+          if (timer) { clearTimeout(timer); timer = null }
+          last = now
+          fn.apply(this, args)
+        } else if (!timer) {
+          timer = setTimeout(() => {
+            last = Date.now()
+            timer = null
+            fn.apply(this, args)
+          }, remaining)
+        }
+      }
+    }
+
+    // 练习4（口答）：防抖和节流的区别？各自用在哪？
+    // 练习5（口答）：为什么手写函数里要用闭包保存 timer？（不用闭包会怎样）
+    // 答案：不用闭包，每次调用都会新建一个 timer，就"记不住"上一次的定时器，防抖失效
+  </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>复习-02 Flexbox和Grid</title>
+  <style>
+    /* 通用样式，不用管 */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; padding: 20px; background: #f5f5f5; }
+    h1 { margin-bottom: 8px; }
+    .hint { color: #666; font-size: 14px; margin-bottom: 20px; }
+    h2 { margin: 8px 0 12px; font-size: 18px; }
+    .section { background: #fff; padding: 16px; border-radius: 8px; margin-bottom: 20px; }
+    .box { background: #3498db; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+    .tips { line-height: 2; margin-top: 20px; }
+
+    /* ========================================
+       练习1（Flexbox）：水平 + 垂直居中
+       目标：让 .center-box 里的"我应该在正中间"居中
+       ======================================== */
+    .center-box {
+      height: 150px;
+      border: 2px dashed #999;
+      display: flex;
+      /* TODO: 水平居中 justify-content: ???
+               垂直居中 align-items: ??? */
+    }
+
+    /* 答案（卡住再看）：
+    .center-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    } */
+
+    /* ========================================
+       练习2（Flexbox）：两端对齐的导航栏
+       目标："品牌"靠左，三个链接靠右且横排
+       ======================================== */
+    .nav {
+      display: flex;
+      /* TODO: 让两组内容两端对齐 justify-content: ??? */
+    }
+    .nav .links {
+      display: flex;
+      gap: 16px;
+    }
+
+    /* 答案（卡住再看）：
+    .nav { justify-content: space-between; } */
+
+    /* ========================================
+       练习3（Grid）：三列卡片
+       目标：三列等宽，间距 12px
+       ======================================== */
+    .grid3 {
+      display: grid;
+      /* TODO: grid-template-columns: ??? */
+      gap: 12px;
+    }
+
+    /* 答案（卡住再看）：
+    .grid3 { grid-template-columns: repeat(3, 1fr); } */
+
+    /* ========================================
+       练习4（Grid）：后台管理布局
+       目标：左侧边栏 200px，右侧内容区占剩余空间
+       ======================================== */
+    .layout {
+      display: grid;
+      /* TODO: grid-template-columns: ??? */
+      gap: 12px;
+    }
+
+    /* 答案（卡住再看）：
+    .layout { grid-template-columns: 200px 1fr; } */
+  </style>
+</head>
+<body>
+  <h1>复习-02：Flexbox 和 Grid（第二周 day1/day2）</h1>
+  <p class="hint">玩法：自己写 CSS → 刷新看效果 → 卡住再看注释答案。<b>目标：10 分钟内不看答案写出来。</b></p>
+
+  <div class="section">
+    <h2>练习1：居中</h2>
+    <div class="center-box"><div class="box">我应该在正中间</div></div>
+  </div>
+
+  <div class="section">
+    <h2>练习2：导航栏</h2>
+    <div class="nav">
+      <div class="box">品牌</div>
+      <div class="links">
+        <div class="box">首页</div>
+        <div class="box">教程</div>
+        <div class="box">关于</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>练习3：三列卡片</h2>
+    <div class="grid3">
+      <div class="box">卡片1</div>
+      <div class="box">卡片2</div>
+      <div class="box">卡片3</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>练习4：后台布局（侧边栏 + 内容区）</h2>
+    <div class="layout">
+      <div class="box">侧边栏</div>
+      <div class="box">内容区</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>概念速测（口答，答不上来就再记一遍）</h2>
+    <ul class="tips">
+      <li>justify-content 控制<b>主轴</b>（默认水平）方向的对齐</li>
+      <li>align-items 控制<b>交叉轴</b>（默认垂直）方向的对齐</li>
+      <li>flex-direction: column 会把主轴变成垂直方向</li>
+      <li>grid-template-columns: repeat(3, 1fr) = 三等分列</li>
+      <li>gap 控制子元素间距，flex 和 grid 通用</li>
+      <li>1fr = 剩余空间的一份，repeat(2, 1fr) = 两等分</li>
+    </ul>
+  </div>
+</body>
+</html>

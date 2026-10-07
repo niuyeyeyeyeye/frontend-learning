@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day3 - 对象</title>
+</head>
+<body>
+  <h1>Day3：对象</h1>
+  <p>打开控制台（F12 → Console）查看输出</p>
+
+  <script>
+    // ========================================
+    // 1. 对象是什么 + 创建方式
+    // ========================================
+
+    console.log('=== 1. 创建对象 ===')
+
+    // 方式1：字面量（最常用）
+    const student = {
+      name: '小明',
+      age: 20,
+      grade: '大三',
+      hobbies: ['编程', '篮球']
+    }
+    console.log('学生对象：', student)
+
+    // 方式2：new Object()（很少用，了解即可）
+    const car = new Object()
+    car.brand = 'BYD'
+    car.price = 150000
+    console.log('汽车对象：', car)
+
+    // ========================================
+    // 2. 访问和修改属性
+    // ========================================
+
+    console.log('=== 2. 访问和修改属性 ===')
+
+    // 点语法（最常用）
+    console.log('姓名：', student.name)
+    console.log('年龄：', student.age)
+
+    // 方括号语法（属性名是变量或含特殊字符时用）
+    const key = 'grade'
+    console.log('年级：', student[key])   // 等价于 student.grade
+
+    // 修改属性
+    student.age = 21
+    console.log('修改后年龄：', student.age)
+
+    // 添加新属性
+    student.school = 'XX大学'
+    console.log('添加学校后：', student)
+
+    // 删除属性
+    delete student.grade
+    console.log('删除年级后：', student)
+
+    // ========================================
+    // 3. 对象的方法
+    // ========================================
+    // 方法 = 对象里的函数
+
+    console.log('=== 3. 对象的方法 ===')
+
+    const person = {
+      name: '张三',
+      age: 25,
+      // 方法1：传统写法
+      sayHi: function() {
+        console.log('你好，我是' + this.name)
+      },
+      // 方法2：ES6 简写（推荐）
+      introduce() {
+        console.log('我叫' + this.name + '，今年' + this.age + '岁')
+      },
+      // 方法3：箭头函数（注意：箭头函数没有自己的 this！）
+      getName: () => {
+        // 箭头函数里的 this 指向外层，这里指向 window，拿不到 name
+        // 所以对象方法不推荐用箭头函数
+        console.log('箭头函数 this 的问题演示')
+      }
+    }
+
+    person.sayHi()
+    person.introduce()
+
+    // ========================================
+    // 4. this 关键字
+    // ========================================
+    // this 指向"调用它的那个对象"
+
+    console.log('=== 4. this 关键字 ===')
+
+    const dog = {
+      name: '旺财',
+      bark() {
+        console.log(this.name + '：汪汪！')
+      }
+    }
+
+    const cat = {
+      name: '咪咪',
+      bark: dog.bark    // 把狗的叫方法借给猫
+    }
+
+    dog.bark()   // 旺财：汪汪！  → this 指向 dog
+    cat.bark()   // 咪咪：汪汪！  → this 指向 cat
+    // 同一个函数，谁调用，this 就是谁
+
+    // ========================================
+    // 5. 遍历对象
+    // ========================================
+
+    console.log('=== 5. 遍历对象 ===')
+
+    const product = {
+      name: '机械键盘',
+      price: 299,
+      brand: 'Logitech',
+      inStock: true
+    }
+
+    // for...in 遍历所有属性名
+    console.log('--- for...in ---')
+    for (let key in product) {
+      console.log(key + '：' + product[key])
+    }
+
+    // Object.keys() 获取所有属性名组成数组
+    console.log('--- Object.keys() ---')
+    const keys = Object.keys(product)
+    console.log('所有属性名：', keys)
+
+    // Object.values() 获取所有值组成数组
+    console.log('--- Object.values() ---')
+    const values = Object.values(product)
+    console.log('所有值：', values)
+
+    // ========================================
+    // 6. 解构赋值
+    // ========================================
+
+    console.log('=== 6. 解构赋值 ===')
+
+    const user = {
+      nickname: '前端小白',
+      level: 5,
+      email: 'test@qq.com'
+    }
+
+    // 不用解构：一个个取
+    const nick = user.nickname
+    const lv = user.level
+    console.log(nick, lv)
+
+    // 用解构：一行搞定
+    const { nickname, level } = user
+    console.log('解构后：', nickname, level)
+
+    // 重命名
+    const { nickname: userName, level: userLevel } = user
+    console.log('重命名：', userName, userLevel)
+
+    // 设置默认值：如果属性不存在就用默认值
+    const { phone = '未填写' } = user
+    console.log('默认值：', phone)
+
+    // 函数参数解构（很常用）
+    function printUser({ nickname, level }) {
+      console.log(nickname + '，等级：' + level)
+    }
+    printUser(user)
+
+    // ========================================
+    // 练习题
+    // ========================================
+    console.log('=== 练习题 ===')
+
+    // 练习1：创建购物车对象
+    // 包含属性：owner（车主），items（商品数组，每个商品有 name 和 price）
+    // 包含方法：addItem(name, price) 添加商品，getTotal() 计算总价
+    const cart = {
+      owner: '小明',
+      items: [
+        { name: '鼠标', price: 99 },
+        { name: '键盘', price: 299 }
+      ],
+      addItem(name, price) {
+        // TODO: 往 items 里 push 一个新商品对象 { name, price }
+        this.items.push({name,price})
+      },
+      getTotal() {
+        // TODO: 遍历 items，累加所有 price，返回总价
+        // 提示：用 for 循环或 forEach
+        let total = 0
+        for (let i=0;i<this.items.length;i++) { total += this.items[i].price }
+        return total
+      }
+    }
+    cart.addItem('显示器', 1299)
+    console.log(cart.getTotal())  // 期望 99+299+1299 = 1697
+
+    // 练习2：写一个函数，接收一个对象，返回对象有多少个属性
+    function countProps(obj) {
+      // TODO: 补全代码
+      return Object.keys(obj).length
+      // 提示：用 Object.keys(obj).length
+    }
+    console.log(countProps({ a: 1, b: 2, c: 3 }))  // 期望 3
+
+    // 练习3：用解构交换两个变量的值（不用第三个变量）
+    let a = 1
+    let b = 2;
+    // TODO: 用解构赋值交换 a 和 b
+    [a,b]=[b,a]
+    console.log('交换后：a=' + a + ', b=' + b)  // 期望 a=2, b=1
+
+    // 练习4：写一个函数 mergeUser，合并两个用户对象
+    // 如果两个对象有同名属性，第二个对象的覆盖第一个
+    function mergeUser(base, extra) {
+      // TODO: 补全代码
+      // 提示：用 Object.assign({}, base, extra)
+      // 或者用展开运算符 { ...base, ...extra }
+      return { ...base, ...extra}
+    }
+    const merged = mergeUser(
+      { name: '张三', age: 20 },
+      { age: 25, city: '北京' }
+    )
+    console.log(merged)  // 期望 { name: '张三', age: 25, city: '北京' }
+
+    // 练习5：数组里放对象，找出年龄最大的人
+    const people = [
+      { name: '张三', age: 25 },
+      { name: '李四', age: 32 },
+      { name: '王五', age: 19 },
+      { name: '赵六', age: 28 }
+    ]
+    // TODO: 写代码找出 age 最大的人，打印他的名字
+    // 提示：for 循环 + if 比较
+    let oldest = people[0]
+    for (let i=0;i<people.length;i++) { if (people[i].age>oldest.age) oldest = people[i] }
+    console.log('年龄最大：', oldest.name)
+  </script>
+</body>
+</html>

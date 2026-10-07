@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <!-- 关键1：viewport 视口标签 —— 没有它，手机浏览器会把网页当成桌面宽度缩小显示 -->
+  <!-- width=device-width：让页面宽度等于设备屏幕宽度 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day3-1 媒体查询基础</title>
+  <style>
+    /* ========================================
+       本文件练习方式：
+       1. 打开浏览器，按住 Ctrl 拖动窗口宽度变化
+       2. 或按 F12 → 点击左上角手机图标（设备模拟）切换各种屏幕尺寸
+       ======================================== */
+       html{
+        font-size: 10px;
+       }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .tip {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    /* ========================================
+       1. 基础：max-width 媒体查询
+       语法：@media (条件) { 满足条件时生效的样式 }
+       max-width: 600px 表示 "屏幕宽度 ≤ 600px 时生效"
+       （一般用于桌面优先，从大到小写）
+       ======================================== */
+    .box {
+      padding: 20px;
+      border-radius: 8px;
+      background: #4a90d9;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    /* 默认样式（大屏）在上面，窄屏样式用 @media 覆盖 */
+    .box {
+      display: flex;
+      flex-direction: row;   /* 大屏：左右排列 */
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    @media (max-width: 600px) {
+      .box {
+        flex-direction: column;  /* 窄屏：上下排列 */
+        gap: 12px;
+        background: #d94a4a;     /* 顺便换个颜色，方便看出生效了 */
+      }
+    }
+
+    /* ========================================
+       2. min-width 媒体查询（移动优先写法，后面第3个文件重点用）
+       min-width: 600px 表示 "屏幕宽度 ≥ 600px 时生效"
+       默认先写手机样式，再逐级增强 —— 这就是"移动优先"
+       ======================================== */
+    .card {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.875rem;      /* 手机：小字号 */
+    }
+
+    @media (min-width: 600px) {
+      .card {
+        font-size: 18px;    /* 平板：大字号 */
+        padding: 24px;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .card {
+        font-size: 20px;    /* 桌面：更大 */
+        max-width: 800px;
+        margin: 0 auto 12px;
+      }
+    }
+
+    /* ========================================
+       3. 范围写法（CSS 新版，可读性更好）
+       min-width: 601px and (max-width: 900px) 可简写为
+       (601px <= width <= 900px)
+       ======================================== */
+    .range-demo {
+      background: #2ecc71;
+      color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .range-demo::after {
+      content: "当前：宽屏（> 900px）";
+    }
+
+    /* 601px ~ 900px 之间（中屏） */
+    @media (601px <= width <= 900px) {
+      .range-demo {
+        background: #f39c12;
+      }
+      .range-demo::after {
+        content: "当前：中屏（601px ~ 900px）";
+      }
+    }
+
+    /* 小于等于 600px（窄屏） */
+    @media (width <= 600px) {
+      .range-demo {
+        background: #8e44ad;
+      }
+      .range-demo::after {
+        content: "当前：窄屏（≤ 600px）";
+      }
+    }
+
+    /* ========================================
+       4. 其他常用条件
+       ======================================== */
+    /* 横屏/竖屏 */
+    @media (orientation: landscape) {
+      .orientation-note {
+        color: #27ae60;
+      }
+    }
+
+    @media (orientation: portrait) {
+      .orientation-note {
+        color: #e74c3c;
+      }
+    }
+
+    @media (max-width: 480px){
+      h1 {
+        font-size: 18px;
+        text-align: center;
+      }
+
+    }
+
+    /* 常用断点速记：
+       手机竖屏：      0 ~ 480px
+       手机横屏/小平板：481 ~ 767px
+       平板：          768 ~ 991px
+       桌面：          992px 以上
+       这只是经验值，具体以你的设计为准 */
+  </style>
+</head>
+<body>
+  <h1>Day3-1：媒体查询（Media Query）</h1>
+  <p class="tip">拖动窗口宽度 / 用设备模拟器切换尺寸，观察下面每个板块的变化</p>
+
+  <div class="box">
+    <span>我是导航栏（大屏横排）</span>
+    <span>链接1 | 链接2 | 链接3</span>
+  </div>
+
+  <div class="card">卡片1：文字大小随屏幕变大而变大</div>
+  <div class="card">卡片2：这就是 min-width 逐级增强</div>
+
+  <div class="range-demo"></div>
+
+  <p class="orientation-note">旋转手机 / 拉伸窗口高度，观察文字颜色变化（横屏绿、竖屏红）</p>
+
+  <script>
+    // ========================================
+    // 练习：写一个媒体查询
+    // ========================================
+    // 需求：在 ≤ 480px 的屏幕上，让 h1 的文字变成 18px 且居中
+    // 提示：把下面的 CSS 写进上面 <style> 里
+    //
+    // @media (max-width: 480px) {
+    //   h1 {
+    //     font-size: 18px;
+    //     text-align: center;
+    //   }
+    // }
+
+    // ========================================
+    // 小知识：JS 里也能判断屏幕宽度（以后做交互会用到）
+    // ========================================
+    console.log('当前窗口宽度：', window.innerWidth + 'px')
+    console.log('当前设备像素比 devicePixelRatio：', window.devicePixelRatio)
+    // 设备像素比 = 2 说明 1 个 CSS 像素 = 2 个物理像素（手机屏幕常见）
+
+    window.addEventListener('resize', () => {
+      console.log('窗口变化为：', window.innerWidth + 'px')
+    })
+  </script>
+</body>
+</html>

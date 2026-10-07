@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day4 - 数组方法</title>
+</head>
+<body>
+  <h1>Day4：数组方法</h1>
+  <p>打开控制台（F12 → Console）查看输出</p>
+
+  <script>
+    console.log('=== 1. push / pop / unshift / shift ===')
+    let a = [1, 2, 3]; console.log('原:', a)
+    a.push(4); console.log('push(4):', a)
+    a.pop(); console.log('pop():', a)
+    a.unshift(0); console.log('unshift(0):', a)
+    a.shift(); console.log('shift():', a)
+
+    console.log('=== 2. splice ===')
+    let b = ['a', 'b', 'c', 'd', 'e']
+    console.log('删除:', b.splice(1, 2), '剩余:', b)
+    b.splice(1, 0, 'x', 'y'); console.log('插入:', b)
+
+    console.log('=== 3. forEach / map ===')
+    let n = [1, 2, 3, 4, 5]
+    n.forEach((v, i) => console.log('第' + i + '个:' + v))
+    console.log('map乘2:', n.map(x => x * 2))
+
+    console.log('=== 4. filter / find / findIndex ===')
+    let s = [45, 78, 92, 60, 33, 88]
+    console.log('及格:', s.filter(x => x >= 60))
+    console.log('第一个大于90:', s.find(x => x > 90))
+    console.log('第一个不及格索引:', s.findIndex(x => x < 60))
+
+    console.log('=== 5. reduce / some / every ===')
+    let p = [100, 200, 300]
+    console.log('总和:', p.reduce((t, v) => t + v, 0))
+    console.log('有大于250的吗:', p.some(x => x > 250))
+    console.log('都大于50吗:', p.every(x => x > 50))
+
+    console.log('=== 6. sort / concat / join ===')
+    console.log('数字升序:', [3, 1, 10, 2].sort((a, b) => a - b))
+    console.log('concat:', [1, 2].concat([3, 4]))
+    console.log('join:', ['a', 'b'].join(','))
+
+    console.log('=== 练习题 ===')
+    // 1. filter 筛选大于 10
+    console.log([5, 12, 8, 130, 44].filter(x => x > 10))
+
+
+    // 2. map 平方
+    console.log([1, 2, 3, 4].map(x => x * x))
+
+    // 3. reduce 求和
+    // console.log([10, 20, 30, 40].reduce((s, n) => s + n, 0))
+
+    // 4. find 找年龄 25
+    // const users = [{ name: '张三', age: 20 }, { name: '李四', age: 25 }]
+    // console.log(users.find(u => u.age === 25))
+
+    // 5. splice 删除索引 2
+    // let arr5 = [1, 2, 3, 4, 5]
+    // arr5.splice(2, 1)
+    // console.log(arr5)
+  </script>
+</body>
+</html>

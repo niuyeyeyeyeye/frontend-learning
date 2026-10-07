@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day6-1 定时器</title>
+</head>
+<body>
+  <h1>Day6-1：定时器（setTimeout / setInterval）</h1>
+  <p>打开控制台（F12 → Console）按顺序看输出（有延迟，稍等一下）</p>
+
+  <script>
+    // ========================================
+    // 1. setTimeout：延迟执行一次
+    // ========================================
+    console.log('=== 1. setTimeout ===')
+
+    // 取消掉，避免等 3 秒
+    const t1 = setTimeout(() => console.log('这行不会打印（被取消了）'), 3000)
+    clearTimeout(t1)
+
+    // 正常使用
+    setTimeout(() => console.log('1 秒后打印这一行'), 1000)
+
+    // 传参数：第三个开始的参数会传给回调
+    setTimeout((name) => console.log('你好，' + name), 500, '小明')
+
+    // ========================================
+    // 2. 回调是"宏任务"：同步代码一定先跑完
+    // ========================================
+    console.log('=== 2. 执行顺序 ===')
+
+    console.log('A：同步代码 1')
+    setTimeout(() => console.log('C：定时器里的代码（延迟 0 也要排队）'), 0)
+    console.log('B：同步代码 2')
+    // 输出顺序：A → B → C
+    // 原因：定时器回调要等主线程的同步代码全部执行完才轮得到
+    // （这就是 Day7 之后的"事件循环 Event Loop"，面试必考，先有个印象）
+
+    // ========================================
+    // 3. setInterval：每隔一段时间执行
+    // ========================================
+    console.log('=== 3. setInterval ===')
+
+    let second = 0
+    const tick = setInterval(() => {
+      second++
+      console.log('过去了 ' + second + ' 秒')
+      if (second === 3) {
+        clearInterval(tick)          // 一定要记得清掉，否则会一直跑
+        console.log('=== 3 秒到，定时器已清除 ===')
+      }
+    }, 1000)
+
+    // ========================================
+    // 4. 定时器"不准"：它是排队，不是闹钟
+    // ========================================
+    // 如果主线程被一段很耗时的代码阻塞了，定时器回调只能等
+    // 所以：不要用 setInterval 做精确计时（比如秒表、倒计时校准）
+    //     需要精确动画用 requestAnimationFrame
+
+    // ========================================
+    // 5. 经典坑：循环里的定时器（闭包复习，Day4 学过）
+    // ========================================
+    console.log('=== 5. 循环 + 定时器 ===')
+
+    for (var i = 1; i <= 3; i++) {
+      setTimeout(() => console.log('var 版本：', i), 0)   // 4 4 4
+    }
+    for (let j = 1; j <= 3; j++) {
+      setTimeout(() => console.log('let 版本：', j), 0)   // 1 2 3
+    }
+
+    // ========================================
+    // 6. 实战：写一个倒计时函数
+    // ========================================
+    console.log('=== 6. 倒计时 ===')
+
+    function countdown(seconds) {
+      console.log('倒计时开始：' + seconds + ' 秒')
+      const timer = setInterval(() => {
+        seconds--
+        if (seconds > 0) {
+          console.log('剩余 ' + seconds + ' 秒')
+        } else {
+          console.log('⏰ 时间到！')
+          clearInterval(timer)
+        }
+      }, 1000)
+      return timer    // 返回出去，方便外部取消
+    }
+
+    // 取消注释体验（下面 3 秒会打印倒计时）
+    // countdown(3)
+
+    // ========================================
+    // 7. 练习题
+    // ========================================
+    // 练习1：写一个 delay(ms) 函数，返回 Promise，配合 await 使用
+    //        用法：await delay(1000); console.log('等了 1 秒')
+
+    function delay(ms){
+      return new Promise(resolve =>setTimeout(resolve,ms))
+    }
+    async function run() {
+      await delay(1000);
+      console.log('等了一秒')
+    }
+
+
+    // 卡住再看 ↓
+    // function delay(ms) {
+    //   return new Promise(resolve => setTimeout(resolve, ms))
+    // }
+    // async function run() { await delay(1000); console.log('等了 1 秒') }
+
+    // 练习2：写一个 poll(fn, interval, times)：每隔 interval 执行一次 fn，执行 times 次后停止
+
+    function poll(fn,interval,times){
+      let n = 0
+      const id = setInterval(()=>{
+        n++;
+        fn()
+        if(n === times){clearInterval(id)};
+      },interval)
+    }
+
+
+
+    // 卡住再看 ↓
+    // function poll(fn, interval, times) {
+    //   let count = 0
+    //   const timer = setInterval(() => {
+    //     fn()
+    //     if (++count >= times) clearInterval(timer)
+    //   }, interval)
+    // }
+
+    // 练习3：用 setTimeout 递归写一个"每 500ms 执行一次，共 3 次"的逻辑
+    //        （提示：比 setInterval 更安全，因为下一次一定在上一次完成后才开始）
+
+    function repeat(fn,interval,times){
+      let n = 0;
+      function next(){
+        n++;
+        if(n>times) return
+        fn();
+        setTimeout(next,interval)
+      }
+      next();
+    }
+
+
+
+    // 卡住再看 ↓
+    // function repeat(fn, interval, times) {
+    //   let count = 0
+    //   function next() {
+    //     if (count++ >= times) return
+    //     fn()
+    //     setTimeout(next, interval)
+    //   }
+    //   next()
+    // }
+
+    // 练习4（口答）：setTimeout(fn, 0) 是真的 0 毫秒后执行吗？
+    // 答案：不是。它表示"尽快排到任务队列"，实际至少等同步代码跑完，
+    //       浏览器还有最小延迟（约 4ms）
+  </script>
+</body>
+</html>

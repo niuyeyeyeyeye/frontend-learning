@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day4-3 闭包</title>
+</head>
+<body>
+  <h1>Day4-3：闭包（Closure）</h1>
+  <p>打开控制台（F12 → Console）按顺序看输出</p>
+
+  <script>
+    // ========================================
+    // 0. 一句话理解闭包
+    // ========================================
+    // 闭包 = 函数 + 它能"记住"的外部变量
+    // 关键点：外层函数执行完了，它的变量本来应该被销毁，
+    //        但因为内层函数还在引用，所以变量"活了下来"
+
+    console.log('=== 1. 计数器：最小闭包 ===')
+
+    function makeCounter() {
+      let count = 0          // 外层函数的局部变量
+      return function () {   // 内层函数引用了它
+        count++
+        return count
+      }
+    }
+
+    const counter = makeCounter()
+    console.log('第一次调用：', counter())   // 1
+    console.log('第二次调用：', counter())   // 2
+    console.log('第三次调用：', counter())   // 3
+    // makeCounter() 早就执行完了，但 count 没被销毁 —— 这就是闭包
+
+    // 再创建一个计数器，它们互不影响（每次调用都会创建新的作用域）
+    const counter2 = makeCounter()
+    console.log('新计数器：', counter2())    // 1
+    console.log('旧计数器还在自己的进度：', counter())  // 4
+
+    // ========================================
+    // 2. 用闭包做"私有变量"（模拟银行账户）
+    // ========================================
+    console.log('=== 2. 私有变量 ===')
+
+    function createAccount(initial) {
+      let balance = initial   // 外部拿不到这个变量，只能通过返回的方法操作
+
+      return {
+        deposit(amount) {
+          balance += amount
+          return '存入 ' + amount + '，余额 ' + balance
+        },
+        withdraw(amount) {
+          if (amount > balance) return '余额不足，当前 ' + balance
+          balance -= amount
+          return '取出 ' + amount + '，余额 ' + balance
+        },
+        getBalance() {
+          return '当前余额：' + balance
+        },
+      }
+    }
+
+    const myAccount = createAccount(100)
+    console.log(myAccount.getBalance())
+    console.log(myAccount.deposit(200))
+    console.log(myAccount.withdraw(500))   // 余额不足
+    console.log(myAccount.withdraw(50))
+    console.log('直接访问 balance：', myAccount.balance)  // undefined，拿不到 ✅
+
+    // ========================================
+    // 3. 经典面试题：var 和 let 在循环里的区别
+    // ========================================
+    console.log('=== 3. 循环里的闭包 ===')
+
+    for (var i = 0; i < 3; i++) {
+      setTimeout(function () {
+        console.log('var 版本：', i)   // 输出 3 3 3
+      }, 0)
+    }
+
+    for (let j = 0; j < 3; j++) {
+      setTimeout(function () {
+        console.log('let 版本：', j)   // 输出 0 1 2
+      }, 0)
+    }
+
+    // 原因：
+    // var 是函数作用域，整个循环只有 1 个 i；循环先跑完（i 变成 3），
+    //     定时器才执行，所以三个回调看到的都是同一个 i = 3
+    // let 是块级作用域，每轮循环都会创建一个新的 j，
+    //     三个回调各自记住自己那一轮的 j ✅
+
+    // 如果非要用 var，老写法是用 IIFE 造一个作用域：
+    for (var k = 0; k < 3; k++) {
+      (function (n) {
+        setTimeout(function () {
+          console.log('var + IIFE 版本：', n)   // 输出 0 1 2
+        }, 0)
+      })(k)
+    }
+
+    // ========================================
+    // 4. 闭包的实际用途（以后每天都会用到）
+    // ========================================
+    console.log('=== 4. 实际用途 ===')
+
+    // 4.1 once：只能执行一次
+    function once(fn) {
+      let called = false
+      let result
+      return function (...args) {
+        if (!called) {
+          called = true
+          result = fn.apply(this, args)   // apply 用来把 this 和参数透传（见 04 文件）
+        }
+        return result
+      }
+    }
+
+    const init = once(function () {
+      console.log('我只会在第一次被调用时执行')
+      return '初始化完成'
+    })
+    console.log(init())   // 我只会在第一次... / 初始化完成
+    console.log(init())   // 初始化完成（不再执行里面的代码）
+
+    // 4.2 memoize：缓存计算结果
+    function memoize(fn) {
+      const cache = {}
+      return function (n) {
+        if (n in cache) {
+          console.log(n + ' 命中缓存，不重新计算')
+          return cache[n]
+        }
+        const result = fn(n)
+        cache[n] = result
+        return result
+      }
+    }
+
+    const slowSquare = memoize(function (n) {
+      console.log('真的在计算 ' + n + ' 的平方')
+      return n * n
+    })
+    console.log(slowSquare(9))   // 真的在计算... / 81
+    console.log(slowSquare(9))   // 命中缓存 / 81
+
+    // 4.3 debounce 防抖雏形（Day6 会正式学）
+    function debounce(fn, delay) {
+      let timer = null          // 闭包保存定时器 id
+      return function (...args) {
+        clearTimeout(timer)     // 每次触发都取消上一次
+        timer = setTimeout(() => fn(...args), delay)
+      }
+    }
+
+    const onSearch = debounce(function (keyword) {
+      console.log('真正发起搜索：', keyword)
+    }, 300)
+    console.log('（下面模拟连续输入，只会触发最后一次）')
+    onSearch('a'); onSearch('ab'); onSearch('abc')
+
+    // ========================================
+    // 5. 练习题（想好再看答案）
+    // ========================================
+    console.log('=== 5. 练习题 ===')
+
+    // 练习1：写一个 makeCounter(step)，支持自定义步长
+    // const c = makeCounter(5); c() → 5, c() → 10
+
+    function makeCounter(step){
+      let count=0 ;
+      return function (){
+        return count+=step
+      }
+    }
+    
+    // 卡住再看 ↓
+    // function makeCounter(step) {
+    //   let count = 0
+    //   return function () {
+    //     count += step
+    //     return count
+    //   }
+    // }
+
+    // 练习2：用闭包实现"最多只能错 3 次"的密码验证器
+    // const check = createPasswordChecker('123456')
+    // check('000') → '密码错误，还剩 2 次'
+    // check('000') → '密码错误，还剩 1 次'
+    // check('000') → '已锁定'
+    // check('123456') → '已锁定'（锁了就不管密码对不对）
+
+    function createPasswordChecker(passWord){
+      let i=3;
+      return function(input){
+        if(i<=0) return '已锁定';
+        if(input === passWord)  return '登录成功';
+        i--;
+        return i>0?'密码错误,还有'+i+'次机会': '已锁定'; 
+        
+      }
+    }
+
+
+    // 卡住再看 ↓
+    // function createPasswordChecker(correct) {
+    //   let remaining = 3
+    //   return function (input) {
+    //     if (remaining <= 0) return '已锁定'
+    //     if (input === correct) return '登录成功'
+    //     remaining--
+    //     return remaining > 0 ? '密码错误，还剩 ' + remaining + ' 次' : '已锁定'
+    //   }
+    // }
+
+    // 练习3（理解题，口答）：
+    // 为什么闭包里的变量不会被销毁？
+    // 答案：内层函数一直引用着它（作用域链保留），垃圾回收器不会回收
+    //   代价：变量常驻内存 → 不用了要手动置 null（了解即可）
+
+    // 练习4：用闭包模拟"购物车"：addItem / removeItem / getTotal
+    function createCart(){
+      let items = [];
+      return {
+        addItem(item){
+          const exsiting = items.find(i=>i.name === item.name)
+          if(exsiting) {
+            exsiting.quantity+=item.quantity
+          } else {
+            items.push({...item})
+          }
+        },
+        removeItem(name){
+          const index = items.findIndex(i=>i.name === name)
+          if(index !== -1) {
+            items.splice(index,1)
+            return true;
+          }
+          return false
+        },
+        getTotal(){
+          return items.reduce((sum,i)=>i.quantity*i.price,0)
+        },
+
+      }
+    }
+  </script>
+</body>
+</html>

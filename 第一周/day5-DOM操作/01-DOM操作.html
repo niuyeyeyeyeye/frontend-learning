@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day5 - DOM操作</title>
+  <style>
+    body { max-width: 700px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+    .section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    .highlight { color: #e74c3c; font-weight: bold; }
+    .box { width: 100px; height: 100px; background: #3498db; margin: 10px 0; }
+    .done { text-decoration: line-through; color: #999; }
+    button { cursor: pointer; padding: 4px 12px; }
+  </style>
+</head>
+<body>
+  <h1>Day5：DOM 操作</h1>
+
+  <!-- 练习1区域：获取和修改 -->
+  <div class="section">
+    <h2>1. 获取与修改元素</h2>
+    <p id="text1">这是原始文字</p>
+    <p class="info">通过 class 获取</p>
+    <div class="box" id="box1"></div>
+    <br>
+    <button onclick="changeText()">修改文字</button>
+    <button onclick="changeColor()">修改颜色</button>
+    <button onclick="toggleBox()">变大变小</button>
+  </div>
+
+  <!-- 练习2区域：添加和删除 -->
+  <div class="section">
+    <h2>2. 添加与删除元素</h2>
+    <div id="list"></div>
+    <br>
+    <button onclick="addItem()">添加一项</button>
+    <button onclick="removeLast()">删除最后一项</button>
+  </div>
+
+  <!-- 练习3：待办事项 -->
+  <div class="section">
+    <h2>3. 待办事项（综合练习）</h2>
+    <input type="text" id="todoInput" placeholder="输入待办事项..." style="padding:6px; width:300px;">
+    <button onclick="addTodo()">添加</button>
+    <ul id="todoList"></ul>
+  </div>
+
+  <script>
+    // ========================================
+    // 补充：写内部代码供练习1调用
+    // ========================================
+
+    function changeText() {
+      // TODO: 获取 id 为 "text1" 的元素，把它的文字改成 "文字已被修改！"
+      const change = document.querySelector('#text1')
+      change.innerText ="文字已被修改"
+    }
+
+    function changeColor() {
+      // TODO: 获取 id 为 "box1" 的元素，把它的背景色改成红色
+      const change = document.querySelector('#box1')
+      change.style.background = 'red'
+    }
+
+    function toggleBox() {
+      // TODO: 获取 id 为 "box1" 的元素
+      const getId = document.querySelector('#box1')
+      // 如果当前宽度是 100px，改成 200px；否则改回 100px
+      if(getId.style.width === '100px'){
+        getId.style.width = '200px'
+      }else{
+        getId.style.width = '100px'
+      }
+      // 提示：box.style.width，判断用 if
+    }
+
+    // ========================================
+    // 练习2
+    // ========================================
+
+    let itemCount = 1
+
+    function addItem() {
+      // TODO: 创建新元素（createElement），设置文字，追加到 id="list" 的 div 中
+      const createElement = document.createElement('div')
+      document.querySelector('#list').appendChild(createElement)
+      createElement.innerText = `第${itemCount}项`
+      itemCount++
+    }
+
+    function removeLast() {
+      // TODO: 找到 id="list"，删掉它的最后一个子元素
+      const removeLastElementChild = document.querySelector('#list')
+      // 提示：list.lastElementChild.remove()
+      removeLastElementChild.lastElementChild.remove()
+      itemCount--
+    }
+
+    // ========================================
+    // 练习3：待办事项
+    // ========================================
+
+    const storage = {
+      set(key, value) {
+        try {
+          localStorage.setItem(key, JSON.stringify(value))
+        } catch (e) {
+          console.warn('存储失败（可能超出 5MB 限制）：', e)
+        }
+      },
+      get(key, defaultValue = null) {
+        const raw = localStorage.getItem(key)
+        if (raw === null) return defaultValue
+        try {
+          return JSON.parse(raw)
+        } catch (e) {
+          return raw          // 不是 JSON 就原样返回
+        }
+      },
+      remove(key) {
+        localStorage.removeItem(key)
+      },
+      clear() {
+        localStorage.clear()
+      },
+    }
+    function addTodo() {
+      // 1. 获取输入框的值
+      const input =  document.querySelector('#todoInput')
+
+
+
+
+      // const input = document.getElementById('todoInput')
+      // const text = input.value
+
+      // 2. 如果为空，提示用户
+      if(input.value ===''){
+        alert('不能为空')
+      }else{
+
+        // 防止刷新后待办失效
+
+        function addEventListener(keyword){
+          const list = storage.get(history,[])
+          const next = [keyword,...list]
+          storage.set('history',next)
+          return next
+    }
+        
+        
+        const createLi = document.createElement('li')
+      
+      
+
+
+      // if (text.trim() === '') { alert('请输入内容'); return }
+
+      // 3. 创建 li 元素
+      const getToDoList = document.querySelector('#todoList')
+      getToDoList.appendChild(createLi)
+      createLi.innerText = input.value
+
+
+      // const li = document.createElement('li')
+      // li.textContent = text
+
+      // 4. 点击 li 切换完成状态（划掉/恢复）
+      createLi.onclick = function(){createLi.classList.toggle('done')}
+
+      
+      // li.onclick = function() { li.classList.toggle('done') }
+
+      // 5. 创建删除按钮
+      const createSelectButton = document.createElement('button');
+      createLi.appendChild(createSelectButton);
+      createSelectButton.innerText = '删除';
+      createSelectButton.onclick = function(){
+        createLi.remove();
+      }
+      
+
+
+      // const delBtn = document.createElement('button')
+      // delBtn.textContent = '删除'
+      // delBtn.onclick = function(e) { e.stopPropagation(); li.remove() }
+
+      // 6. 组装并追加
+      // li.appendChild(delBtn)
+      // document.getElementById('todoList').appendChild(li)
+
+      // 7. 清空输入框
+
+      input.value = ''
+    }
+      // input.value = ''
+    }
+  </script>
+</body>
+</html>

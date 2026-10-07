@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day5-2 class语法</title>
+</head>
+<body>
+  <h1>Day5-2：class 语法（原型链的语法糖）</h1>
+  <p>打开控制台（F12 → Console）按顺序看输出</p>
+
+  <script>
+    // ========================================
+    // 0. 一句话理解
+    // ========================================
+    // class 不是新东西，它就是"构造函数 + prototype"的更好看的写法
+    // 写法变了，底层还是原型链 —— 证据在下面第 5 节
+
+    console.log('=== 1. 基本写法 ===')
+
+    class User {
+      // ① 静态属性（挂在类上，不属于任何实例）
+      static count = 0
+
+      // ② 私有字段（必须在类里先声明，外部访问会直接报错）
+      #password
+
+      // ③ 构造函数
+      constructor(name, password) {
+        this.name = name
+        this.#password = password
+        User.count++        // 每创建一个实例，计数 +1
+      }
+
+      // ④ 实例方法（等价于写在 prototype 上）
+      checkPassword(input) {
+        return input === this.#password
+      }
+
+      // ⑤ getter：像读属性一样调用方法
+      get displayName() {
+        return '用户：' + this.name
+      }
+
+      // ⑥ setter：像赋值一样调用方法
+      set displayName(value) {
+        this.name = value.replace('用户：', '')
+      }
+
+      // ⑦ 静态方法（用类名调用，不用实例）
+      static createGuest() {
+        return new User('游客' + Math.floor(Math.random() * 1000), 'guest')
+      }
+    }
+
+    const u1 = new User('小明', '123456')
+    console.log('checkPassword("123456")：', u1.checkPassword('123456'))   // true
+    console.log('checkPassword("000")：', u1.checkPassword('000'))         // false
+
+    // getter / setter 用起来像属性
+    console.log('读 getter：', u1.displayName)          // 用户：小明
+    u1.displayName = '用户：小红'                        // 走 setter
+    console.log('setter 改完后：', u1.name)              // 小红
+
+    // 静态成员
+    console.log('实例数量 static count：', User.count)   // 1（目前只创建了 u1）
+    const guest = User.createGuest()
+    console.log('静态方法创建的实例：', guest.name)       // 游客xxx
+
+    // ========================================
+    // 2. 私有字段：外部真的访问不到
+    // ========================================
+    console.log('=== 2. 私有字段 ===')
+
+    // 【重要】在类外面写 u1.#password，浏览器会直接抛【语法错误】：
+    //   SyntaxError: Private field '#password' must be declared in an enclosing class
+    // 语法错误意味着整个脚本一行都不会执行，所以这里只能写在注释里讲，不能真运行 👇
+    //   console.log(u1.#password)   // ❌ 整个文件都会挂掉
+
+    // 所以 # 私有字段的验证方式是"从侧面看"：
+    console.log('只有在类内部的方法里能读到它：', u1.checkPassword('123456'))  // true
+    console.log('外部枚举属性时它不出现 Object.keys(u1)：', Object.keys(u1))    // ['name']
+    console.log('去掉 # 写 u1.password 是 undefined：', u1.password)           // undefined
+    console.log("u1 有 'password' 这个属性吗：", 'password' in u1)            // false
+
+    // 对比老写法：下划线开头只是"君子协定"，外部想改就改
+    class OldStyle {
+      constructor() { this._secret = '谁都能改' }
+    }
+    const old = new OldStyle()
+    old._secret = '被外面改掉了'
+    console.log('下划线"私有"被外部改了：', old._secret)                       // 被外面改掉了
+    // 结论：# 是语法级私有，_ 只是命名约定
+
+    // ========================================
+    // 3. class 的两个"脾气"
+    // ========================================
+    console.log('=== 3. class 的脾气 ===')
+
+    // ① class 不会提升（TDZ）：必须先定义再使用
+    try {
+      new NotDefinedYet()
+    } catch (e) {
+      console.log('类不提升（先定义后用）：', e.constructor.name)   // ReferenceError
+    }
+    class NotDefinedYet {}
+
+    // ② class 内部自动是严格模式
+    console.log('class 里的方法自动严格模式：this 不会变成 window')
+
+    // ③ class 本质还是函数
+    console.log('typeof User：', typeof User)                      // function
+    console.log('User.prototype 上有 checkPassword：',
+      Object.prototype.hasOwnProperty.call(User.prototype, 'checkPassword'))  // true
+
+    // ========================================
+    // 4. 实例方法与实例属性
+    // ========================================
+    console.log('=== 4. 属性归属 ===')
+    console.log('u1 自己的属性：', Object.keys(u1))                 // ['name']（#password 不枚举）
+    console.log('实例方法在原型上，不在实例上：',
+      u1.hasOwnProperty('checkPassword'))                          // false
+    console.log('但能调用（原型链找到的）：', typeof u1.checkPassword)  // function
+
+    // 一次创建多个实例，方法只有一份（省内存）
+    const u2 = new User('小刚', 'abc')
+    console.log('两个实例共用同一个方法：',
+      u1.checkPassword === u2.checkPassword)                       // true
+
+    // ========================================
+    // 5. class 和"构造函数 + prototype"是同一件事
+    // ========================================
+    console.log('=== 5. 两种写法对照 ===')
+
+    // 写法 A：class（推荐）
+    class DogA {
+      constructor(name) { this.name = name }
+      bark() { return this.name + ' 汪汪' }
+    }
+
+    // 写法 B：构造函数（老写法，底层完全一样）
+    function DogB(name) { this.name = name }
+    DogB.prototype.bark = function () { return this.name + ' 汪汪' }
+
+    const a = new DogA('旺财')
+    const b = new DogB('小黑')
+    console.log('两种写法结果一致：', a.bark(), '/', b.bark())
+    console.log('原型链结构也一样：',
+      Object.getPrototypeOf(a) === DogA.prototype,
+      Object.getPrototypeOf(b) === DogB.prototype)
+
+    // ========================================
+    // 6. 练习题
+    // ========================================
+    console.log('=== 6. 练习题 ===')
+
+    // 练习1：写一个 class Counter
+    //   - constructor(start) 记录初始值
+    //   - 方法 increment() 自增 1，decrement() 自减 1
+    //   - getter value 返回当前值
+    //   - 静态方法 createZero() 返回从 0 开始的计数器
+
+    class Counter {
+      #value
+      constructor(start = 0){
+        this.value = start
+      }
+      increment(){
+        this.#value++;
+        return this.#value;
+      }
+      decrement(){
+        this.#value--;
+        return this.#value;
+      }
+      get value(){
+        return this.#value;
+      }
+      static createZero(){
+        return new Counter(0);
+      }
+    }
+
+    // 卡住再看 ↓
+    // class Counter {
+    //   #value
+    //   constructor(start = 0) { this.#value = start }
+    //   increment() { this.#value++; return this.#value }
+    //   decrement() { this.#value--; return this.#value }
+    //   get value() { return this.#value }
+    //   static createZero() { return new Counter(0) }
+    // }
+
+    // 练习2：写一个 class BankAccount，用 #balance 做私有余额，
+    //        提供 deposit / withdraw / get balance，余额不足时抛错
+    // 提示：抛错写法 throw new Error('余额不足')
+    class BankAccount {
+      #balance;
+      start(money){
+        this.#balance = money;
+      }
+      withdraw(money){
+        if(this.#balance>=money){
+          this.#balance-=money
+          return this.#balance;
+        } else {
+          throw new Error('余额不足')
+        }
+      }
+      deposit(money){
+        this.#balance+=money
+        return this.#balance;
+      }
+      get balance(){
+        return this.#balance;
+      }
+    }
+
+    // 练习3：口答 —— class 的实例方法，为什么所有实例共用一份？
+    // 答案：方法定义在 Class.prototype 上，实例通过原型链访问
+
+    // 练习4：口答 —— # 私有字段和 _ 下划线开头的属性有什么区别？
+    // 答案：# 是语法级私有，外部访问直接报错；_ 只是命名约定，外部照样能访问/修改
+  </script>
+</body>
+</html>

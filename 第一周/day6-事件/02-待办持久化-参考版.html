@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>待办清单 · 持久化参考版</title>
+  <style>
+    body { max-width: 700px; margin: 0 auto; padding: 20px; font-family: "Microsoft YaHei", sans-serif; line-height: 1.8; }
+    h1 { font-size: 20px; }
+    .tip { color: #57606a; font-size: 14px; }
+    .row { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+    input { padding: 8px 10px; border: 1px solid #d0d7de; border-radius: 6px; flex: 1; min-width: 200px; }
+    button { padding: 6px 14px; border: 1px solid #d0d7de; background: #f6f8fa; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #eaeef2; }
+    ul { list-style: none; padding: 0; }
+    li {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; padding: 10px 12px; border: 1px solid #d0d7de;
+      border-radius: 8px; margin-bottom: 8px; cursor: pointer; background: #fff;
+    }
+    li.done { text-decoration: line-through; color: #8b949e; background: #f6f8fa; }
+    .stage {
+      background: #f6f8fa; border-left: 4px solid #0969da;
+      padding: 10px 14px; margin: 20px 0; border-radius: 0 6px 6px 0; font-size: 14px;
+    }
+    .stage b { color: #0969da; }
+  </style>
+</head>
+<body>
+  <h1>待办清单（localStorage 持久化）· 参考版</h1>
+  <p class="tip">刷新页面数据不会丢。**这道题的正确姿势只有一句话：改数据 → 存起来 → 重新渲染**（DOM 永远由数据生成，不手动改）。</p>
+
+  <div class="row">
+    <input type="text" id="todoInput" placeholder="输入待办，回车或点添加">
+    <button id="addBtn">添加</button>
+    <button id="clearBtn">清空全部</button>
+  </div>
+  <ul id="todoList"></ul>
+
+  <div class="stage">
+    <b>如果你只想用 20 分钟收工：</b>只看下面的「阶段 ① + 阶段 ②」，把删除功能（阶段 ③）跳过。
+    增删改查里"增 + 持久化"跑通，这道题就已经算完成了。
+  </div>
+
+  <script>
+    // ==========================================================
+    // 阶段 ⓿：存储工具（照抄即可，不用纠结）
+    // ==========================================================
+    const storage = {
+      get(key, defaultValue = []) {
+        const raw = localStorage.getItem(key)
+        if (raw === null) return defaultValue      // ← 关键：取不到就给默认值
+        try {
+          return JSON.parse(raw)
+        } catch (e) {
+          console.log('解析失败，返回默认值', e)
+          return defaultValue
+        }
+      },
+      set(key, value) {
+        localStorage.setItem(key, JSON.stringify(value))
+      },
+      remove(key) {
+        localStorage.removeItem(key)               // ← 用参数，不要写死字符串
+      },
+    }
+
+    // ==========================================================
+    // 阶段 ①：先不管存储，只做「添加 + 渲染」
+    //   目标：输入文字点添加，页面上出现一条
+    // ==========================================================
+    let todos = []                        // 唯一数据源（页面长什么样，全看它）
+
+    const input = document.querySelector('#todoInput')
+    const list = document.querySelector('#todoList')
+
+    function render() {
+      list.innerHTML = ''                          // ① 先清空，避免重复堆叠
+      todos.forEach((text, index) => {             // ② 按数据生成 DOM
+        const li = document.createElement('li')
+        li.textContent = text
+        li.dataset.index = index                   // 记住下标，删除时要用
+
+        const del = document.createElement('button')   // ③ 删除按钮要在循环里创建！
+        del.textContent = '删除'
+        li.appendChild(del)
+
+        list.appendChild(li)
+      })
+    }
+
+    function addTodo() {
+      const text = input.value.trim()
+      if (!text) return alert('请输入内容')
+
+      todos.unshift(text)      // 改数据（最新放最前）
+      input.value = ''
+      render()                 // 重新渲染
+    }
+
+    // ==========================================================
+    // 阶段 ②：接上 localStorage（只加了 3 行！）
+    //   ① 打开页面时读  ② 每次改完数据就存  ③ 删除、清空同理
+    // ==========================================================
+    todos = storage.get('todos')          // ← ① 打开页面：从 localStorage 读出来
+
+    // 把"存"加进 addTodo
+    function addTodoAndSave() {
+      const text = input.value.trim()
+      if (!text) return alert('请输入内容')
+
+      todos.unshift(text)
+      storage.set('todos', todos)         // ← ② 改完数据立刻存
+      input.value = ''
+      render()
+    }
+
+    // ==========================================================
+    // 阶段 ③：删除 / 完成切换（事件委托）
+    //   核心：删的是"数据"，不是 DOM；DOM 由 render 重新生成
+    // ==========================================================
+    list.addEventListener('click', (e) => {
+      const li = e.target.closest('li')
+      if (!li) return
+      const index = Number(li.dataset.index)
+
+      if (e.target.tagName === 'BUTTON') {
+        todos.splice(index, 1)            // ① 改数据
+        storage.set('todos', todos)       // ② 存起来
+        render()                          // ③ 重新渲染
+      } else {
+        li.classList.toggle('done')       // 只是样式，不用存
+      }
+    })
+
+    document.querySelector('#clearBtn').addEventListener('click', () => {
+      todos = []
+      storage.remove('todos')             // 清空存储
+      render()
+    })
+
+    // ==========================================================
+    // 事件绑定 + 初始化
+    // ==========================================================
+    document.querySelector('#addBtn').onclick = addTodoAndSave
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addTodoAndSave()
+    })
+
+    render()                              // 打开页面先渲染一次（把存过的数据画出来）
+    console.log('当前待办数据：', todos)
+
+    // ==========================================================
+    // 对照检查表：你的版本和这里的差异
+    // ==========================================================
+    // [ ] storage.get 有没有"取不到就给默认值"？ → 你少这个，所以 lis 是 null 直接崩
+    // [ ] 渲染前有没有先清空 list.innerHTML = ''？ → 否则重复堆叠
+    // [ ] 删除按钮是在循环里创建的吗？ → 在外面创建只会留在一个 li 上
+    // [ ] 删除时是"改数据 + 存 + 重渲染"，还是只 remove() 了 DOM？
+    // [ ] innerHTML 是"属性"还是"函数"？（要写 = 号）
+    // [ ] 有没有 updateLi() 这种"手动往页面塞 DOM"的函数？→ 统一交给 render()
+  </script>
+</body>
+</html>

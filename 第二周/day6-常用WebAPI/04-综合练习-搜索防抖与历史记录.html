@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Day6-4 综合练习：搜索防抖 + 历史记录持久化</title>
+  <style>
+    /* 移动优先 + Flexbox/Grid 复习（Day3 学过） */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      background: #f6f8fa;
+      color: #24292f;
+      line-height: 1.6;
+    }
+    header {
+      background: #24292f;
+      color: #fff;
+      padding: 20px 16px;
+    }
+    header h1 { font-size: 20px; }
+    header p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;      /* 手机竖排 */
+    }
+    #search {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;             /* ≥16px 防 iOS 聚焦缩放 */
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+    }
+    #search:focus { outline: 2px solid #58a6ff; border-color: transparent; }
+
+    .btn-ghost {
+      padding: 10px 16px;
+      border: 1px solid #d0d7de;
+      background: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+    .btn-ghost:hover { background: #f3f4f6; }
+
+    section { margin-top: 24px; }
+    h2 { font-size: 16px; margin-bottom: 10px; }
+    .hint { font-size: 12px; color: #57606a; font-weight: normal; }
+
+    /* 历史标签 */
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: #ddf4ff;
+      border: 1px solid #b6e3ff;
+      color: #0969da;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .tag:hover { background: #b6e3ff; }
+
+    /* 结果卡片：手机 1 列 → 平板 2 列（Day3 的媒体查询） */
+    .card-list { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 640px) {
+      .search-row { flex-direction: row; }
+      .card-list { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+    }
+    .avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-weight: bold; flex-shrink: 0;
+    }
+    .card h3 { font-size: 15px; }
+    .card .bio { font-size: 13px; color: #57606a; }
+    .card .meta { font-size: 12px; color: #57606a; margin-top: 4px; display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .empty { color: #57606a; font-size: 14px; padding: 12px 0; display: none; }
+    .show { display: block; }
+
+    .note {
+      margin-top: 24px;
+      background: #fff8c5;
+      border: 1px solid #d4a72c;
+      border-radius: 8px;
+      padding: 16px;
+      font-size: 14px;
+    }
+    .note ol { padding-left: 22px; }
+    code { background: #eef1f4; padding: 2px 5px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Day6-4：搜索防抖 + 历史记录持久化</h1>
+    <p>输入会被防抖处理；搜索历史存在 localStorage，刷新页面不会丢</p>
+  </header>
+
+  <div class="container">
+    <div class="search-row">
+      <input type="search" id="search" placeholder="搜索用户：试试输入 ga / an / yu / lee">
+      <button class="btn-ghost" id="clear-history">清空历史</button>
+    </div>
+
+    <section>
+      <h2>搜索历史 <span class="hint">（最多 10 条，最新的在最前）</span></h2>
+      <div class="tags" id="history"></div>
+      <p class="empty" id="history-empty">还没有搜索记录，输入点东西试试</p>
+    </section>
+
+    <section>
+      <h2>结果 <span class="hint" id="result-count"></span></h2>
+      <div class="card-list" id="results"></div>
+      <p class="empty" id="results-empty">没有匹配的用户 😅</p>
+    </section>
+
+    <div class="note">
+      <b>练习题</b>
+      <ol>
+        <li>把历史上限从 10 改成 5（改 <code>MAX_HISTORY</code>）</li>
+        <li>改成"按回车才写历史"（更贴近真实产品：避免记录半截关键词）</li>
+        <li>给每个历史标签加一个 <code>×</code>，点它只删除这一条</li>
+        <li>历史存成对象 <code>{ keyword, time }</code>，显示成"3 分钟前"</li>
+        <li>把防抖换成节流（400ms），体验"边打字边过滤"和防抖的差异</li>
+        <li>把 <code>localStorage</code> 换成 <code>sessionStorage</code>，观察刷新/新标签页的行为差异</li>
+        <li>挑战：命中的关键词用 <code>&lt;mark&gt;</code> 高亮显示</li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    // ========================================
+    // 1. 模拟数据
+    // ========================================
+    const users = [
+      { name: 'gaearon',      bio: 'React 核心作者',        repos: 142,  followers: 120000, color: '#6e40c9' },
+      { name: 'gatsby',       bio: '静态站点框架作者',       repos: 88,   followers: 12000,  color: '#2ea44f' },
+      { name: 'antfu',        bio: 'Vue 生态活跃开发者',     repos: 320,  followers: 42000,  color: '#d29922' },
+      { name: 'yyx990803',    bio: 'Vue.js 作者 Evan You',  repos: 310,  followers: 88000,  color: '#8250df' },
+      { name: 'leerob',       bio: 'Next.js 布道师',        repos: 96,   followers: 21000,  color: '#cf222e' },
+      { name: 'sindresorhus', bio: '开源狂人',              repos: 1100, followers: 98000,  color: '#1f883d' },
+      { name: 'tj',           bio: 'Express 作者',          repos: 1200, followers: 65000,  color: '#0969da' },
+      { name: 'torvalds',     bio: 'Linux 与 Git 之父',     repos: 6,    followers: 230000, color: '#bc4c00' },
+      { name: 'ryan',         bio: '前端工程师',            repos: 45,   followers: 3200,   color: '#6e7781' },
+      { name: 'anita',        bio: 'CSS 爱好者',            repos: 30,   followers: 1800,   color: '#bf3989' },
+      { name: 'yuki',         bio: 'TypeScript 学习者',      repos: 12,   followers: 260,    color: '#1a7f37' },
+      { name: 'lee',          bio: '算法爱好者',            repos: 58,   followers: 4100,   color: '#6639ba' },
+    ]
+
+    // ========================================
+    // 2. 存储工具（Day6-02 封装过的写法）
+    // ========================================
+    const storage = {
+      set(key, value) { localStorage.setItem(key, JSON.stringify(value)) },
+      get(key, defaultValue = null) {
+        const raw = localStorage.getItem(key)
+        if (raw === null) return defaultValue
+        try { return JSON.parse(raw) } catch (e) { return raw }
+      },
+      remove(key) { localStorage.removeItem(key) },
+    }
+
+    // ========================================
+    // 3. 防抖（Day6-03 手写过的）
+    // ========================================
+    function debounce(fn, delay = 300) {
+      let timer = null
+      return function (...args) {
+        clearTimeout(timer)
+        timer = setTimeout(() => fn.apply(this, args), delay)
+      }
+    }
+
+    // ========================================
+    // 4. 状态
+    // ========================================
+    const HISTORY_KEY = 'search-history'
+    const MAX_HISTORY = 10          // ← 练习1：改成 5
+
+    let history = storage.get(HISTORY_KEY, [])
+
+    const input = document.querySelector('#search')
+    const historyBox = document.querySelector('#history')
+    const historyEmpty = document.querySelector('#history-empty')
+    const resultsBox = document.querySelector('#results')
+    const resultsEmpty = document.querySelector('#results-empty')
+    const resultCount = document.querySelector('#result-count')
+
+    // ========================================
+    // 5. 渲染
+    // ========================================
+    function renderHistory() {
+      historyBox.innerHTML = history
+        .map(k => `<span class="tag" data-keyword="${k}">${k}</span>`)
+        .join('')
+      historyEmpty.classList.toggle('show', history.length === 0)
+    }
+
+    function renderResults(keyword) {
+      const kw = keyword.trim().toLowerCase()
+      const data = kw
+        ? users.filter(u => u.name.toLowerCase().includes(kw) || u.bio.includes(keyword.trim()))
+        : users
+
+      resultsBox.innerHTML = data.map(u => `
+        <div class="card">
+          <div class="avatar" style="background:${u.color}">${u.name[0].toUpperCase()}</div>
+          <div>
+            <h3>${u.name}</h3>
+            <p class="bio">${u.bio}</p>
+            <div class="meta">
+              <span>📦 ${u.repos} 仓库</span>
+              <span>⭐ ${u.followers.toLocaleString()} 粉丝</span>
+            </div>
+          </div>
+        </div>
+      `).join('')
+
+      resultsEmpty.classList.toggle('show', data.length === 0)
+      resultCount.textContent = kw ? `（"${keyword.trim()}" 命中 ${data.length} 条）` : `（共 ${data.length} 位）`
+    }
+
+    // ========================================
+    // 6. 历史记录：去重 + 最新在前 + 截断
+    // ========================================
+    function addHistory(keyword) {
+      const kw = keyword.trim()
+      if (!kw) return
+      history = [kw, ...history.filter(k => k !== kw)].slice(0, MAX_HISTORY)
+      storage.set(HISTORY_KEY, history)       // 持久化：刷新不丢
+      renderHistory()
+      console.log('已写入历史：', history)
+    }
+
+    // ========================================
+    // 7. 搜索：输入防抖 400ms
+    // ========================================
+    const runSearch = debounce(function (keyword) {
+      console.log('真正执行搜索：', keyword)
+      renderResults(keyword)
+      addHistory(keyword)      // ← 练习2：真实项目里应该在"回车"时才写历史
+    }, 400)
+
+    input.addEventListener('input', () => {
+      runSearch(input.value)
+    })
+
+    // 回车立刻搜索（不等防抖）
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        renderResults(input.value)
+        addHistory(input.value)
+      }
+    })
+
+    // ========================================
+    // 8. 事件委托：点击历史标签 → 再次搜索
+    // ========================================
+    historyBox.addEventListener('click', (e) => {
+      const keyword = e.target.dataset.keyword
+      if (!keyword) return
+      input.value = keyword
+      renderResults(keyword)
+      addHistory(keyword)                      // 点过的排到最前
+    })
+
+    // 清空历史
+    document.querySelector('#clear-history').addEventListener('click', () => {
+      history = []
+      storage.remove(HISTORY_KEY)
+      renderHistory()
+      console.log('历史已清空')
+    })
+
+    // ========================================
+    // 9. 初始化
+    // ========================================
+    renderHistory()
+    renderResults('')
+
+    console.log('页面初始化完成，当前历史：', history)
+    console.log('提示：F12 → Application → Local Storage 可以实时看到 search-history')
+  </script>
+</body>
+</html>

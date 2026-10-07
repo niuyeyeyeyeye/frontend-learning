@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day6-6 闭卷练习：自己写出「历史记录」</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Microsoft YaHei", sans-serif; background: #f6f8fa; color: #24292f; line-height: 1.6; }
+  header { background: #24292f; color: #fff; padding: 20px 16px; }
+  header h1 { font-size: 20px; }
+  header p { font-size: 13px; color: #8b949e; margin-top: 4px; }
+  .container { max-width: 900px; margin: 0 auto; padding: 16px; }
+
+  .model { background: #ddf4ff; border: 1px solid #b6e3ff; border-radius: 10px; padding: 14px 16px; margin-top: 16px; }
+  .model b { color: #0969da; }
+  .model code { background: rgba(255,255,255,.7); }
+
+  .search-row { display: flex; gap: 10px; flex-direction: column; margin-top: 20px; }
+  #search { width: 100%; padding: 12px 14px; font-size: 16px; border: 1px solid #d0d7de; border-radius: 8px; }
+  #search:focus { outline: 2px solid #58a6ff; border-color: transparent; }
+  .btn { padding: 10px 16px; border: 1px solid #d0d7de; background: #fff; border-radius: 8px; cursor: pointer; font-size: 14px; white-space: nowrap; }
+  .btn:hover { background: #f3f4f6; }
+  .btn-main { background: #1f883d; border-color: #1f883d; color: #fff; }
+  .btn-main:hover { background: #1a7f37; }
+
+  section { margin-top: 24px; }
+  h2 { font-size: 16px; margin-bottom: 10px; }
+  .hint { font-size: 12px; color: #57606a; font-weight: normal; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; min-height: 34px; }
+  .tag { background: #ddf4ff; border: 1px solid #b6e3ff; color: #0969da; padding: 5px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; }
+  .tag:hover { background: #b6e3ff; }
+  .empty { color: #57606a; font-size: 14px; padding: 8px 0; display: none; }
+  .show { display: block; }
+
+  #check-result { margin-top: 12px; font-size: 14px; }
+  .row { padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; font-family: Consolas, monospace; font-size: 13px; }
+  .ok { background: #dafbe1; color: #1a7f37; }
+  .bad { background: #ffebe9; color: #cf222e; }
+  .score { font-weight: bold; margin-top: 10px; font-size: 15px; }
+
+  .todo-list { background: #fff; border: 1px solid #d0d7de; border-radius: 10px; padding: 14px 16px 14px 34px; }
+  .todo-list li { margin-bottom: 6px; font-size: 14px; }
+  .warn { background: #fff8c5; border: 1px solid #d4a72c; border-radius: 8px; padding: 14px 16px; margin-top: 16px; font-size: 14px; }
+  code { background: #eef1f4; padding: 2px 5px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+  @media (min-width: 640px) { .search-row { flex-direction: row; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Day6-6：闭卷写出「搜索历史记录」</h1>
+  <p>5 个空函数 + 自动判分。写之前先别看 04，写完再对比</p>
+</header>
+
+<div class="container">
+
+  <div class="model">
+    <b>只有一句话要记：</b><br>
+    用户动作 → <b>改内存里的数据</b> → <b>写进 localStorage</b> → <b>重画界面</b><br>
+    <span class="hint">顺序不能反。新手两大错：只改 DOM 不存数据（刷新就没）；只存数据不重画（页面不动）。</span>
+  </div>
+
+  <div class="search-row">
+    <input type="search" id="search" placeholder="输入关键词后按回车（或点添加）">
+    <button class="btn btn-main" id="add">添加</button>
+    <button class="btn" id="clear">清空历史</button>
+  </div>
+
+  <section>
+    <h2>搜索历史 <span class="hint">（最多 5 条，最新的排最前，重复的只留一条）</span></h2>
+    <div class="tags" id="history"></div>
+    <p class="empty" id="history-empty">还没有搜索记录</p>
+  </section>
+
+  <section>
+    <h2>你要写的 5 个函数</h2>
+    <ol class="todo-list">
+      <li><code>loadHistory()</code> —— 从 localStorage 读出来，赋给 <code>historyList</code>。读不到就给 <code>[]</code></li>
+      <li><code>saveHistory()</code> —— 把 <code>historyList</code> 写进 localStorage</li>
+      <li><code>addHistory(kw)</code> —— <b>核心</b>：去空格 → 空的就 return → 去重 → 最新在前 → 最多 5 条 → 存 → 重画</li>
+      <li><code>renderHistory()</code> —— 把 <code>historyList</code> 画成标签：<code>&lt;span class="tag" data-keyword="词"&gt;词&lt;/span&gt;</code>；没记录时显示空状态</li>
+      <li><code>clearHistory()</code> —— 清空内存 + 删掉存储 + 重画</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>自动判分 <span class="hint">（写完点这里，逐条告诉你哪里没做到）</span></h2>
+    <button class="btn btn-main" id="check">检查我的实现</button>
+    <div id="check-result"></div>
+  </section>
+
+  <div class="warn">
+    <b>判据：什么时候算「学会」</b><br>
+    1. 上面 8 项检查全绿；<br>
+    2. <b>3 天后</b>新建一个空白 html，不看这份文件、不看 04，凭记忆写出能跑的历史记录；<br>
+    3. 面试前能对着空气讲出「先改数据 → 再存 → 再重画」，并说出 3 个坑（空值 / 去重 / 截断）。
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+ * 已给你：常量 + 存储工具（Day6-02 写过的封装）
+ * ============================================================ */
+const HISTORY_KEY = 'practice-search-history'
+const MAX_HISTORY = 5
+
+const storage = {
+  set(key, value) { localStorage.setItem(key, JSON.stringify(value)) },
+  get(key, fallback = null) {
+    const raw = localStorage.getItem(key)
+    if (raw === null) return fallback
+    try { return JSON.parse(raw) } catch (e) { return fallback }
+  },
+  remove(key) { localStorage.removeItem(key) },
+}
+
+/* 内存里的「真身」：界面永远只是它的影子 */
+let historyList = []
+
+/* ============================================================
+ * 你要写的 5 个空（提示：每个函数只干一件事）
+ * ============================================================ */
+
+function loadHistory() {
+  /* TODO 1：从存储里读出来，赋给 historyList；读不到就给 [] */
+  historyList = storage.get(HISTORY_KEY,[])
+}
+
+function saveHistory() {
+  /* TODO 2：把 historyList 写进存储 */
+  storage.set(HISTORY_KEY,historyList)
+}
+
+function addHistory(keyword) {
+  /* TODO 3：核心逻辑（去空格 / 空值 return / 去重 / 最新在前 / 截断 5 条 / 存 / 重画） */
+  if(keyword.trim() === ''){
+    return
+  }else{
+    historyList = historyList.filter(n=>n !== keyword.trim())
+    historyList.unshift(keyword.trim())
+  }
+  historyList = historyList.slice(0,MAX_HISTORY)
+  saveHistory()
+  renderHistory()
+}
+
+function renderHistory() {
+  /* TODO 4：把 historyList 画成标签 + 控制空状态的显示 */
+  document.querySelector('.tags').innerHTML = ''
+  const historyDiv = document.querySelector('.tags')
+  if(historyList){
+    historyList.forEach(n=>{
+      let historySpan = document.createElement('span')
+      historyDiv.appendChild(historySpan)
+      historySpan.innerHTML = `${n}`
+    })
+  }else{
+    historyDiv.textContent = '无历史记录'
+  }
+}
+
+function clearHistory() {
+  /* TODO 5：清空内存、删掉存储、重画界面 */
+  historyList = []
+  storage.remove(HISTORY_KEY)
+  renderHistory()
+}
+
+/* ============================================================
+ * 已给你：DOM 与事件绑定（这部分 Day5 事件学过，不用你写）
+ * ============================================================ */
+const searchInput = document.querySelector('#search')
+const historyBox = document.querySelector('#history')
+const emptyTip = document.querySelector('#history-empty')
+
+function submitKeyword() {
+  addHistory(searchInput.value)
+  searchInput.value = ''
+}
+
+document.querySelector('#add').addEventListener('click', submitKeyword)
+
+searchInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') submitKeyword()
+})
+
+// 点历史标签 → 当作一次新的搜索（会排到最前）
+historyBox.addEventListener('click', (e) => {
+  const kw = e.target.dataset.keyword
+  if (kw) addHistory(kw)
+})
+
+document.querySelector('#clear').addEventListener('click', clearHistory)
+document.querySelector('#check').addEventListener('click', runChecks)
+
+/* ============================================================
+ * TODO 6：页面加载时应该做什么？（把下面两行的注释去掉）
+ * ------------------------------------------------------------
+ * 想清楚：刷新页面后数据从哪来？界面靠谁画出来？
+ * ============================================================ */
+loadHistory()
+renderHistory()
+
+/* ============================================================
+ * 自动判分（别改这一段，它只调用你写的函数）
+ * ============================================================ */
+function runChecks() {
+  const results = []
+
+  function stored() {
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY)
+      return raw === null ? null : JSON.parse(raw)
+    } catch (e) { return 'PARSE_ERROR' }
+  }
+  function boxHtml() { return String(historyBox.innerHTML || '') }
+  function reset() {
+    try { localStorage.removeItem(HISTORY_KEY) } catch (e) {}
+    historyList = []
+    try { renderHistory() } catch (e) {}
+  }
+  function cleared() {
+    const s = stored()
+    return s === null || (Array.isArray(s) && s.length === 0)
+  }
+  function check(name, fn) {
+    let ok = false, msg = ''
+    try {
+      const r = fn()
+      if (r === true) { ok = true } else if (typeof r === 'string') { msg = r }
+    } catch (e) {
+      msg = e.constructor.name + ': ' + e.message
+    }
+    results.push({ name, ok, msg })
+  }
+
+  check('1. loadHistory() 能从存储里读回来', () => {
+    historyList = []
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(['saved']))
+    loadHistory()
+    return JSON.stringify(historyList) === '["saved"]'
+      || 'historyList 现在是 ' + JSON.stringify(historyList) + '，期望 ["saved"]'
+  })
+
+  check('2. addHistory() 会把数据写进 localStorage', () => {
+    reset()
+    addHistory('react')
+    const s = stored()
+    return JSON.stringify(s) === '["react"]'
+      || '存储里现在是 ' + JSON.stringify(s) + '，期望 ["react"]'
+  })
+
+  check('3. addHistory() 会重画界面', () => {
+    reset()
+    addHistory('react')
+    return boxHtml().indexOf('react') !== -1
+      || '页面 #history 里没出现 react，实际内容：' + JSON.stringify(boxHtml())
+  })
+
+  check('4. 去重 + 最新排最前', () => {
+    reset()
+    addHistory('a'); addHistory('b'); addHistory('a')
+    const s = stored()
+    return JSON.stringify(s) === '["a","b"]'
+      || '期望 ["a","b"]（a 被重复添加后应排到最前且只有一条），实际 ' + JSON.stringify(s)
+  })
+
+  check('5. 空关键词 / 纯空格不记录', () => {
+    reset()
+    addHistory('a'); addHistory('   '); addHistory('')
+    const s = stored()
+    return JSON.stringify(s) === '["a"]'
+      || '期望 ["a"]，实际 ' + JSON.stringify(s)
+  })
+
+  check('6. 最多只留 5 条，超出丢最旧的', () => {
+    reset()
+    ;['a1','a2','a3','a4','a5','a6','a7','a8'].forEach(k => addHistory(k))
+    const s = stored()
+    if (!Array.isArray(s)) return '存储里不是数组：' + JSON.stringify(s)
+    if (s.length !== MAX_HISTORY) return '存了 ' + s.length + ' 条，期望 ' + MAX_HISTORY + ' 条'
+    if (s[0] !== 'a8') return '最新的没排最前，第一位是 ' + s[0] + '，期望 a8'
+    if (s.indexOf('a1') !== -1) return '最旧的 a1 应该被丢掉，但它还在'
+    return true
+  })
+
+  check('7. clearHistory() 内存和存储都清干净', () => {
+    reset()
+    addHistory('zzz')
+    if (JSON.stringify(stored()) !== '["zzz"]') {
+      return '前置条件没满足：addHistory 没把 zzz 存进去，先让第 2 项变绿'
+    }
+    clearHistory()
+    if (!cleared()) return '存储里还有 ' + JSON.stringify(stored())
+    if (boxHtml().indexOf('zzz') !== -1) return '页面上的 zzz 标签没被清掉'
+    return true
+  })
+
+  check('8. 模拟刷新：数据能从存储重建', () => {
+    reset()
+    addHistory('keep')
+    historyList = []      // 假装刷新，内存全没了
+    loadHistory()
+    return JSON.stringify(historyList) === '["keep"]'
+      || '刷新后读回来的是 ' + JSON.stringify(historyList) + '，期望 ["keep"]'
+  })
+
+  const passed = results.filter(r => r.ok).length
+  document.querySelector('#check-result').innerHTML =
+    results.map(r =>
+      '<div class="row ' + (r.ok ? 'ok' : 'bad') + '">' +
+        (r.ok ? '✅ ' : '❌ ') + r.name +
+        (r.ok ? '' : '\n     → ' + r.msg) +
+      '</div>'
+    ).join('') +
+    '<div class="score">' + passed + ' / ' + results.length +
+    (passed === results.length ? ' 🎉 全过了，3 天后闭卷重写一遍' : ' ← 按提示改，改完再点一次') +
+    '</div>'
+
+  // 方便在 Console 里看
+  console.table(results)
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day6 - 事件</title>
+  <style>
+    body { max-width: 700px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+    .section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    .done { text-decoration: line-through; color: #999; }
+    button { padding: 4px 12px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Day6：事件</h1>
+
+  <div class="section">
+    <h2>1. 事件委托</h2>
+    <p>事件绑在父元素上，新增子元素自动生效</p>
+    <ul id="list1">
+      <li>第1项</li>
+      <li>第2项</li>
+      <li>第3项</li>
+    </ul>
+    <button onclick="addListItem()">添加一项</button>
+  </div>
+
+  <div class="section">
+    <h2>2. 冒泡 + stopPropagation</h2>
+    <div id="outer" style="background:#eee;padding:30px;">
+      外层
+      <div id="inner" style="background:#ddd;padding:20px;margin-top:10px;">
+        内层
+        <button id="stopBtn" style="margin-top:10px;">点我阻止冒泡</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>3. submit + preventDefault</h2>
+    <form id="myForm">
+      <input type="text" id="nameInput" placeholder="用户名" style="padding:4px;">
+      <button type="submit">提交</button>
+    </form>
+    <p id="formResult" style="color:green;"></p>
+  </div>
+
+  <div class="section">
+    <h2>4. 综合：事件委托版待办</h2>
+    <input type="text" id="todoInput" placeholder="输入..." style="padding:4px;width:250px;">
+    <button id="addBtn">添加</button>
+    <ul id="todoList"></ul>
+  </div>
+
+  <script>
+    let count = 3
+
+    // 1. 事件委托
+    // document.getElementById('list1').onclick = function(e) {
+    //   if (e.target.tagName === 'LI') e.target.classList.toggle('done')
+    // }
+    const tianjia = document.querySelector('#list1')
+    tianjia.addEventListener('click',function(e){
+      if(e.target.tagName === 'LI'){
+        e.target.classList.toggle('done')
+      }
+    })
+
+
+    function addListItem() {
+      const addLi = document.createElement('li')
+      addLi.innerText = `第${++count}项`
+      tianjia.appendChild(addLi)
+      // const li = document.createElement('li')
+      // li.textContent = '第' + (++count) + '项'
+      // document.getElementById('list1').appendChild(li)
+    }
+
+    // 2. 冒泡
+    // document.getElementById('outer').onclick = function() { console.log('外层') }
+    // document.getElementById('inner').onclick = function(e) { console.log('内层') }
+    // document.getElementById('stopBtn').onclick = function(e) {
+    //   e.stopPropagation(); console.log('阻止冒泡！')
+    // }
+    document.querySelector('#outer').addEventListener('click',function(){alert('外层')}) 
+    document.querySelector('#inner').addEventListener('click',function(e){alert('内层')})
+    document.querySelector('#stopBtn').addEventListener('click',function(e){
+      e.stopPropagation();alert('阻止冒泡')})
+
+
+    // 3. submit
+    // document.getElementById('myForm').onsubmit = function(e) {
+    //   e.preventDefault()
+    //   const name = document.getElementById('nameInput').value
+    //   document.getElementById('formResult').textContent = '提交：' + name
+    // }
+    
+      document.querySelector('#myForm').addEventListener('submit',function(e){
+        e.preventDefault();
+        const userName = document.querySelector('#nameInput').value;
+        document.querySelector('#formResult').innerText = `用户名是：${userName}`;
+    })
+
+    // 4. 待办
+
+
+    const storage = {
+      get(keydown,defaultValue =[]){
+        try{
+            const string = localStorage.getItem(keydown)
+            if(string ===null){
+              return defaultValue
+          }else{
+            return JSON.parse(string)
+          }
+        }catch(e){console.log('获取localStorage失败',e)}
+        },
+      set(key,value){
+        localStorage.setItem(key,JSON.stringify(value))
+      },
+      remove(key){
+        localStorage.removeItem(key)
+      },
+      clear(){
+        localStorage.clear()
+      }
+    }
+    const lis = storage.get('todos');
+    function updateLi(){
+      const parent = document.querySelector('#todoList')
+      for(let i=0;i<lis.length;i++){
+      const li = document.createElement('li')
+      const del = document.createElement('button')
+      del.textContent ='删除'
+      parent.appendChild(li)
+      if(lis[i]!==''){
+      li.innerHTML = (`待办${i+1}:${lis[i]}`)
+      li.appendChild(del)
+    }
+  } 
+}
+    updateLi()
+
+    function addTodo() {
+      const text = document.getElementById('todoInput').value.trim()
+      if (!text) return alert('请输入内容')
+
+      const inputValue = document.querySelector('#todoInput').value
+
+      const addLi = document.createElement('li')
+      const btn = document.createElement('button')
+      btn.textContent = '删除'
+      addLi.innerHTML = `待办:${inputValue}`
+      document.querySelector('#todoList').appendChild(addLi)
+      addLi.appendChild(btn)
+      document.querySelector('#todoInput').value = ''
+      if(lis!==''){
+      storage.set('todos',[inputValue,...lis])}
+
+      // const li = document.createElement('li')
+      // const span = document.createElement('span'); span.textContent = text
+      // const btn = document.createElement('button'); btn.textContent = '删除'
+      // li.appendChild(span); li.appendChild(btn)
+      // document.getElementById('todoList').appendChild(li)
+      // document.getElementById('todoInput').value = ''
+    }
+    document.getElementById('addBtn').onclick = addTodo
+
+    // Enter
+    // document.getElementById('todoInput').onkeydown = function(e) {
+    //   if (e.key === 'Enter') addTodo()
+    // }
+    document.querySelector('#todoInput').addEventListener('keydown',function(e){
+      if(e.key === 'Enter')
+      addTodo()
+    })
+
+    // 事件委托
+    // document.getElementById('todoList').onclick = function(e) {
+    //   if (e.target.tagName === 'BUTTON') e.target.parentElement.remove()
+    //   else if (e.target.tagName === 'SPAN') e.target.classList.toggle('done')
+    // }
+    document.querySelector('#todoList').addEventListener('click',function(e){
+      if(e.target.tagName === 'BUTTON'){
+        e.target.parentElement.remove();
+        const n = lis.findIndex(Element => {
+          Element === e.target.innerHTML
+        });
+        lis.splice(n,1)
+        storage.set('todos',lis)
+      }
+      if(e.target.tagName === 'LI')e.target.classList.toggle('done')
+
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day6-5 逐行拆解：防抖与节流</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      line-height: 2;
+      padding: 24px;
+      max-width: 780px;
+      margin: 0 auto;
+      color: #24292f;
+      background: #fff;
+    }
+    h1 { font-size: 22px; margin-bottom: 8px; }
+    h2 {
+      font-size: 18px;
+      margin: 32px 0 12px;
+      padding-left: 10px;
+      border-left: 4px solid #1f883d;
+    }
+    h3 { font-size: 15px; margin: 20px 0 8px; color: #0969da; }
+    p { margin: 8px 0; }
+    pre {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.9;
+      margin: 10px 0;
+    }
+    code {
+      background: #eef1f4;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 13px;
+    }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px 10px; text-align: left; }
+    th { background: #f6f8fa; }
+    .why {
+      background: #ddf4ff;
+      border-left: 4px solid #0969da;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .warn {
+      background: #fff8c5;
+      border-left: 4px solid #d4a72c;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 10px 0;
+      font-size: 14px;
+    }
+    .todo { background: #f6f8fa; border-radius: 8px; padding: 14px; margin: 12px 0; }
+    .todo li { margin-left: 20px; }
+    ol, ul { margin-left: 22px; }
+    li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>Day6-5：防抖与节流 · 逐行拆解版</h1>
+  <p><b>什么时候看这个文件：</b>看 <code>03-防抖与节流.html</code> 的答案觉得晕的时候。</p>
+  <p><b>怎么用：</b>打开控制台（F12），从上往下读，每段代码都跑一遍。<b>不要跳着看。</b></p>
+
+  <h2>第 0 步：先补 3 个前置知识</h2>
+  <p>看不懂防抖的答案，八成不是防抖难，而是卡在这 3 个小东西上。先把它们弄明白。</p>
+
+  <h3>前置 1：函数可以"返回一个函数"</h3>
+  <pre>function outer() {
+  const msg = '我是外面的变量'
+  return function inner() {   // 返回一个函数
+    console.log(msg)          // inner 还记得外面的 msg
+  }
+}
+
+const f = outer()   // 执行 outer()，拿到的是 inner
+f()                 // 打印：我是外面的变量
+f()                 // 再打印一次：我是外面的变量</pre>
+  <div class="why">
+    <b>关键：</b><code>outer()</code> 早就执行完了，但 <code>msg</code> 没有消失，因为 <code>inner</code> 一直用着它。<br>
+    这就是<b>闭包</b>——防抖能"记住上一次的定时器"，靠的就是这个。
+  </div>
+
+  <h3>前置 2：<code>...args</code>（剩余参数）</h3>
+  <pre>function sum(...args) {        // args 是一个数组，把传来的参数全收进去
+  return args.reduce((a, b) => a + b, 0)
+}
+
+sum(1, 2, 3)   // 6
+sum()          // 0</pre>
+  <div class="why">
+    <b>为什么防抖里要用它：</b>防抖返回的那个函数，不知道外面会传几个参数进来，
+    所以先用 <code>...args</code> 全部收下，等真执行时再原样交出去。
+  </div>
+
+  <h3>前置 3：<code>fn.apply(this, args)</code></h3>
+  <pre>function hi(name) { console.log('你好 ' + name) }
+
+hi.apply(null, ['小明'])   // 你好 小明
+// apply 的两个参数：① 把 this 给谁  ② 参数数组（会被自动拆开）</pre>
+  <div class="why">
+    <b>说白了：</b><code>fn.apply(this, args)</code> = "用这里的 this，带着这些参数，去调用 fn"。<br>
+    它的用处就是<b>把外面传进来的东西，原封不动转交给真正的函数</b>。
+  </div>
+
+  <h2>第 1 步：先看"最朴素"的写法（有问题的版本）</h2>
+  <pre>// 搜索框，每打一个字就搜索
+input.addEventListener('input', () => {
+  search(input.value)
+})
+
+// 打 "react" 5 个字母 → 触发 5 次搜索
+// 问题是：请求太频繁，且返回顺序可能乱</pre>
+  <p><b>我们的目标一句话：</b>让它在用户"停下来"之后才执行，只执行最后一次。</p>
+
+  <h2>第 2 步：用定时器手动实现（不封装，先看懂效果）</h2>
+  <pre>let timer = null                  // 准备一个变量，用来装定时器
+
+input.addEventListener('input', () => {
+  clearTimeout(timer)             // ① 把上一次还没执行的定时器取消掉
+  timer = setTimeout(() => {      // ② 重新起一个：300ms 后执行
+    search(input.value)
+  }, 300)
+})</pre>
+  <div class="why">
+    <b>跑一遍就明白了：</b>你打字期间每敲一个字都会"取消上一个、重新计时"，
+    所以只有最后停下 300ms 后，那个定时器才有机会执行 → <b>总共只搜 1 次</b>。
+  </div>
+  <div class="warn">
+    <b>但这段代码有两个毛病：</b>① <code>timer</code> 是"全局变量"，别人也能改它；
+    ② 这段逻辑没法复用，第二个搜索框就要再抄一遍。<br>
+    → 第 3 步就是把这段逻辑"打包"成一个函数。
+  </div>
+
+  <h2>第 3 步：打包成 debounce（先看简化版！）</h2>
+  <pre>function debounce(fn, delay) {      // fn 是要执行的函数，delay 是等待时间
+  let timer = null                  // ← 原来在全局，现在"藏"进函数里（闭包）
+  return function () {              // ← 返回一个函数，外面用的就是它
+    clearTimeout(timer)             // ① 取消上一次
+    timer = setTimeout(fn, delay)   // ② 重新计时，到点执行 fn
+  }
+}
+
+// 用法
+const searchDebounced = debounce(search, 300)
+input.addEventListener('input', () => {
+  searchDebounced(input.value)      // 注意：调用的是 debounce 返回的那个函数
+})</pre>
+  <div class="why">
+    <b>对照上面的第 2 步，其实一模一样，只是：</b>
+    <table>
+      <tr><th>第 2 步（手动写）</th><th>第 3 步（封装后）</th></tr>
+      <tr><td><code>let timer = null</code> 写在全局</td><td>写在 <code>debounce</code> 函数里 → 变成私有的，且被闭包记住</td></tr>
+      <tr><td><code>clearTimeout(timer)</code></td><td>一样</td></tr>
+      <tr><td><code>setTimeout(() => search(...), 300)</code></td><td><code>setTimeout(fn, delay)</code>（换成参数，方便复用）</td></tr>
+      <tr><td>写死在事件监听里</td><td><code>return function () {}</code> 交出去，谁需要谁调用</td></tr>
+    </table>
+  </div>
+
+  <h3>运行一下，亲眼看到"只执行 1 次"</h3>
+  <pre>let count = 0
+const say = () => {
+  count++
+  console.log('✅ 真正执行了，第 ' + count + ' 次')
+}
+const debouncedSay = debounce(say, 500)
+
+// 模拟 1 秒内疯狂触发 10 次
+for (let i = 0; i < 10; i++) debouncedSay()
+console.log('触发了 10 次，等一下看真正执行几次 ↓')</pre>
+  <p>预期：控制台先打印一行提示，<b>0.5 秒后只打印 1 次</b>「真正执行了，第 1 次」。</p>
+
+  <h3>升级版：加上 <code>...args</code> 和 <code>apply</code></h3>
+  <p>简化版有个缺陷：<b>它不能把参数传进去</b>（<code>search(input.value)</code> 里的关键词丢了）。所以真实版要加两个零件：</p>
+  <pre>function debounce(fn, delay) {
+  let timer = null
+  return function (...args) {                              // ← 零件1：把参数收进来
+    clearTimeout(timer)
+    timer = setTimeout(() => fn.apply(this, args), delay)  // ← 零件2：原样转交给 fn
+  }
+}
+// fn.apply(this, args) = 用当前的 this，带着这些参数，去调用 fn</pre>
+  <div class="why">
+    <b>先看懂简化版，再看升级版</b>。升级版只是多了"把参数和 this 传进去"这件事，
+    骨架（clearTimeout + setTimeout）完全没变。
+  </div>
+
+  <h2>第 4 步：动手实验（比看十遍有用）</h2>
+  <div class="todo">
+    <p>在控制台或文件里试，每做一步都记一句"我看到了什么"：</p>
+    <ol>
+      <li><b>删行法：</b>把 <code>clearTimeout(timer)</code> 注释掉 → 再触发 10 次 →
+        变成执行 10 次（防抖失效，退化成普通延时）</li>
+      <li><b>改数字：</b>把 <code>300</code> 改成 <code>3000</code> → 明显感到"要等很久才执行"；
+        改成 <code>0</code> → 几乎立刻执行</li>
+      <li><b>看参数：</b>在 <code>return function (...args)</code> 里加
+        <code>console.log('收到的参数：', args)</code> → 确认参数真的进来了</li>
+      <li><b>制造 bug：</b>把 <code>fn.apply(this, args)</code> 改成 <code>fn()</code> →
+        参数和 this 都丢了（这就是 Day4 学的 this 丢失）</li>
+      <li><b>体会复用：</b>用同一个 <code>debounce</code> 再包一个函数（比如
+        <code>debounce(() => console.log('滚动结束'), 200)</code>）→ 两个互不干扰，
+        因为各自的 <code>timer</code> 是独立的闭包变量</li>
+    </ol>
+  </div>
+
+  <h2>第 5 步：节流 throttle 也是同样套路（3 步）</h2>
+  <p><b>目标：</b>不管触发多快，每 500ms 最多执行 1 次。</p>
+  <pre>// 第 1 步：思路 —— 记住"上次执行的时间"，跟现在比一比
+// 第 2 步：手动版
+let lastTime = 0
+button.addEventListener('click', () => {
+  const now = Date.now()                 // 现在的时间戳（毫秒）
+  if (now - lastTime >= 500) {           // 距离上次执行够 500ms 了吗？
+    lastTime = now                       // 记下这次的时间
+    doSomething()                        // 执行
+  }
+})
+
+// 第 3 步：打包（同样的闭包套路，只是变量从 timer 换成了 lastTime）
+function throttle(fn, interval) {
+  let lastTime = 0                       // 被闭包记住
+  return function (...args) {
+    const now = Date.now()
+    if (now - lastTime >= interval) {
+      lastTime = now
+      fn.apply(this, args)
+    }
+  }
+}</pre>
+  <div class="why">
+    <b>一句话分清：</b>防抖是"你停下来我才动"（只认最后一次）；
+    节流是"我按自己的节奏动，你触发再快也没用"（固定频率）。
+  </div>
+
+  <h2>第 6 步：自查（能全打勾才算看懂）</h2>
+  <div class="todo">
+    <ul>
+      <li>⬜ 我能说出"为什么 debounce 里要 <code>return</code> 一个函数"（答案：为了用闭包记住 timer）</li>
+      <li>⬜ 我能说出 <code>clearTimeout(timer)</code> 的作用（答案：取消上一次，所以只执行最后一次）</li>
+      <li>⬜ 我能说出 <code>...args</code> 和 <code>apply</code> 各自解决什么问题</li>
+      <li>⬜ 我做过"删掉某一行看结果"的实验，并看到了差异</li>
+      <li>⬜ 我<b>合上文件</b>写出了简化版 debounce（10 行以内）</li>
+      <li>⬜ 我合上文件写出了 throttle 的时间戳版</li>
+    </ul>
+  </div>
+  <div class="warn">
+    <b>如果还是看不懂：</b>不要硬扛。带上①你在哪一行卡住 ②你写的代码，直接来问我 ——
+    我们可以把它再拆小一点，或者先用 3 行代码写一个"只延迟一次"的版本，
+    一步一步加上去。卡 20 分钟就该问了。
+  </div>
+
+  <script>
+    // ========================================
+    // 下面是可以直接运行的演示，按顺序看控制台
+    // ========================================
+    console.log('===== 前置 1：闭包最小例子 =====')
+    function outer() {
+      const msg = '我是外面的变量'
+      return function inner() {
+        console.log(msg)
+      }
+    }
+    const f = outer()
+    f()
+    f()
+
+    console.log('===== 前置 2/3：...args 与 apply =====')
+    function sum(...args) { return args.reduce((a, b) => a + b, 0) }
+    console.log('sum(1,2,3) =', sum(1, 2, 3))
+
+    function hi(name) { console.log('你好 ' + name) }
+    hi.apply(null, ['小明'])
+
+    console.log('===== 简化版 debounce =====')
+    function debounce(fn, delay) {
+      let timer = null
+      return function () {
+        clearTimeout(timer)
+        timer = setTimeout(fn, delay)
+      }
+    }
+
+    let count = 0
+    const say = () => {
+      count++
+      console.log('✅ 真正执行了，第 ' + count + ' 次')
+    }
+    const debouncedSay = debounce(say, 500)
+    for (let i = 0; i < 10; i++) debouncedSay()
+    console.log('触发了 10 次，等一下看真正执行几次 ↓')
+
+    console.log('===== 节流 throttle（时间戳版）=====')
+    function throttle(fn, interval) {
+      let lastTime = 0
+      return function (...args) {
+        const now = Date.now()
+        if (now - lastTime >= interval) {
+          lastTime = now
+          fn.apply(this, args)
+        }
+      }
+    }
+
+    let tickCount = 0
+    const tick = throttle(() => { tickCount++; console.log('节流执行第 ' + tickCount + ' 次') }, 500)
+    let n = 0
+    const spread = setInterval(() => {
+      tick()
+      if (++n === 6) clearInterval(spread)   // 每 100ms 触发一次，共 6 次（共 600ms）
+    }, 100)
+    // 预期：立刻执行 1 次，500ms 左右再执行 1 次 → 共 2 次（而不是 6 次）
+  </script>
+</body>
+</html>

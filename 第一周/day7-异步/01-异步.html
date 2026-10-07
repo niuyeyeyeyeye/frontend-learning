@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day7 - 异步与API</title>
+  <style>
+    body { max-width: 700px; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+    .section { border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+    button { padding: 6px 16px; cursor: pointer; }
+    .card { border: 1px solid #eee; padding: 10px; margin: 5px 0; border-radius: 4px; }
+    .card h4 { margin: 0 0 5px 0; }
+    .card p { margin: 0; color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>Day7：异步与 API 请求</h1>
+  <div class="section">
+    <h2>1. 三种异步写法（看控制台）</h2>
+    <p>回调 / Promise / async await</p>
+  </div>
+  <div class="section">
+    <h2>2. 模拟网络请求</h2>
+    <button onclick="simulateRequest()">模拟请求（1.5秒）</button>
+    <p id="simResult"></p>
+  </div>
+  <div class="section">
+    <h2>3. 真实 API 请求（fetch）</h2>
+    <p>需要 HTTP 服务器：python -m http.server 8080</p>
+    <button onclick="fetchPosts()">获取文章</button>
+    <p id="fetchStatus"></p>
+    <div id="postList"></div>
+  </div>
+  <div class="section">
+    <h2>4. 练习题</h2>
+    <ol>
+      <li>模拟请求改成 async/await</li>
+      <li>fetch GitHub 用户：api.github.com/users/octocat</li>
+      <li>try/catch 错误处理</li>
+    </ol>
+  </div>
+  <script>
+    console.log('=== 1. 三种异步写法 ===')
+    function getCallback(cb) { setTimeout(() => cb(null, '回调数据'), 800) }
+    getCallback((e, r) => console.log('回调:', r))
+    function getPromise() { return new Promise(r => setTimeout(() => r('Promise数据'), 800)) }
+    getPromise().then(r => console.log('Promise:', r))
+    async function getAsync() { const r = await getPromise(); console.log('async/await:', r) }
+    getAsync()
+
+    console.log('=== 2. 模拟请求 ===')
+    // function simulateRequest() {
+    //   const p = document.getElementById('simResult'); p.textContent = '加载中...'
+    //   new Promise(r => setTimeout(() => r({ name: '用户数据', time: new Date().toLocaleTimeString() }), 1500))
+    //     .then(d => p.textContent = d.name + ' (' + d.time + ')')
+    // }
+
+    console.log('=== 3. fetch API ===')
+    async function fetchPosts() {
+      const s = document.getElementById('fetchStatus'), l = document.getElementById('postList')
+      s.textContent = '请求中...'; l.innerHTML = ''
+      try {
+        const r = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
+        if (!r.ok) throw new Error('状态码：' + r.status)
+        const posts = await r.json()
+        s.textContent = '成功获取 ' + posts.length + ' 篇'
+        posts.forEach(p => {
+          const c = document.createElement('div'); c.className = 'card'
+          c.innerHTML = '<h4>' + p.title + '</h4><p>' + p.body.slice(0, 50) + '...</p>'
+          l.appendChild(c)
+        })
+      } catch (e) { s.textContent = '出错：' + e.message; s.style.color = 'red' }
+    }
+
+    console.log('=== 练习题 ===')
+    // 1. async function simAsync() { const p=...; p.textContent='...'; await new Promise(...); p.textContent=... }
+    // function simulateRequest() {
+    //   const p = document.getElementById('simResult'); p.textContent = '加载中...'
+    //   new Promise(r => setTimeout(() => r({ name: '用户数据', time: new Date().toLocaleTimeString() }), 1500))
+    //     .then(d => p.textContent = d.name + ' (' + d.time + ')')
+    // }
+    async function simulateRequest(){
+      const p = document.querySelector('#simResult');
+      p.textContent = '...';
+      const r = await new Promise(r => setTimeout(() => r({name : '用户数据',time : new Date().toDateString()}),1500))
+      p.textContent =`${r.name} ${r.time}`
+    }
+    
+
+
+    // 2. fetch('https://api.github.com/users/octocat').then(r=>r.json()).then(u=>console.log(u.name))
+    fetch('https://api.github.com/users/octocat').then(r=>r.json()).then(u=>console.log(u.name))
+    // 3. try { await fetch('bad.url') } catch(e) { console.log('捕获:', e.message) }
+    try { await fetch('bad.url') } catch(e) { console.log('捕获:', e.message) }
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day4-1 模块化基础</title>
+</head>
+<body>
+  <h1>Day4-1：模块化（import / export）</h1>
+  <p>打开控制台（F12 → Console）查看输出</p>
+
+  <!-- ============================================
+       关键：type="module"
+       加上它，脚本就变成"模块"，拥有 5 个特殊性质：
+       1. 自动进入严格模式（'use strict'）
+       2. 有自己的作用域，变量不会挂到 window 上
+       3. 顶层 this 是 undefined（不是 window！）
+       4. 自动延迟执行（相当于自带 defer）
+       5. 可以用 import / export 语法
+       ============================================ -->
+  <script type="module">
+    console.log('=== 模块的性质 ===')
+
+    // 1. 顶层 this 是 undefined
+    console.log('模块顶层的 this：', this)   // undefined（普通 script 里是 window）
+
+    // 2. 作用域独立：这里的变量不会污染 window
+    const moduleVar = '我只属于这个模块'
+    console.log('moduleVar：', moduleVar)
+    console.log('window.moduleVar：', window.moduleVar)  // undefined
+
+    // 3. 自动严格模式：给未声明的变量赋值会直接报错
+    try {
+      undeclaredVar = 123   // 非严格模式下这是允许的（很危险）
+    } catch (e) {
+      console.log('严格模式生效：', e.message)
+    }
+
+    // 4. 严格模式下的默认 this 绑定
+    function showThis() {
+      console.log('普通函数直接调用时的 this：', this)  // 严格模式下是 undefined
+    }
+    showThis()
+
+    // ============================================
+    // 5. export / import 语法速查（这段只是语法说明，真正运行在 02 文件）
+    // ============================================
+    // 【导出】
+    // export const PI = 3.14              ← 具名导出
+    // export function add(a, b) {}        ← 具名导出
+    // export default function log() {}    ← 默认导出（一个模块只能一个）
+    // export { a, b }                     ← 统一导出
+    //
+    // 【导入】
+    // import { add } from './utils.js'            ← 导入具名
+    // import log from './utils.js'                ← 导入默认（名字随便起）
+    // import log, { add } from './utils.js'       ← 默认 + 具名一起
+    // import * as utils from './utils.js'         ← 全部导入，用 utils.add() 调用
+    // import { add as plus } from './utils.js'    ← 改名
+    //
+    // 【规则】
+    // - import 必须写在文件最顶部（会被提升，不能放在 if 里）
+    // - 路径要写全：'./utils.js'，不能只写 'utils'
+    // - 同一个模块被 import 多次，只会执行一次（单例）
+    // - 想按条件加载，用动态导入：const m = await import('./utils.js')
+
+    // ============================================
+    // 练习
+    // ============================================
+    // 1. 把上面这段 <script> 的 type 改成没有 module，观察 this 和 window.moduleVar 的变化
+    // 2. 想一想：为什么模块化后，就不用担心"变量重名打架"了？
+    //    答案：每个模块有独立作用域，不 export 的东西外面看不见
+    // 3. 挑战：说出 import 和 require 的区别（提示：一个是 ES 标准，一个是 Node 老写法）
+  </script>
+</body>
+</html>

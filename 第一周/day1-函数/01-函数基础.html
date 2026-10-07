@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day1 - 函数基础</title>
+</head>
+<body>
+  <h1>Day1：函数基础</h1>
+  <p>打开控制台（F12 → Console）查看输出</p>
+
+  <script>
+    // ========================================
+    // 1. 函数是什么
+    // ========================================
+    // 函数就是一段可以重复使用的代码块
+    // 就像你手机里的"闹钟"功能——设定一次，每天都能用
+
+    console.log('=== 1. 函数的声明和调用 ===')
+
+    // 声明（定义）一个函数
+    function sayHello() {
+      console.log('你好，世界！')
+    }
+
+    // 调用（使用）这个函数 —— 可以调用多次
+    sayHello()
+    sayHello()
+
+    // ========================================
+    // 2. 带参数的函数
+    // ========================================
+    // 参数就是"输入"，让函数更灵活
+
+    console.log('=== 2. 带参数的函数 ===')
+
+    function greet(name) {
+      console.log('你好，' + name + '！')
+    }
+
+    greet('张三')
+    greet('李四')
+
+    // 多个参数
+    function add(a, b) {
+      console.log(a + ' + ' + b + ' = ' + (a + b))
+    }
+
+    add(3, 5)
+    add(10, 20)
+
+    // ========================================
+    // 3. 返回值 return
+    // ========================================
+    // return 让函数把计算结果"交出去"
+    // return 之后的代码不会执行
+
+    console.log('=== 3. 返回值 return ===')
+
+    function multiply(a, b) {
+      return a * b
+    }
+
+    let result = multiply(4, 6)
+    console.log('4 × 6 = ' + result)
+
+    // 没有 return 的函数返回 undefined
+    function noReturn() {
+      console.log('我没有 return')
+    }
+
+    let r = noReturn()
+    console.log('没有 return 的函数返回值：', r)
+
+    // ========================================
+    // 4. 作用域
+    // ========================================
+    // 函数内部声明的变量，外面访问不到
+
+    console.log('=== 4. 作用域 ===')
+
+    function scopeDemo() {
+      let insideVar = '我在函数里面'
+      console.log(insideVar) // ✅ 能访问
+    }
+
+    scopeDemo()
+    // console.log(insideVar)  // ❌ 报错！外面访问不到
+
+    let outsideVar = '我在函数外面'
+
+    function accessOutside() {
+      console.log(outsideVar) // ✅ 函数内可以访问外面的变量
+    }
+
+    accessOutside()
+
+    // ========================================
+    // 5. 箭头函数（ES6）
+    // ========================================
+    // 更简洁的函数写法
+
+    console.log('=== 5. 箭头函数 ===')
+
+    // 普通写法
+    function double(x) {
+      return x * 2
+    }
+
+    // 箭头函数写法
+    const doubleArrow = (x) => {
+      return x * 2
+    }
+
+    // 更简短：只有一个参数可以省略括号，只有一行 return 可以省略 {} 和 return
+    const doubleShort = x => x * 2
+
+    console.log('普通函数：', double(5))
+    console.log('箭头函数：', doubleArrow(5))
+    console.log('简写箭头：', doubleShort(5))
+
+    // ========================================
+    // 练习题 —— 打开控制台，完成以下练习
+    // ========================================
+    console.log('=== 练习题 ===')
+    console.log('请完成以下练习，把 ??? 替换成正确的代码')
+
+    // 练习1：写一个函数，接收两个数字，返回较大的那个
+    function max(a, b) {
+      // TODO: 
+     return Math.max(a,b)
+    }
+     console.log(max(10, 20))  // 期望输出 20
+
+    // 练习2：写一个函数，判断一个数字是奇数还是偶数，返回字符串 "奇数" 或 "偶数"
+    function isOddOrEven(num) {
+      // TODO: 补全代码
+      if (num%2==0) {
+        return '偶数'
+      } else {
+        return '奇数'
+      }
+    }
+     console.log(isOddOrEven(7))   // 期望输出 "奇数"
+     console.log(isOddOrEven(12))  // 期望输出 "偶数"
+
+    // 练习3：写一个箭头函数，接收名字，返回 "Hello, 名字!"
+     const helloName = (name)=>'hello,'+name
+     console.log(helloName('小明'))  // 期望输出 "Hello, 小明!"
+
+    // 练习4：写一个函数，接收一个数组，返回数组所有元素的和
+    function sumArray(arr) {
+      //  TODO: 补全代码
+       let total = 0
+      for (let i=0;i<arr.length;i++) {
+         total+=arr[i]
+       }
+       return total
+    }
+     console.log(sumArray([1, 2, 3, 4, 5]))  // 期望输出 15
+
+    // 练习5：写一个函数，接收摄氏度，返回华氏度（公式：F = C × 9/5 + 32）
+     const toFahrenheit = (C)=> C*9/5+32
+     console.log(toFahrenheit(0))    // 期望输出 32
+     console.log(toFahrenheit(100))  // 期望输出 212
+  </script>
+</body>
+</html>

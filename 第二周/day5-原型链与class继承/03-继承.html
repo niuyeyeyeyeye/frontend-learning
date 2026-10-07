@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day5-3 继承</title>
+</head>
+<body>
+  <h1>Day5-3：继承（extends / super）</h1>
+  <p>打开控制台（F12 → Console）按顺序看输出</p>
+
+  <script>
+    // ========================================
+    // 0. 一句话理解
+    // ========================================
+    // extends 做的事：把子类的 prototype 的原型，指向父类的 prototype
+    //   Dog.prototype.__proto__ === Animal.prototype
+    // super 有两个用法：
+    //   super(...)      → 调用父类构造函数（必须在使用 this 之前调用）
+    //   super.method()  → 调用父类的同名方法（用来"扩展"而不是"覆盖"）
+
+    console.log('=== 1. 基础继承 ===')
+
+    class Animal {
+      constructor(name) {
+        this.name = name
+      }
+
+      speak() {
+        return this.name + ' 发出声音'
+      }
+
+      // 静态方法也会被继承
+      static create(name) {
+        return new this(name)   // 注意：this 指向"调用它的那个类"
+      }
+    }
+
+    class Dog extends Animal {
+      constructor(name, breed) {
+        super(name)             // 必须先调 super，才能用 this
+        this.breed = breed      // 子类额外属性
+      }
+
+      // 方法重写：扩展父类行为，而不是完全重写
+      speak() {
+        return super.speak() + '：汪汪！'
+      }
+
+      // 子类新增方法
+      fetch() {
+        return this.name + ' 把球叼回来了'
+      }
+    }
+
+    const dog = new Dog('旺财', '柴犬')
+    console.log('重写后的 speak：', dog.speak())        // 旺财 发出声音：汪汪！
+    console.log('子类新增的方法：', dog.fetch())        // 旺财 把球叼回来了
+    console.log('继承来的属性：', dog.name, dog.breed)  // 旺财 柴犬
+
+    // ========================================
+    // 2. 用原型链验证"继承"到底做了什么
+    // ========================================
+    console.log('=== 2. 继承的底层结构 ===')
+    console.log('dog 的原型是 Dog.prototype：',
+      Object.getPrototypeOf(dog) === Dog.prototype)                    // true
+    console.log('Dog.prototype 的原型是 Animal.prototype（这就是继承）：',
+      Object.getPrototypeOf(Dog.prototype) === Animal.prototype)       // true
+    console.log('Animal.prototype 的原型是 Object.prototype：',
+      Object.getPrototypeOf(Animal.prototype) === Object.prototype)    // true
+
+    // 完整原型链：
+    // dog → Dog.prototype → Animal.prototype → Object.prototype → null
+    console.log('instanceof 一路都为 true：',
+      dog instanceof Dog, dog instanceof Animal, dog instanceof Object) // true true true
+
+    // ========================================
+    // 3. super 的两个用法 + 常见报错
+    // ========================================
+    console.log('=== 3. super 用法 ===')
+
+    class Cat extends Animal {
+      constructor(name) {
+        // this.color = '橘色'   // ❌ 报错：Must call super constructor before accessing 'this'
+        super(name)
+        this.color = '橘色'      // ✅ super 之后才行
+      }
+      speak() {
+        return super.speak() + '：喵～'
+      }
+    }
+
+    const cat = new Cat('咪咪')
+    console.log('cat.speak()：', cat.speak())
+    console.log('cat.color：', cat.color)
+
+    // 不写 constructor 时会自动继承父类的构造函数
+    class Bird extends Animal {}
+    const bird = new Bird('小黄')
+    console.log('子类不写 constructor 也能用：', bird.speak())
+
+    // ========================================
+    // 4. 静态属性和静态方法也会被继承
+    // ========================================
+    console.log('=== 4. 静态继承 ===')
+    console.log('Animal.create 返回 Animal 实例：',
+      Animal.create('动物') instanceof Animal)                         // true
+    console.log('Dog.create 调用的是父类的静态方法，但返回 Dog 实例：',
+      Dog.create('小白') instanceof Dog)                               // true（因为静态方法里的 this 是 Dog）
+    console.log('静态链验证：Object.getPrototypeOf(Dog) === Animal：',
+      Object.getPrototypeOf(Dog) === Animal)                           // true
+
+    // ========================================
+    // 5. 三层继承 + 多态
+    // ========================================
+    console.log('=== 5. 多态 ===')
+
+    class Puppy extends Dog {
+      speak() {
+        return super.speak() + '（奶声奶气）'
+      }
+    }
+
+    const animals = [new Animal('普通动物'), new Dog('旺财'), new Cat('咪咪'), new Puppy('小奶狗')]
+    // 同一个 speak()，不同实例表现不同 —— 这就是多态
+    animals.forEach(a => console.log('  ', a.speak()))
+
+    // ========================================
+    // 6. 继承内置类（不强求，看看就好）
+    // ========================================
+    console.log('=== 6. 继承内置类 ===')
+
+    class MyArray extends Array {
+      first() { return this[0] }
+      last() { return this[this.length - 1] }
+      sum() { return this.reduce((a, b) => a + b, 0) }
+    }
+
+    const nums = MyArray.from([1, 2, 3, 4])
+    console.log('first / last / sum：', nums.first(), nums.last(), nums.sum())
+    console.log('它仍然是数组：', Array.isArray(nums), nums instanceof MyArray)  // true true
+
+    // ========================================
+    // 7. 什么时候该用继承？（重要）
+    // ========================================
+    // ✅ 适合：真的是"是一种"的关系（狗是一种动物、按钮是一种组件）
+    // ❌ 不适合：只是"用到了"就别继承（继承层级超过 3 层会很难维护）
+    // 现代前端更推荐"组合"：把功能写成函数/对象，需要时拼进类里
+    //   Vue 3 的组合式 API（第三阶段会学）就是这个思路
+
+    // ========================================
+    // 8. 练习题
+    // ========================================
+    console.log('=== 8. 练习题 ===')
+
+    // 练习1：写一个 class Shape（构造函数收 name），
+    //        方法 area() 返回 0，方法 describe() 返回 "图形：xx，面积：yy"
+    //        再写 Circle extends Shape，重写 area() 返回 πr²
+    class Shape {
+      constructor(name){
+        this.name = name;
+      }
+      area(){
+        return 0;
+      }
+      describe(){
+        return '图形'+this.name+','+'面积：'+this.area();
+      }
+    }
+    class Circle extends Shape{
+      constructor(r){
+        super('圆');
+        this.r = r;
+      }
+      area(){
+        return Math.PI*r*r;
+      }
+    }
+
+
+    // 卡住再看 ↓
+    // class Shape {
+    //   constructor(name) { this.name = name }
+    //   area() { return 0 }
+    //   describe() { return '图形：' + this.name + '，面积：' + this.area().toFixed(2) }
+    // }
+    // class Circle extends Shape {
+    //   constructor(r) { super('圆形'); this.r = r }
+    //   area() { return Math.PI * this.r ** 2 }
+    // }
+
+    // 练习2：再写 Rectangle extends Shape，并让 Shape.describe() 直接可用（不用重写）
+    class Rectangle extends Shape {
+      constructor(l,w){
+        super('矩形');
+        this.l = l;
+        this.w = w;
+      }
+      area(){
+        return this.l*this.w;
+      }
+    }
+
+
+
+
+    // 答案：class Rectangle extends Shape {
+    //         constructor(w, h) { super('矩形'); this.w = w; this.h = h }
+    //         area() { return this.w * this.h }
+    //       }
+
+    // 练习3：把上面所有图形放进数组，循环调用 describe() —— 体验多态
+    const shapes = [new Circle(5),new Rectangle(4,5)]
+    shapes.forEach(a=>console.log(a.describe))
+
+
+
+
+
+    // 答案：const shapes = [new Circle(2), new Rectangle(3, 4)]
+    //       shapes.forEach(s => console.log(s.describe()))
+
+    // 练习4：口答 —— 子类 constructor 里为什么必须先调 super()？
+    // 答案：子类的 this 由父类构造函数创建；super 之前 this 还不存在，访问会报错
+  </script>
+</body>
+</html>

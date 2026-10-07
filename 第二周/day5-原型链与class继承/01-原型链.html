@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Day5-1 原型链</title>
+</head>
+<body>
+  <h1>Day5-1：原型链（Prototype Chain）</h1>
+  <p>打开控制台（F12 → Console）按顺序看输出</p>
+
+  <script>
+    // ========================================
+    // 0. 一句话理解
+    // ========================================
+    // 每个对象都有一个"隐藏的祖先指针"（原型），
+    // 访问一个属性时：先看自己有没有 → 没有就顺着原型往上找 → 直到 null
+    // 这条"往上找"的链子，就叫原型链
+    //
+    // 【最容易搞混的两个东西】
+    //   p.__proto__        → 对象 p 的"原型"（通常用 Object.getPrototypeOf(p)）
+    //   Person.prototype   → 函数 Person 身上的一个普通属性，
+    //                        它是"将来用 new Person() 创建的实例的原型"
+    //
+    // 关系图（背下来）：
+    //   p  --->  Person.prototype  --->  Object.prototype  --->  null
+    //  (实例)     (放 sayHi 等方法)      (放 toString 等方法)
+
+    console.log('=== 1. 构造函数 + 原型方法 ===')
+
+    function Person(name) {
+      this.name = name          // 实例自己的属性（每个实例一份）
+    }
+
+    // 方法写到 prototype 上（所有实例共用一份，省内存）
+    Person.prototype.sayHi = function () {
+      return '你好，我是' + this.name
+    }
+
+    const p = new Person('小明')
+    console.log('调用原型上的方法：', p.sayHi())
+
+    // ========================================
+    // 2. 验证原型链的每一环
+    // ========================================
+    console.log('=== 2. 验证原型链 ===')
+
+    console.log('p 的原型是不是 Person.prototype：',
+      Object.getPrototypeOf(p) === Person.prototype)        // true
+    console.log('用 __proto__ 写法（老写法，等价的）：',
+      p.__proto__ === Person.prototype)                      // true
+    console.log('Person.prototype 的 constructor 指回 Person：',
+      Person.prototype.constructor === Person)                // true
+    console.log('Person.prototype 的原型是 Object.prototype：',
+      Object.getPrototypeOf(Person.prototype) === Object.prototype)  // true
+    console.log('Object.prototype 的原型是 null（链到头了）：',
+      Object.getPrototypeOf(Object.prototype))                // null
+
+    // 函数本身也是对象，所以函数也有原型
+    console.log('Person 的原型是 Function.prototype：',
+      Object.getPrototypeOf(Person) === Function.prototype)   // true
+
+    // ========================================
+    // 3. 属性的"归属"：自己的 vs 原型上的
+    // ========================================
+    console.log('=== 3. 属性归属 ===')
+
+    console.log('p 自己有没有 name：', p.hasOwnProperty('name'))       // true
+    console.log('p 自己有没有 sayHi：', p.hasOwnProperty('sayHi'))     // false（在原型上）
+    console.log("'sayHi' in p（in 会往原型链上找）：", 'sayHi' in p)    // true
+    console.log('Person.prototype 自己有 sayHi：',
+      Person.prototype.hasOwnProperty('sayHi'))                       // true
+
+    // 打印 p 自己真正拥有的属性（只有 name）
+    console.log('p 自身的属性：', Object.keys(p))                      // ['name']
+
+    // ========================================
+    // 4. instanceof 的原理：顺着原型链找
+    // ========================================
+    console.log('=== 4. instanceof ===')
+    console.log('p instanceof Person：', p instanceof Person)   // true
+    console.log('p instanceof Object：', p instanceof Object)   // true（链上有 Object.prototype）
+    console.log('[] instanceof Array：', [] instanceof Array)   // true
+    console.log('[] instanceof Object：', [] instanceof Object) // true（数组也是对象）
+
+    // ========================================
+    // 5. 原来我们天天在用原型链！
+    // ========================================
+    console.log('=== 5. 日常里的原型链 ===')
+    const arr = [1, 2, 3]
+    console.log('数组自己没定义 map，是从 Array.prototype 借的：',
+      arr.hasOwnProperty('map'))                               // false
+    console.log('Array.prototype 上有 map：',
+      Array.prototype.hasOwnProperty('map'))                   // true
+    console.log("字符串的方法来自 String.prototype：",
+      'abc'.hasOwnProperty === undefined ? '字符串是原始值，不能 hasOwnProperty' : '')
+    console.log('所以原型链就是 JS 的"继承"机制')
+
+    // ========================================
+    // 6. Object.create：手动指定原型（不写构造函数也能造对象）
+    // ========================================
+    console.log('=== 6. Object.create ===')
+
+    const animalProto = {
+      speak() { return this.name + ' 发出声音' },
+    }
+    const cat = Object.create(animalProto)   // cat 的原型 = animalProto
+    cat.name = '咪咪'
+    console.log('cat.speak()：', cat.speak())                  // 咪咪 发出声音
+    console.log('cat 自己的属性：', Object.keys(cat))          // ['name']
+
+    // ========================================
+    // 7. new 到底做了什么（和 Day4 的 this 呼应）
+    // ========================================
+    // new Person('小明') 的 4 步：
+    //   1. 创建一个空对象 {}
+    //   2. 把这个空对象的原型指向 Person.prototype
+    //   3. 让构造函数里的 this 指向这个空对象，执行构造函数
+    //   4. 如果构造函数没 return 对象，就返回这个空对象
+    console.log('=== 7. 手工模拟 new ===')
+
+    function myNew(Ctor, ...args) {
+      const obj = Object.create(Ctor.prototype)  // 第 1、2 步
+      const result = Ctor.apply(obj, args)       // 第 3 步（apply 绑定 this，Day4 学过）
+      return result && typeof result === 'object' ? result : obj  // 第 4 步
+    }
+
+    const p2 = myNew(Person, '小红')
+    console.log('手工 new 出来的实例：', p2.sayHi())            // 你好，我是小红
+    console.log('它 instanceof Person 吗：', p2 instanceof Person)  // true
+
+    // ========================================
+    // 8. 练习题（想好再看答案）
+    // ========================================
+    console.log('=== 8. 练习题 ===')
+
+    // 练习1：不用 class，用构造函数 + prototype 写一个 Book
+    //        book.name、book.price，原型上有个 describe() 返回 "《书名》售价 xx 元"
+
+    function Book(name,price){
+      this.name = name;
+      this.price = price;
+    }
+    Book.prototype.describe = function(){
+      return `《${this.name} ${this.price} 元`
+    }
+
+    // 卡住再看 ↓
+    // function Book(name, price) { this.name = name; this.price = price }
+    // Book.prototype.describe = function () { return '《' + this.name + '》售价 ' + this.price + ' 元' }
+
+    // 练习2：口答 —— 为什么方法要写在 prototype 上，而不是写在构造函数里？
+    // 答案：写在构造函数里，每 new 一个实例就复制一份函数（浪费内存）；
+    //       写在 prototype 上，所有实例共用同一个函数
+
+    // 练习3：手写一个 instanceof 判断函数 myInstanceof(obj, Ctor)
+
+    function myInstanceof(obj,Ctor){
+      let proto = Object.getPrototypeOf(obj);
+      while(proto){
+        if(proto === Ctor.prototype){
+          proto = Object.getPrototypeOf(proto)
+        }
+      }
+    }
+
+    // 卡住再看 ↓
+    // function myInstanceof(obj, Ctor) {
+    //   let proto = Object.getPrototypeOf(obj)
+    //   while (proto) {
+    //     if (proto === Ctor.prototype) return true
+    //     proto = Object.getPrototypeOf(proto)
+    //   }
+    //   return false
+    // }
+
+    // 练习4（思考题）：修改 Object.prototype 会有什么后果？
+    // 答案：所有对象都会多出这个属性 —— 污染全局，实际项目中禁止这样做
+  </script>
+</body>
+</html>

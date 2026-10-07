@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>复习-01 JS基础自测与重做</title>
+</head>
+<body>
+  <h1>复习-01：JS 基础（第一周内容）</h1>
+  <p>玩法：<b>先写答案 → 再取消注释运行验证 → 卡住才看"答案"</b></p>
+  <p>打开控制台（F12 → Console）</p>
+  <ul id="list"></ul>
+  <button id="btn">点我</button>
+
+  <script>
+    // ========================================
+    // Part A：自测题（每题 30 秒，凭记忆回答，别查资料）
+    // 先在纸上写出答案，再往下看注释里的答案
+    // ========================================
+    console.log('=== Part A 自测 ===')
+
+    // 1. 箭头函数：把 function add(a, b) { return a + b } 改成最简写法
+
+    // 答案：const add = (a, b) => a + b
+
+    // 2. map 和 forEach 的区别？
+    // 答案：map 返回一个新数组；forEach 不返回（只遍历）
+
+    // 3. filter 返回什么？find 返回什么？
+    // 答案：filter 返回所有满足条件的元素组成的新数组；
+    //       find 返回第一个满足条件的元素，没有则返回 undefined
+
+    // 4. 解构：const { name, age } = user 是干嘛的？
+    // 答案：从 user 对象里取出 name 和 age 两个属性，存成同名变量
+
+    // 5. document.querySelector('.box') 返回什么？
+    // 答案：页面中第一个 class 为 box 的元素
+
+    // 6. addEventListener('click', fn) 里的 fn 什么时候执行？
+    // 答案：用户点击这个元素的时候
+
+    // 7. Promise 是干嘛的？async/await 是它的什么？
+    // 答案：Promise 用来处理异步操作；async/await 是更易读的写法（语法糖）
+
+    // 8. splice(1, 2) 是什么意思？
+    // 答案：从下标 1 开始，删除 2 个元素（会修改原数组）
+
+    // 9. localStorage 和普通变量的区别？
+    // 答案：localStorage 存在浏览器里，刷新页面后还在；普通变量刷新就没了
+
+    // 10. 闭包是什么？（说个大概就行）
+    // 答案：函数内部返回/使用的函数，能访问外层函数的变量，且这个变量不会随外层函数结束而销毁
+
+    // ========================================
+    // Part B：重做练习（每题 5~10 分钟，写不出来再看答案）
+    // 写完后取消注释 console.log 那行运行验证
+    // ========================================
+    console.log('=== Part B 重做 ===')
+
+    // B1. 写一个函数：输入数字数组，返回其中的偶数（用 filter）
+      // TODO: 自己写
+
+   
+
+
+
+
+    // 卡住再看 ↓
+    // function getEvens(arr) {
+    //   return arr.filter(n => n % 2 === 0)
+    // }
+    // console.log(getEvens([1, 2, 3, 4, 5, 6])) // 期望 [2, 4, 6]
+
+    // B2. 用 map 把 [1, 2, 3] 变成 ['1号', '2号', '3号']
+    // const formatted = ???
+    const formatted = [1,2,3].map(n=>n+'号')
+    console.log(formatted)
+
+
+
+
+
+    // console.log(formatted) // 期望 ['1号', '2号', '3号']
+    // 卡住再看 ↓
+    // const formatted = [1, 2, 3].map(n => n + '号')
+
+    // B3. 用 reduce 求 [1, 2, 3, 4] 的和
+    // const total = ???
+    // console.log(total) // 期望 10
+
+
+    // 卡住再看 ↓
+    // const total = [1, 2, 3, 4].reduce((acc, n) => acc + n, 0)
+
+    // B4. 创建一个 user 对象：有 name、age 和一个 sayHi 方法
+    // const user = ???
+
+
+
+
+
+
+    // user.sayHi() // 期望输出 "你好，我是小明"
+    // 卡住再看 ↓
+    // const user = {
+    //   name: '小明',
+    //   age: 18,
+    //   sayHi() { console.log('你好，我是' + this.name) }
+    // }
+
+    // B5. DOM：给下面的 #list 添加 3 个 <li>
+      const list = document.querySelector('#list')
+      for(i=1;i<=3;i++){
+      const li = document.createElement('li')
+      list.appendChild(li)
+      li.textContent = '第'+i+'个'
+      }
+
+
+    // 卡住再看 ↓
+    // const list = document.querySelector('#list')
+    // for (let i = 1; i <= 3; i++) {
+    //   const li = document.createElement('li')
+    //   li.textContent = '第' + i + '项'
+    //   list.appendChild(li)
+    // }
+
+    // B6. 事件：点击按钮时，把按钮文字改成"已点击"
+    const btn = document.querySelector('#btn');
+    btn.addEventListener('click',()=>btn.textContent = '已点击');
+
+
+    // 卡住再看 ↓
+    // document.querySelector('#btn').addEventListener('click', function () {
+    //   this.textContent = '已点击'
+    // })
+
+    // B7. 异步：把下面的 .then 链改成 async/await 写法
+    // fetch('https://api.github.com/users/gaearon')
+    //   .then(r => r.json())
+    //   .then(data => console.log(data.name))
+    async function load(){
+      const r = await fetch('https://api.github.com/users/gaearon')
+      const data = await r.json()
+      console.log(data.name)
+    }
+
+
+
+    // 卡住再看 ↓
+    // async function load() {
+    //   const r = await fetch('https://api.github.com/users/gaearon')
+    //   const data = await r.json()
+    //   console.log(data.name)
+    // }
+    // load()
+  </script>
+</body>
+</html>
