@@ -355,6 +355,43 @@ toLocaleString()方法：
 
 与数字同名方法不同，会将Date对象的时间转换成字符串类型
 
+### Map()方法
+
+可以存入键值对
+
+~~~javascript
+const map = new Map();
+
+map.set('a', 1);     // 添加/修改
+map.get('a');        // 1，获取值
+map.has('a');        // true，判断键是否存在
+map.delete('a');     // 删除
+map.size;            // 元素个数
+map.clear();         // 清空
+
+for (let [key, value] of map) {
+  console.log(key, value);
+}
+~~~
+
+
+
+### Set()方法
+
+可以存入键,可以使用for of
+
+~~~javascript
+const set = new Set([1, 2, 3]);
+
+set.add(4);        // Set {1, 2, 3, 4}
+set.has(2);        // true
+set.delete(2);     // true
+set.size;          // 3
+set.clear();       // 清空
+~~~
+
+
+
 ## 高阶函数
 
 ### 回调函数（函数作为参数）

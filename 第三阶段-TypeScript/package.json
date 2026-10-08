@@ -1,0 +1,14 @@
+{
+  "name": "ts-learning",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TypeScript 学习练习（第三阶段）",
+  "scripts": {
+    "check": "tsc --noEmit",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

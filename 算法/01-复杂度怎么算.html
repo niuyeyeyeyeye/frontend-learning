@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>复杂度怎么算（大 O 入门）</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      line-height: 1.9;
+      padding: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+      color: #24292f;
+    }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    h2 { font-size: 18px; margin: 34px 0 12px; padding-left: 10px; border-left: 4px solid #1f883d; }
+    h3 { font-size: 15px; margin: 18px 0 8px; color: #0969da; }
+    p { margin: 8px 0; }
+    pre {
+      background: #0d1117; color: #c9d1d9; border-radius: 8px; padding: 14px;
+      overflow-x: auto; font-family: Consolas, monospace; font-size: 13px; line-height: 1.8; margin: 10px 0;
+    }
+    code { background: #eef1f4; padding: 1px 6px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px 10px; text-align: left; }
+    th { background: #f6f8fa; }
+    .tip { background: #ddf4ff; border-left: 4px solid #0969da; padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+    .warn { background: #fff8c5; border-left: 4px solid #d4a72c; padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+    .rule { background: #f6f8fa; border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+    .rule b { color: #1f883d; }
+    details { background: #f6f8fa; border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 14px; }
+    summary { cursor: pointer; color: #0969da; font-weight: bold; }
+    details p { margin: 8px 0 0; }
+    ol, ul { margin-left: 22px; }
+    li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>复杂度怎么算（大 O 记法入门）</h1>
+  <p>读完这一份，你就能给任何一段代码估出时间和空间复杂度。打开控制台看第 6 节的实测数据。</p>
+
+  <h2>0. 先纠正一个误解</h2>
+  <p>复杂度<b>不是</b>测"跑了几秒"，而是回答一个问题：</p>
+  <div class="rule">
+    <b>当数据量 n 变大时，操作次数增长得有多快？</b>
+  </div>
+  <p>为什么不用秒数衡量？两个原因：</p>
+  <ol>
+    <li>同一段代码在你的电脑和服务器上跑，秒数不一样</li>
+    <li><b>数据小的时候，O(n²) 和 O(n) 看起来一样快</b>；数据一大就差出几万倍（第 6 节有实测）</li>
+  </ol>
+  <p>所以我们数的是"**操作次数**"，用字母 n 表示数据量，写成 O(某个关于 n 的式子)。</p>
+
+  <h2>1. 算复杂度的三条规则（能解决 90% 的题）</h2>
+
+  <div class="rule">
+    <b>规则 1：只看最大项，把小的丢掉</b><br>
+    3n² + 5n + 7 → <b>O(n²)</b><br>
+    因为 n 很大时，n² 远远压过 5n 和 7。比如 n=1000：3n²=300万，5n=5000，7 可以忽略。
+  </div>
+
+  <div class="rule">
+    <b>规则 2：忽略常数系数</b><br>
+    2n → <b>O(n)</b>；n/2 → <b>O(n)</b>；100n → <b>O(n)</b><br>
+    因为常数在 n 变大时不起决定作用。3 步和 300 步都是"随着 n 线性增长"。
+  </div>
+
+  <div class="rule">
+    <b>规则 3：默认说的是"最坏情况"</b><br>
+    "在数组里找某个数"——最好情况第一个就找到（1 次），最坏要看完整个数组（n 次）。<br>
+    我们说 <b>O(n)</b>。面试除非特别问，都答最坏情况。
+  </div>
+
+  <h2>2. 怎么数：只有两种动作 —— 相加 和 相乘</h2>
+
+  <table>
+    <tr><th>代码形态</th><th>怎么算</th><th>例子</th></tr>
+    <tr>
+      <td>顺序执行的几段代码</td>
+      <td><b>相加</b>，然后取最大的那个</td>
+      <td>先 O(n) 再 O(n²) → O(n + n²) = <b>O(n²)</b></td>
+    </tr>
+    <tr>
+      <td>循环包着一段代码</td>
+      <td><b>相乘</b>：循环次数 × 循环体的复杂度</td>
+      <td>for (n 次) 内部做 O(1) → n × 1 = <b>O(n)</b></td>
+    </tr>
+    <tr>
+      <td>嵌套循环</td>
+      <td><b>相乘</b>：外层次数 × 内层次数</td>
+      <td>两层都跑 n 次 → n × n = <b>O(n²)</b></td>
+    </tr>
+  </table>
+
+  <div class="tip">
+    <b>实操口诀（照着做就行）：</b><br>
+    ① 找到<b>执行次数最多</b>的那一行代码<br>
+    ② 数它在最坏情况下执行多少次<br>
+    ③ 用 n 表示这个次数，去掉常数和系数
+  </div>
+
+  <h2>3. 常见复杂度速查表（记这张表就够了）</h2>
+  <table>
+    <tr><th>复杂度</th><th>名称</th><th>n=10</th><th>n=100</th><th>n=1000</th><th>什么代码长这样</th></tr>
+    <tr><td><b>O(1)</b></td><td>常数</td><td>1</td><td>1</td><td>1</td><td>数组按下标取值、Map 查表、几个变量加减</td></tr>
+    <tr><td><b>O(log n)</b></td><td>对数</td><td>≈3</td><td>≈7</td><td>≈10</td><td>二分查找、每次把范围砍一半</td></tr>
+    <tr><td><b>O(n)</b></td><td>线性</td><td>10</td><td>100</td><td>1000</td><td>一层 for 遍历数组</td></tr>
+    <tr><td><b>O(n log n)</b></td><td>线性对数</td><td>≈33</td><td>≈664</td><td>≈9966</td><td>排序、分治</td></tr>
+    <tr><td><b>O(n²)</b></td><td>平方</td><td>100</td><td>10000</td><td>1000000</td><td>双层 for、两两比较</td></tr>
+    <tr><td><b>O(2ⁿ)</b></td><td>指数</td><td>1024</td><td>天文数字</td><td>—</td><td>穷举所有子集（别写这种）</td></tr>
+  </table>
+  <p><b>大小顺序：</b>O(1) &lt; O(log n) &lt; O(n) &lt; O(n log n) &lt; O(n²) &lt; O(2ⁿ) &lt; O(n!)</p>
+
+  <h2>4. 实战：用你自己做过的两道题推一遍</h2>
+
+  <h3>例 1：两数之和 · 暴力解 → O(n²)</h3>
+  <pre>function twoSum(nums, target) {
+  for (let i = 0; i < nums.length; i++) {          // 跑 n 次
+    for (let j = i + 1; j < nums.length; j++) {    // 里面再跑约 n 次
+      if (nums[i] + nums[j] === target) {          // ← 这行是执行最多的
+        return [i, j]
+      }
+    }
+  }
+}</pre>
+  <p><b>数法</b>：内层那行执行 n × n ÷ 2 次 → 去掉常数 ½ → <b>时间 O(n²)</b>，<b>空间 O(1)</b>（只用了 i、j 两个变量）。</p>
+
+  <h3>例 2：两数之和 · Map 版 → O(n)</h3>
+  <pre>function twoSum(nums, target) {
+  const map = new Map()                      // 额外开了一个 Map
+  for (let i = 0; i < nums.length; i++) {    // 跑 n 次（只有一层！）
+    const need = target - nums[i]
+    if (map.has(need)) return [map.get(need), i]   // Map 查表是 O(1)
+    map.set(nums[i], i)
+  }
+}</pre>
+  <p><b>数法</b>：只有一层循环跑 n 次，里面全是 O(1) 的操作 → n × 1 = <b>时间 O(n)</b>。</p>
+  <p><b>空间</b>：那个 Map 最坏要存 n 个元素 → <b>空间 O(n)</b>（<i>这就是「用空间换时间」</i>）。</p>
+  <div class="tip">
+    你笔记里两数之和写的是「时间 O(n) / 空间 O(?)」——那个问号填 <b>O(n)</b>。
+  </div>
+
+  <h3>例 3：字母异位词分组 → O(n·k log k)</h3>
+  <pre>function groupAnagrams(strs) {
+  const map = new Map()
+  for (const s of strs) {              // 外层：n 个字符串
+    const key = s.split('').sort().join('')   // 关键：排序！这步不是 O(1)
+    if (!map.has(key)) map.set(key, [])
+    map.get(key).push(s)
+  }
+  return [...map.values()]
+}</pre>
+  <p><b>数法</b>：这里有两个变量，别只盯着 n：</p>
+  <ul>
+    <li><b>n</b> = 字符串的个数</li>
+    <li><b>k</b> = 单个字符串的长度</li>
+    <li>外层跑 n 次；每次对长度 k 的字符串排序 → k log k</li>
+    <li>所以：n × (k log k) = <b>时间 O(n·k log k)</b>，<b>空间 O(n·k)</b>（要存下所有字符）</li>
+  </ul>
+  <div class="warn">
+    <b>这是最容易漏的一点：循环体里如果做了"非 O(1)"的事，必须乘进去。</b>
+    排序、includes、slice、字符串拼接，都不是 O(1)。
+  </div>
+
+  <h2>5. 空间复杂度怎么数</h2>
+  <p><b>只数"你额外申请的内存"，不算输入本身。</b></p>
+  <table>
+    <tr><th>情况</th><th>空间</th></tr>
+    <tr><td>只用几个变量（i、sum、max…）</td><td><b>O(1)</b> —— 叫"原地操作"</td></tr>
+    <tr><td>新建了一个长度 n 的数组 / 存 n 个元素的 Map</td><td><b>O(n)</b></td></tr>
+    <tr><td>新建了 n×k 的结构（比如二维数组）</td><td><b>O(n·k)</b></td></tr>
+    <tr><td>递归函数</td><td><b>至少 O(递归深度)</b>，因为调用栈占内存</td></tr>
+  </table>
+  <div class="tip">
+    面试时如果答案"用空间换时间"（像两数之和的 Map 版），主动说出来，面试官会觉得你懂权衡。
+  </div>
+
+  <h2>6. 亲手数一遍（看控制台）</h2>
+  <p>下面的代码会打印"操作次数"和"实际耗时"两个表，跑起来看看规律 👇</p>
+
+  <h2>7. 练习（先自己判断，再点开答案）</h2>
+
+  <p><b>练习 1：</b>求数组所有元素的和（一层 for）</p>
+  <details><summary>看答案</summary>
+    <p>时间 <b>O(n)</b>（遍历一次），空间 <b>O(1)</b>（只用了一个 total 变量）。</p>
+  </details>
+
+  <p><b>练习 2：</b>判断数组里有没有重复元素（双层 for 两两比较）</p>
+  <details><summary>看答案</summary>
+    <p>时间 <b>O(n²)</b>（n×n），空间 <b>O(1)</b>。<br>
+    优化思路：用 Set 边遍历边查 → 时间 O(n)，空间 O(n)。</p>
+  </details>
+
+  <p><b>练习 3：</b>把一个数字数组从大到小排序（用内置 sort）</p>
+  <details><summary>看答案</summary>
+    <p>时间 <b>O(n log n)</b>（内置排序的复杂度），空间 <b>O(log n)</b> 左右（引擎实现不同，答 O(1)~O(log n) 都能接受，重点是说对 n log n）。</p>
+  </details>
+
+  <p><b>练习 4：</b>在一段"从头到尾每次砍一半"的循环里执行 O(1) 操作（比如二分查找）</p>
+  <details><summary>看答案</summary>
+    <p>时间 <b>O(log n)</b>。因为 n 每次除以 2，直到 1，需要 log₂n 次。</p>
+  </details>
+
+  <p><b>练习 5：</b>遍历数组，对每个元素都排序一次整个数组</p>
+  <details><summary>看答案</summary>
+    <p>时间 <b>O(n² log n)</b>（n 次 × 每次 n log n）。这种写法要警惕：<b>循环体里的操作复杂度要乘进去</b>。</p>
+  </details>
+
+  <p><b>练习 6（回到你的题）：</b>字母异位词分组里，如果不用排序，改用"统计 26 个字母出现次数"当 key，复杂度是多少？</p>
+  <details><summary>看答案</summary>
+    <p>时间 <b>O(n·k)</b>（每个字符串扫一遍统计，是 k 不是 k log k），比排序版 O(n·k log k) 更快。<br>
+    想通了这一点，你就掌握了"优化复杂度"的思路：<b>找出最贵的那一步，换掉它。</b></p>
+  </details>
+
+  <h2>8. 面试话术模板（照这个说）</h2>
+  <div class="rule">
+    "我用一个 Map 存「值 → 下标」，<b>只遍历一次数组</b>，每个元素做一次 <b>O(1) 的哈希查找</b>，
+    所以时间复杂是 <b>O(n)</b>；额外开了一个最多存 n 个元素的 Map，所以空间是 <b>O(n)</b>。
+    比暴力双层循环的 O(n²) 快，代价是多花了 O(n) 的空间。"
+  </div>
+  <p>要点：<b>① 说清用了什么结构 ② 说清循环几层 ③ 说清额外空间 ④ 说清取舍</b>。</p>
+
+  <script>
+    // ========================================
+    // 实测：操作次数 与 实际耗时
+    // ========================================
+    console.log('==== 表 1：不同复杂度在不同 n 下的「操作次数」====')
+
+    const opsO1 = () => 1
+    const opsLogN = (n) => Math.ceil(Math.log2(n))
+    const opsN = (n) => n
+    const opsNLogN = (n) => Math.ceil(n * Math.log2(n))
+    const opsN2 = (n) => n * n
+
+    const sizes = [10, 100, 1000]
+    console.log('n\t\tO(1)\tO(log n)\tO(n)\tO(n log n)\tO(n²)')
+    for (const n of sizes) {
+      console.log(
+        n + '\t\t' + opsO1(n) + '\t' + opsLogN(n) + '\t\t' + opsN(n) + '\t' + opsNLogN(n) + '\t\t' + opsN2(n)
+      )
+    }
+    console.log('→ 看 n=1000 那一行：O(n) 是 1000，O(n²) 是 100 万，差了 1000 倍')
+
+    // ---------- 用"计数器"实测操作次数（完全确定，不受机器影响） ----------
+    console.log('\n==== 表 2：实测操作次数（一行行数出来的）====')
+
+    let opCount = 0
+
+    function sumLoop(nums) {              // O(n)
+      let total = 0
+      for (let i = 0; i < nums.length; i++) { opCount++; total += nums[i] }
+      return total
+    }
+
+    function pairLoop(nums) {             // O(n²)
+      let count = 0
+      for (let i = 0; i < nums.length; i++) {
+        for (let j = i + 1; j < nums.length; j++) {
+          opCount++
+          if (nums[i] + nums[j] > 0) count++
+        }
+      }
+      return count
+    }
+
+    function makeArray(n) {
+      const arr = []
+      for (let i = 0; i < n; i++) arr.push(i)
+      return arr
+    }
+
+    console.log('n\t\tO(n) 执行次数\tO(n²) 执行次数\t相差')
+    for (const n of [1000, 2000, 4000]) {
+      const arr = makeArray(n)
+
+      opCount = 0; sumLoop(arr); const c1 = opCount
+      opCount = 0; pairLoop(arr); const c2 = opCount
+
+      console.log(n + '\t\t' + c1 + '\t\t' + c2 + '\t\t' + (c2 / c1).toFixed(0) + ' 倍')
+    }
+    console.log('→ n 从 1000 翻到 2000：O(n) 只涨 2 倍，O(n²) 涨了 4 倍')
+    console.log('→ 再翻到 4000：O(n) 还是 2 倍，O(n²) 又是 4 倍 —— 这就是"增长速度"的含义')
+
+    // ---------- 真实耗时（必须预热 + 重复测量，否则测不准） ----------
+    console.log('\n==== 表 3：真实耗时（毫秒/次）====')
+
+    function bench(fn, arr, repeats) {
+      let sink = fn(arr)                                  // 先跑一次预热（第一次有 JIT 冷启动）
+      const t = performance.now()
+      for (let i = 0; i < repeats; i++) sink += fn(arr)   // 用 sink 累加，防止被编译器优化掉
+      return (performance.now() - t) / repeats
+    }
+
+    for (const n of [2000, 4000, 8000]) {
+      const arr = makeArray(n)
+      const t1 = bench(sumLoop, arr, 500)     // O(n) 太快，多跑 500 次取平均
+      const t2 = bench(pairLoop, arr, 3)      // O(n²) 太慢，只跑 3 次
+      console.log(
+        'n = ' + n +
+        ' | O(n): ' + t1.toFixed(4) + ' ms' +
+        ' | O(n²): ' + t2.toFixed(2) + ' ms' +
+        ' | 相差约 ' + (t2 / t1).toFixed(0) + ' 倍'
+      )
+    }
+    console.log('→ O(n) 快到几乎测不出来（0.0x 毫秒），O(n²) 已经要几十毫秒')
+    console.log('→ 结论：秒数会受机器和测量误差影响，所以复杂度看的是"增长速度"，不是"跑了几秒"')
+    console.log('→ 补充：像 O(n) 这种极快的代码，用秒表是量不准的 —— 所以面试里我们"数操作次数"，而不是"测时间"')
+  </script>
+</body>
+</html>
