@@ -8,6 +8,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["*.ts"],
-  "exclude": ["node_modules", "dist", "报错示例"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "dist", "**/报错示例.ts"]
 }

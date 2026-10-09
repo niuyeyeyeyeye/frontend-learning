@@ -2,7 +2,7 @@
 // 报错示例：常见类型错误长什么样（这个文件故意是错的，别去修它）
 // ============================================================
 // 【怎么运行】
-//   npx tsc --ignoreConfig --strict --noEmit 报错示例\01-常见类型错误.ts
+//   npx tsc --ignoreConfig --strict --noEmit day1-基础类型与推断\报错示例.ts
 //
 // 【为什么必须加 --ignoreConfig】
 //   TS 7 里如果"命令行指定了文件"、同时目录里又有 tsconfig.json，
