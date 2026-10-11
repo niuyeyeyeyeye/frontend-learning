@@ -319,7 +319,7 @@ const notANumber = '5' as unknown as number   // 强行骗过 TS
 
 ### 非空断言！
 
-一个值有两种可能 的类型包括空或者undefined，此时直接使用这个值可能会报错，在这个值后面加上!就可以直接运行，但是遇到空会崩溃
+一个值有两种可能 的类型包括空或者undefined，此时直接使用这个值可能会报错，在这个值后面加上!才可以运行，但是前提是已经不可能为空
 
 ~~~ typescript
 const map = new Map<string, number>()
