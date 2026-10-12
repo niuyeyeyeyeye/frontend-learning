@@ -46,6 +46,8 @@ npm的附带工具，用来找到并执行某个包提供的命令，本地没�
 
 `type Fn = (a: number) => string;`
 
+**TS中函数的类型变得精确，包含了参数和返回值，格式`（参数类型）=>返回值类型`**
+
 ### interface接口
 
 `interface`是给**函数**和**对象**设置属性的，也叫起别名
@@ -335,3 +337,78 @@ const safeValue = map.get('b')
 console.log('安全写法：', safeValue === undefined ? '没有这个 key' : safeValue.toFixed(2))
 ~~~
 
+
+
+## 泛型类型
+
+泛型类型就是由typescript推断类型格式是`<占位符>`,一般用在函数里等需要多个同种类型的地方
+
+### 泛型约束extends
+
+`<T extends K>`T会继承K的类型
+
+ const常量会被typescript精确保留类型，字面量就是类型
+
+### 泛型接口
+
+带类型参数的接口
+
+`interface 接口名<T>{`
+
+`}`
+
+### 泛型别名
+
+带类型参数的type
+
+`type 别名<A,B> = [A,B]`
+
+### 默认值
+
+可以给泛型类型默认值，不传类型就用默认值
+
+`interface 接口名<T =unknown>{`
+
+`}`
+
+### 工具类型
+
+**通常不会给原始类型使用**
+
+#### Omit<T,K>
+
+从T去掉属性K
+
+#### Pick<T,K>
+
+从T中挑选K
+
+#### Partial<T>
+
+将T类型全部变成可读
+
+#### Required<T>
+
+T类型全部变成必填
+
+#### Readonly<T>
+
+T全部变成只读
+
+#### Record<K,V>
+
+描述字典，用来表示一堆键值对集合，K是键，V是值
+
+#### ReturnType<typeof function>
+
+ReturnType通常用来取函数的返回值类型，后面必须跟函数类型参数，也就是`(参数类型)=>返回值类型`
+
+最后得到返回值类型
+
+#### Parameters<typeof function>
+
+Parameters返回的是函数的参数类型，后面也必须跟函数的类型参数，同ReturnType
+
+## typeof
+
+在ts函数中，typeof在不同的地方作用不同，如果在值的前面就是’functon‘字符串，如果在类型的位置就是函数的类型
