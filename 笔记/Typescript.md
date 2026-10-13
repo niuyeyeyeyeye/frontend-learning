@@ -341,7 +341,7 @@ console.log('安全写法：', safeValue === undefined ? '没有这个 key' : sa
 
 ## 泛型类型
 
-泛型类型就是由typescript推断类型格式是`<占位符>`,一般用在函数里等需要多个同种类型的地方
+使用泛型类型需要先声明，泛型类型就是由typescript推断类型格式是`<占位符>`,一般用在函数里等需要多个同种类型的地方
 
 ### 泛型约束extends
 
@@ -379,6 +379,12 @@ console.log('安全写法：', safeValue === undefined ? '没有这个 key' : sa
 
 从T去掉属性K
 
+~~~ typescript
+type A = Omit<User, 'nope'>//nope不存在不会报错
+~~~
+
+
+
 #### Pick<T,K>
 
 从T中挑选K
@@ -408,6 +414,94 @@ ReturnType通常用来取函数的返回值类型，后面必须跟函数类型�
 #### Parameters<typeof function>
 
 Parameters返回的是函数的参数类型，后面也必须跟函数的类型参数，同ReturnType
+
+## 元素类型
+
+### querySelector的元素类型
+
+通常用泛型参数,TS规定querySelector类型是继承Element所有类型
+
+`document.querySelector<Element>`
+
+### $辅助函数
+
+~~~ typescript
+function $<T extends Element>(v:string):T{
+    const el = document.querySelector<T>(v)
+    if(el ===null){
+        throw new Erorr('找不到元素'+v)
+    }
+    return el
+}
+~~~
+
+### e.target
+
+e.target的类型是EventTarget，是元素类型的祖先，所以要收窄类型
+
+#### instanceof判断
+
+~~~ typescript
+if(e.target instanceof HTMLElement){
+    console.log(e.target.tagName)
+}
+~~~
+
+#### 使用closest()寻找祖先元素
+
+~~~typescript
+  const li = (e.target as HTMLElement).closest('li')
+  if (li !== null) console.log('所在的 li：', li.textContent)
+}
+~~~
+
+
+
+### dataset的类型
+
+datase也属于HMTL属性，所以类型是字符串
+
+### 定时器属性
+
+在ts和js中定时器的属性是number，在node里属性是NodeJS.Timeout,所以通常使用ReturnType()来判断类型
+
+~~~ typescript
+let timer :ReturnType<typeof setTimeout>|null=null
+~~~
+
+
+
+### 常见事件类型对应表
+
+`click / dblclick / mousemove → MouseEvent`
+
+`keydown / keyup / keypress   → KeyboardEvent`
+
+`input / change               → Event（想拿 value 就断言 target）`
+
+`submit                       → SubmitEvent`
+
+`scroll                       → Event`
+
+`focus / blur                 → FocusEvent`
+
+### 常见元素类型名
+
+**`HTMLInputElement`**
+
+**` HTMLButtonElement ` **
+
+**` HTMLUListElement `**
+
+**` HTMLLIElement` **
+
+**`HTMLFormElement `**
+
+**`HTMLDivElement `**
+
+**`HTMLImageElement ` **
+
+**`HTMLAnchorElement`**
 
 ## typeof
 

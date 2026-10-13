@@ -216,7 +216,7 @@ document.write(`我今年${age}岁了`)
 
 按括号里的规则切分字符串,返回一个数组
 
-
+#### slice()
 
 ### Boolean类型
 
@@ -939,11 +939,17 @@ every()判断是否所有元素都满足条件，满足返回true，不满足返
 
 ### DOM内置方法
 
-#### matches
+#### matches()
 
 `element.matches('选择器全称')`
 
 判断当前节点是否符合该选择器，并返回true/false
+
+#### closest()
+
+`element.closest('选择器')`
+
+从自己往上找，找到合适的选择器就返回，否则返回null
 
 ## 事件
 

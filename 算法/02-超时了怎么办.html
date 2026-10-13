@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>超时了怎么办（TLE 处理方案）</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "Microsoft YaHei", sans-serif; line-height: 1.9; padding: 24px; max-width: 820px; margin: 0 auto; color: #24292f; }
+    h1 { font-size: 22px; margin-bottom: 6px; }
+    h2 { font-size: 18px; margin: 32px 0 12px; padding-left: 10px; border-left: 4px solid #1f883d; }
+    h3 { font-size: 15px; margin: 18px 0 8px; color: #0969da; }
+    pre { background: #0d1117; color: #c9d1d9; border-radius: 8px; padding: 14px; overflow-x: auto; font-family: Consolas, monospace; font-size: 13px; line-height: 1.8; margin: 10px 0; }
+    code { background: #eef1f4; padding: 1px 6px; border-radius: 4px; font-family: Consolas, monospace; font-size: 13px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+    th, td { border: 1px solid #d0d7de; padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: #f6f8fa; }
+    .tip { background: #ddf4ff; border-left: 4px solid #0969da; padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+    .warn { background: #fff8c5; border-left: 4px solid #d4a72c; padding: 10px 14px; border-radius: 0 6px 6px 0; margin: 12px 0; font-size: 14px; }
+    .rule { background: #f6f8fa; border-radius: 8px; padding: 14px 18px; margin: 12px 0; }
+    ol, ul { margin-left: 22px; }
+    li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1>超时了怎么办（TLE 处理方案）</h1>
+  <p>LeetCode 报 <b>Time Limit Exceeded（超出时间限制）</b> 时看这一篇。先打开控制台，第 5 节有可运行的实测。</p>
+
+  <h2>1. TLE 到底是什么</h2>
+  <div class="rule">
+    <b>TLE = 你的算法跑得太慢，超过了平台的限制（力扣多数题目约 1~2 秒）。<br>
+    它不是"代码写得慢"，而是"<u>算法的时间复杂度太高</u>"。</b>
+  </div>
+  <ul>
+    <li>它和"答案错误（Wrong Answer）"不同：**你的逻辑多半是对的，只是不够快**</li>
+    <li>所以 TLE 是**最有指导性的报错**——它直接告诉你"复杂度这一关没过"</li>
+    <li>真实面试里**不会给你 TLE**：面试官会直接问"你这个解法的时间复杂度是多少？"——所以现在把 TLE 当成免费的复杂度检测器</li>
+  </ul>
+
+  <h2>2. ⭐ 核心技能：用数据量反推复杂度上限</h2>
+  <p>这是最实用的一招：**先看题目给的 n 有多大，就知道该用什么复杂度的算法**。看题时就能判断，不用等 TLE。</p>
+
+  <table>
+    <tr><th>题目给的 n 范围</th><th>允许的复杂度</th><th>该想到的算法</th></tr>
+    <tr><td>n ≤ 10</td><td>O(n!) / O(2ⁿ)</td><td>全排列、暴力穷举</td></tr>
+    <tr><td>n ≤ 100</td><td>O(n³)</td><td>三重循环</td></tr>
+    <tr><td>n ≤ 1000</td><td>O(n²)</td><td>双层循环、简单 DP</td></tr>
+    <tr><td><b>n ≤ 10⁵</b></td><td><b>O(n log n)</b></td><td>排序、二分、堆</td></tr>
+    <tr><td><b>n ≤ 10⁶ ~ 10⁷</b></td><td><b>O(n)</b></td><td>哈希表、双指针、滑动窗口、前缀和</td></tr>
+    <tr><td>n 更大</td><td>O(log n) / O(1)</td><td>数学公式、二分</td></tr>
+  </table>
+
+  <div class="tip">
+    <b>怎么用：</b>题目说 <code>1 ≤ nums.length ≤ 10⁵</code>，你就该立刻排除 O(n²) ——
+    因为 10⁵ × 10⁵ = <b>10¹⁰</b> 次操作，JS 一秒只能做约 10⁷~10⁸ 次，必然超时。<br>
+    <b>10⁵ 这个数量级 → 只能用 O(n) 或 O(n log n)。</b>
+  </div>
+
+  <h2>3. 定位问题：四步法</h2>
+  <ol>
+    <li><b>看 TLE 出现在哪个用例</b><br>力扣会显示"最后执行的输入"，看那个数组/字符串有多长 → 用上面的表反推允许的复杂度</li>
+    <li><b>找你代码里的"执行次数最多的那一行"</b><br>就是你 Day1 学的"数操作次数"：哪一层循环最内层、哪个操作被反复执行</li>
+    <li><b>用优化模式替换它</b><br>见第 6 节的对照表（哈希表、双指针、前缀和、记忆化…）</li>
+    <li><b>不要做常数级微优化</b><br>把 <code>for</code> 改成 <code>while</code>、<code>let</code> 改成 <code>const</code>、
+        删掉几个变量 —— 这些改变不了<b>数量级</b>，救不了 TLE</li>
+  </ol>
+
+  <h2>4. JS 特有的坑：这些操作"看着是 O(1)，其实很贵"</h2>
+  <p>很多 TLE 不是因为双层循环，而是**循环里藏了一个 O(n) 的操作**。这是 JS 新手最容易踩的：</p>
+
+  <table>
+    <tr><th>操作</th><th>真实复杂度</th><th>后果</th></tr>
+    <tr><td><code>arr.includes(x)</code> / <code>arr.indexOf(x)</code> 在循环里</td><td><b>O(n)</b></td><td>整体从 O(n) 变成 <b>O(n²)</b> ⚠️</td></tr>
+    <tr><td><code>arr.shift()</code> / <code>arr.unshift()</code></td><td><b>O(n)</b></td><td>要移动整个数组；队列请用索引或双指针</td></tr>
+    <tr><td><code>arr.slice()</code> / <code>arr.splice()</code>（非末尾）</td><td><b>O(n)</b></td><td>每次都复制/移动元素</td></tr>
+    <tr><td>循环里 <code>str += x</code> 拼接字符串</td><td><b>O(n)</b> 每次</td><td>整体 O(n²)；改用数组 <code>join</code></td></tr>
+    <tr><td><code>arr.sort()</code> 在循环里</td><td><b>O(n log n)</b> 每次</td><td>整体变成 O(n² log n)</td></tr>
+    <tr><td><code>Set.has()</code> / <code>Map.get()</code></td><td>✅ O(1)</td><td>这才是对的选择</td></tr>
+    <tr><td>循环里大量 <code>console.log</code></td><td>很慢</td><td><b>提交前一定要删掉调试输出</b></td></tr>
+  </table>
+
+  <div class="warn">
+    <b>最容易上钩的写法</b>：<code>if (arr.indexOf(arr[i]) !== i) ...</code> ——
+    看起来只有一层循环（O(n)），但 <code>indexOf</code> 本身是 O(n)，合起来还是 <b>O(n²)</b>。
+    把它换成 <code>Set</code> 就变成真正的 O(n)。
+  </div>
+
+  <h2>5. 实测：O(n²) 在 n=10⁵ 时到底要多久</h2>
+  <p>下面的代码会实测三种"判断数组有无重复元素"的写法，并**推算**到 10⁵ 的耗时 👇</p>
+
+  <h2>6. 优化模式对照表（找到瓶颈后照这张表换）</h2>
+  <table>
+    <tr><th>瓶颈</th><th>换成什么</th><th>复杂度变化</th></tr>
+    <tr><td>反复查找"某个值在不在"</td><td><b>Set / Map / 对象</b></td><td>O(n) → <b>O(1)</b></td></tr>
+    <tr><td>两层循环找配对</td><td><b>哈希表</b>（存"值→下标"）</td><td>O(n²) → <b>O(n)</b></td></tr>
+    <tr><td>两层循环枚举子数组/子串</td><td><b>双指针 / 滑动窗口</b></td><td>O(n²) → <b>O(n)</b></td></tr>
+    <tr><td>反复求区间和</td><td><b>前缀和</b></td><td>每次 O(n) → <b>O(1)</b></td></tr>
+    <tr><td>需要排序后才能用双指针</td><td><b>先排序</b>（O(n log n)）</td><td>用一次排序换后面全变简单</td></tr>
+    <tr><td>递归重复计算</td><td><b>记忆化 / 动态规划</b></td><td>O(2ⁿ) → <b>O(n)</b></td></tr>
+    <tr><td>找"下一个更大/更小元素"</td><td><b>单调栈</b></td><td>O(n²) → <b>O(n)</b></td></tr>
+  </table>
+
+  <h2>7. 本地计时调试（力扣上是黑盒，本地能秒定位）</h2>
+  <pre>// 用大数据量测你的函数，看哪一步慢
+const big = Array.from({ length: 100000 }, () => Math.floor(Math.random() * 100000))
+
+let t = performance.now()
+你的函数(big)
+console.log('耗时：', (performance.now() - t).toFixed(1), 'ms')
+// 超过 1000ms 基本就会 TLE（力扣限制约 1~2 秒）</pre>
+  <p>技巧：**把 n 翻倍看耗时变化** ——如果耗时翻 4 倍，说明是 O(n²)；翻 2 倍是 O(n)；几乎不变是 O(log n) 或 O(1)。</p>
+
+  <h2>8. 自查清单（提交前 10 秒过一遍）</h2>
+  <ul>
+    <li>⬜ 题目给的 n 上限是多少？我算法的复杂度符合第 2 节的表吗？</li>
+    <li>⬜ 循环里有没有 <code>includes</code> / <code>indexOf</code> / <code>slice</code> / <code>shift</code> / 字符串 <code>+=</code>？</li>
+    <li>⬜ 有没有在循环里做排序？</li>
+    <li>⬜ 递归有没有重复计算（该记忆化了吗）？</li>
+    <li>⬜ 有没有死循环？（循环变量真的在变吗）</li>
+    <li>⬜ <b>调试用的 console.log 删干净了吗？</b></li>
+  </ul>
+
+  <h2>9. 心态提醒</h2>
+  <div class="rule">
+    <b>TLE 在学习阶段是好消息。</b><br>
+    它精确地告诉你"思路对但复杂度不对"，比"答案错误"更容易修 ——
+    因为优化方向是有限的（第 6 节那 7 种），而逻辑错误有无数种。
+  </div>
+
+  <script>
+    // ========================================
+    // 三种写法的实测：判断数组里有没有重复元素
+    // ========================================
+    function makeArray(n, hasDup) {
+      const arr = []
+      for (let i = 0; i < n; i++) arr.push(i)
+      if (hasDup) arr[n - 1] = 0        // 制造一个重复
+      return arr
+    }
+
+    // 写法 1：双层循环 O(n²)
+    function hasDupN2(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+          if (arr[i] === arr[j]) return true
+        }
+      }
+      return false
+    }
+
+    // 写法 2：一层循环 + indexOf（看起来 O(n)，其实 O(n²)）
+    function hasDupIndexOf(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr.indexOf(arr[i]) !== i) return true
+      }
+      return false
+    }
+
+    // 写法 3：Set O(n)
+    function hasDupSet(arr) {
+      const seen = new Set()
+      for (const x of arr) {
+        if (seen.has(x)) return true
+        seen.add(x)
+      }
+      return false
+    }
+
+    // 预热（避免第一次调用的 JIT 冷启动影响结果）
+    hasDupN2([1, 2, 3])
+    hasDupIndexOf([1, 2, 3])
+    hasDupSet([1, 2, 3])
+
+    console.log('==== 实测：n = 5000（最坏情况：无重复）====')
+    const n = 5000
+    const data = makeArray(n, false)
+
+    let t = performance.now()
+    hasDupN2(data)
+    const t1 = performance.now() - t
+
+    t = performance.now()
+    hasDupIndexOf(data)
+    const t2 = performance.now() - t
+
+    t = performance.now()
+    hasDupSet(data)
+    const t3 = performance.now() - t
+
+    console.log('写法1 双层循环      : ' + t1.toFixed(1) + ' ms')
+    console.log('写法2 循环+indexOf  : ' + t2.toFixed(1) + ' ms')
+    console.log('写法3 Set           : ' + t3.toFixed(2) + ' ms')
+    console.log('→ 注意：n 小的时候差距只有几倍～十几倍，感觉"不优化也能跑"')
+
+    console.log('\n==== 推算到 n = 100000（力扣常见数据量）====')
+    const ratio = (100000 / n) * (100000 / n)     // O(n²) 的放大倍数 = 400 倍
+    const sec1 = t1 * ratio / 1000
+    const sec2 = t2 * ratio / 1000
+    const sec3 = t3 * (100000 / n) / 1000
+
+    console.log('写法1 双层循环   : 约 ' + sec1.toFixed(1) + ' 秒  → 必然 TLE ❌')
+    console.log('写法2 循环+indexOf: 约 ' + sec2.toFixed(1) + ' 秒  → 必然 TLE ❌')
+    console.log('写法3 Set        : 约 ' + sec3.toFixed(3) + ' 秒  → 轻松通过 ✅')
+    console.log('→ 到 10⁵ 这个量级，Set 比双层循环快约 ' + (sec1 / sec3).toFixed(0) + ' 倍')
+    console.log('\n→ 结论：n 到 10⁵ 这个量级，O(n²) 没有任何侥幸空间，必须降到 O(n)。')
+    console.log('→ 这就是为什么"看题先看 n 的范围"，就能反推该用什么算法。')
+  </script>
+</body>
+</html>
