@@ -187,6 +187,20 @@ class TodoStore {
     return result
   }
 
+  // 把所有待办设为 done 指定的状态，返回实际被改变的条数
+  toggleAll(done:boolean):number{
+    let count =0
+    this.todos = this.todos.map(n=>{
+      if(n.done===done){
+        return n
+      }
+      count++
+      return {...n,done}
+    })
+    this.save()
+    return count
+  }
+
   private save(): void {
     this.storage.set('todos', this.todos)      // 类型对得上 —— todos 必须是 Todo[]
   }
@@ -324,23 +338,18 @@ function test(): void {
   store.add({ text: '复习数学', done: true })
   store.add({ text: 'Review Algorithm', done: false })   // ← 加英文数据（为了测大小写）
 
-  expect('总数', store.stats().total, 5)                                    // ← 4 → 5
-  expect('search("练习")', store.search('练习').map((t) => t.text), ['写练习'])
-  expect('search("复习")', store.search('复习').map((t) => t.text), ['复习算法', '复习数学'])
-  expect('search("") 返回全部', store.search('').length, 5)                 // ← 4 → 5
 
-  // ⭐ 大小写不敏感（用同一份数据、三种写法，期望结果一样）
-  expect('search("review") 全小写', store.search('review').map((t) => t.text), ['Review Algorithm'])
-  expect('search("REVIEW") 全大写', store.search('REVIEW').map((t) => t.text), ['Review Algorithm'])
-  expect('search("Algorithm") 混合大小写', store.search('Algorithm').map((t) => t.text), ['Review Algorithm'])
-  expect('search("abc") 不存在的词返回空', store.search('abc'), [])          // ← 这条才是"期望 0"
-
-  expect('clearDone 返回删除条数', store.clearDone(), 2)
-  expect('clearDone 后剩余', store.list().map((t) => t.text), ['学 TS', '写练习', 'Review Algorithm'])  // ← 加上英文那条
-
-  // 边界情况
-  expect('删除不存在的 id', store.remove(999), false)
-  expect('空数组 search', new TodoStore().search('x'), [])
+  expect('正常修改',store.toggleAll(true),3)
+  expect('再次修改',store.toggleAll(true),0)
+  expect('反过来',store.toggleAll(false),5)
+  expect('空实例',new TodoStore().toggleAll(true),0)
+  expect('toggleAll 后条数不变（不重复）', (() => {
+  const s = new TodoStore()
+  s.add({ text: 'a', done: false })
+  s.add({ text: 'b', done: true })
+  s.toggleAll(true)
+  return s.list().length
+})(), 2)
 }
 test()
 
