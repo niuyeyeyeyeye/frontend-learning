@@ -218,6 +218,12 @@ document.write(`我今年${age}岁了`)
 
 #### slice()
 
+截取字符串，返回一个新字符串
+
+#### includes()
+
+是否包含某个值
+
 ### Boolean类型
 
 boolean:只有true和false两个值，true false 是布尔型字面量

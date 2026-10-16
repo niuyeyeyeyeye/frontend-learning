@@ -101,7 +101,7 @@ interface Options {
   timeout?: number
 }
 function setup(options: Options): number {
-  return options.timeout??0 + 1000
+  return (options.timeout??0) + 1000
 }
 
 // ------------------------------------------------------------
