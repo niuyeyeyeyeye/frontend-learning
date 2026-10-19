@@ -222,7 +222,11 @@ document.write(`我今年${age}岁了`)
 
 #### includes()
 
-是否包含某个值
+是否包含某个值，会遍历字符串
+
+#### charCodeAt()
+
+找到字符的Unicode码，括号里是字符串中字符的地址
 
 ### Boolean类型
 
