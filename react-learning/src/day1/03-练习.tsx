@@ -13,7 +13,7 @@
 // ------------------------------------------------------------
 function SkillTag({ label, color = '#0969da' }: { label: string; color?: string }) {
   // TODO: 把下面这行换成真正的标签
-  return <span className="tag" color={color}>{label}</span>
+  return <span className="tag" style={{color:color}}>{label}</span>
 }
 
 // ------------------------------------------------------------
@@ -68,7 +68,7 @@ function Alert({ type, children }: { type: 'info' | 'warn' | 'error'; children: 
 // ------------------------------------------------------------
 function Stat({ label, value, unit = '' }: { label: string; value: number; unit?: string }) {
   // TODO
-  return (<div>{label}:<strong style={{fontSize: '14px'}}>{value}</strong>{unit}</div>)
+  return (<div>{label}：<strong style={{fontSize: '20px'}}>{value}</strong>{unit}</div>)
 }
 
 // ------------------------------------------------------------
@@ -93,10 +93,10 @@ function Practice() {
       <Alert type="error">这是一条错误</Alert>
 
       <h3>练习 4：Stat</h3>
-      <p>
+      <div>
         <Stat label="已完成" value={12} />
         <Stat label="完成率" value={75} unit="%" />
-      </p>
+      </div>
     </div>
   )
 }
