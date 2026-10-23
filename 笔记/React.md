@@ -50,7 +50,7 @@ function Button({ text, variant = 'primary', onClick }: ButtonProps) {
 
 ### key
 
-
+分辨元素的标识，如果元素没有删除修改可以用index
 
 ### children
 
