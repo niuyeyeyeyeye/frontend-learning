@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>参考实现：原生 JS 待办列表</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Microsoft YaHei", sans-serif;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 24px;
+      background: #f6f8fa;
+      line-height: 1.7;
+    }
+    h1 { font-size: 22px; margin-bottom: 4px; }
+    .hint { color: #57606a; font-size: 13px; margin-bottom: 16px; }
+    .box { background: #fff; border: 1px solid #d0d7de; border-radius: 10px; padding: 16px; }
+    .row { display: flex; gap: 8px; margin-bottom: 12px; }
+    #input { flex: 1; padding: 8px 10px; border: 1px solid #d0d7de; border-radius: 6px; font-size: 15px; }
+    #add { padding: 8px 16px; border: none; background: #1f883d; color: #fff; border-radius: 6px; cursor: pointer; }
+    #list { list-style: none; }
+    #list li {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid #d0d7de; border-radius: 8px;
+      padding: 10px 12px; margin-bottom: 8px;
+      background: #fff; cursor: pointer;
+    }
+    #list li.done { text-decoration: line-through; color: #8b949e; background: #f6f8fa; }
+    #list li span { flex: 1; }
+    #list li button {
+      border: 1px solid #d0d7de; background: #f6f8fa;
+      border-radius: 6px; padding: 2px 10px; cursor: pointer; font-size: 13px;
+    }
+    #stats { font-size: 13px; color: #57606a; margin-bottom: 8px; }
+    .empty { color: #8b949e; font-size: 14px; padding: 12px 0; }
+  </style>
+</head>
+<body>
+  <h1>参考实现：原生 JS 待办列表</h1>
+  <p class="hint">
+    这是 <b>Step 0~6</b> 的完整版（每段都有注释标出是第几步）。<b>先自己按 md 写，卡住再来看这里。</b>
+  </p>
+
+  <div class="box">
+    <!-- ===== Step 0：静态骨架 ===== -->
+    <div class="row">
+      <input id="input" placeholder="输入待办，按回车或点添加">
+      <button id="add">添加</button>
+    </div>
+    <div id="stats"></div>
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    // ============================================================
+    // Step 1：数据 + render 函数（整个模式的核心）
+    // ============================================================
+    // Step 5 一并做了：启动时从 localStorage 读（没有就空数组）
+    let todos = JSON.parse(localStorage.getItem('todos') || '[]')
+
+    // ⚠️ id 不能用 Date.now() 或 Math.random()：
+    //    Date.now() 在"同一毫秒内添加两条"时会重复（我的测试就抓到了这个 bug），
+    //    Math.random() 太小概率但也不可靠。
+    //    ✅ 正确做法：自己维护一个自增计数器，启动时从已有数据里恢复。
+    let nextId = todos.reduce((max, t) => Math.max(max, t.id), 0) + 1
+
+    function render() {
+      const list = document.querySelector('#list')
+      const stats = document.querySelector('#stats')
+
+      // ⭐ 先清空，再重建（否则会重复堆叠）
+      list.innerHTML = ''
+
+      // Step 6：空列表提示
+      if (todos.length === 0) {
+        list.innerHTML = '<p class="empty">还没有待办，先添加一条吧</p>'
+      }
+
+      // 渲染每一项
+      todos.forEach((todo) => {
+        const li = document.createElement('li')
+        li.className = todo.done ? 'done' : ''   // Step 4：完成状态靠 class
+        li.dataset.id = String(todo.id)          // ← 把 id 存在 li 上，切换完成时用
+
+        const span = document.createElement('span')
+        span.textContent = todo.text
+        li.appendChild(span)
+
+        // Step 3：删除按钮，把 id 存在 data-id 上（dataset 是 string，用的时候转数字）
+        const del = document.createElement('button')
+        del.textContent = '删除'
+        del.dataset.id = String(todo.id)
+        li.appendChild(del)
+
+        list.appendChild(li)
+      })
+
+      // Step 6：统计未完成数量
+      const left = todos.filter((t) => !t.done).length
+      stats.textContent = `共 ${todos.length} 条 · 未完成 ${left} 条`
+    }
+
+    // ============================================================
+    // Step 5：保存到 localStorage
+    // ============================================================
+    function save() {
+      localStorage.setItem('todos', JSON.stringify(todos))
+    }
+
+    // 每次改完数据：render() + save()
+    function update() {
+      render()
+      save()
+    }
+
+    // ============================================================
+    // Step 2：添加
+    // ============================================================
+    function addTodo() {
+      const input = document.querySelector('#input')
+      const text = input.value.trim()
+      if (!text) return                       // 空输入不添加
+
+      todos.push({ id: nextId++, text, done: false })   // ① 改数据（自增 id，不会重复）
+      input.value = ''                                    // ② 清空输入框
+      update()                                            // ③ 重新渲染 + 保存
+    }
+
+    document.querySelector('#add').addEventListener('click', addTodo)
+
+    // Step 6：回车提交
+    document.querySelector('#input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addTodo()
+    })
+
+    // ============================================================
+    // Step 3：删除（事件委托：绑在父元素上，因为按钮是动态创建的）
+    // ============================================================
+    document.querySelector('#list').addEventListener('click', (e) => {
+      if (e.target.tagName !== 'BUTTON') return
+      const id = Number(e.target.dataset.id)
+      todos = todos.filter((t) => t.id !== id)   // ① 改数据（造新数组）
+      update()                                    // ② 重新渲染
+    })
+
+    // ============================================================
+    // Step 4：点击文字切换完成状态
+    // ============================================================
+    document.querySelector('#list').addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') return   // 点删除按钮时不切换
+      const li = e.target.closest('li')
+      if (!li) return
+      const id = Number(li.dataset.id)            // 从 li 上拿到 id（比按文字匹配可靠）
+      todos = todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t))
+      update()
+    })
+
+    // 启动时先渲染一次
+    render()
+
+    // ============================================================
+    // 对照表：原生 JS  vs  React
+    // ============================================================
+    // 添加        | todos.push + input清空 + render() + save()  | setTodos([...todos, x]) 一行搞定
+    // 删除        | filter + render + save                      | setTodos(todos.filter(...))
+    // 切换        | map + render + save                         | setTodos(todos.map(...))
+    // 渲染列表    | 手写 forEach + createElement + appendChild  | {todos.map(t => <li key={t.id}>)}
+    // 清空重建    | list.innerHTML = ''                          | React 自动 diff，只改必要的
+    // 输入框状态  | 手动 input.value = ''  | 受控组件（value + onChange）
+  </script>
+</body>
+</html>
