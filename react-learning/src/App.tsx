@@ -9,6 +9,10 @@ import KeyBugDemo from './day3/01-key的坑'
 import ListOperations from './day3/02-列表与不可变更新'
 import TodoApp from './day3/03-表单与待办列表'
 import PracticeDay3 from './day3/04-练习'
+import EffectBasics from './day4/01-useEffect基础'
+import CleanupBasics from './day4/02-清理函数'
+import FetchDemo from './day4/03-请求数据'
+import PracticeDay4 from './day4/04-练习'
 
 function App() {
   return (
@@ -71,6 +75,26 @@ function App() {
       <div className="section">
         <h2>Day3 · 四、练习（3 个 TODO）</h2>
         <PracticeDay3 />
+      </div>
+
+      <div className="section">
+        <h2>Day4 · 一、useEffect 基础 + 依赖数组 + 闭包陷阱</h2>
+        <EffectBasics />
+      </div>
+
+      <div className="section">
+        <h2>Day4 · 二、清理函数（不写会出事）</h2>
+        <CleanupBasics />
+      </div>
+
+      <div className="section">
+        <h2>Day4 · 三、请求数据（loading / error / data 三态）</h2>
+        <FetchDemo />
+      </div>
+
+      <div className="section">
+        <h2>Day4 · 四、练习（3 个 TODO）</h2>
+        <PracticeDay4 />
       </div>
     </div>
   )

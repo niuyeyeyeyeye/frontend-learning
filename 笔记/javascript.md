@@ -1,6 +1,6 @@
 > ###### JavaScript权威网站：[MDN Web Docs](https://developer.mozilla.org/zh-CN/)
 
-# javascript笔记
+# javascript
 
 ## JavaScript组成
 

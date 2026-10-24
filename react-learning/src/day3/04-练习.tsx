@@ -96,7 +96,7 @@ function TodoFilter() {
 
   // TODO 2：算出 visibleTodos 和 doneCount
   const visibleTodos = todos.filter((n)=>
-    filter==='done'?n.done===true:filter==='active'?n.done===false:n
+    filter==='all'?true:filter==='done'?n.done:!n.done
   ) // ← 改这里
   const doneCount = todos.filter((n)=>n.done===true).length// ← 改这里
 
@@ -130,11 +130,37 @@ function TodoEdit() {
     { id: 2, text: '再双击我', done: false },
   ])
   // TODO 3：加 editingId 和 draft 两个 state，实现编辑
+  const [editingId,setEditingId]=useState<number|null>(null)
+  const [draft,setDraft]=useState('')
+
+  function startEdit(t:Todo){
+    setEditingId(t.id)
+    setDraft(t.text)
+  }
+  function saveEdit(){
+    if(draft.trim()!==''&&editingId!==null){
+      setTodos(todos.map((n)=>n.id===editingId?{...n,text:draft}:n))
+    }
+    setEditingId(null)
+    setDraft('')
+  }
+
   return (
     <div>
       {todos.map((t) => (
         <div key={t.id} className="card">
-          {t.text}
+          {editingId===t.id?
+          (<input
+          autoFocus
+          value={draft}
+          onBlur={saveEdit}
+          onChange={(e)=>setDraft(e.target.value)}
+          onKeyDown={(e)=>{
+            if(e.key==='Enter')saveEdit()
+              if(e.key==='Escape')setEditingId(null)
+          }}
+          ></input>):(<span onDoubleClick={()=>startEdit(t)}>{t.text}</span>
+          )}
         </div>
       ))}
     </div>
