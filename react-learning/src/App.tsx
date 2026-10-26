@@ -13,6 +13,7 @@ import EffectBasics from './day4/01-useEffect基础'
 import CleanupBasics from './day4/02-清理函数'
 import FetchDemo from './day4/03-请求数据'
 import PracticeDay4 from './day4/04-练习'
+import PracticeDay4Variant from './day4/05-变式练习'
 
 function App() {
   return (
@@ -95,6 +96,11 @@ function App() {
       <div className="section">
         <h2>Day4 · 四、练习（3 个 TODO）</h2>
         <PracticeDay4 />
+      </div>
+
+      <div className="section">
+        <h2>Day4 · 五、变式练习（验证你是不是真的会了）</h2>
+        <PracticeDay4Variant />
       </div>
     </div>
   )

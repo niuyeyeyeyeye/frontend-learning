@@ -20,7 +20,10 @@ function TitleSync() {
   ])
 
   // TODO 1：写 useEffect，把 document.title 改成 `待办（${未完成数}）`
-
+  useEffect(()=>{
+    const ti=todos.filter(n=>!n.done).length
+    document.title=`待办（${ti}）`
+  },[todos])
   return (
     <div>
       <p className="hint">看浏览器标签，应该显示"待办（2）"；点下面按钮后数字要跟着变</p>
@@ -52,6 +55,11 @@ function Countdown() {
   const [running, setRunning] = useState(false)
 
   // TODO 2：写 useEffect，实现倒计时 + 清理函数
+  useEffect(()=>{
+    if(running!==true||seconds<=0)return
+    const s = setInterval(()=>setSeconds(n=>n-1),1000)
+    return ()=>clearInterval(s)}
+    ,[running])
 
   return (
     <div>
@@ -83,11 +91,22 @@ function Countdown() {
 // ------------------------------------------------------------
 function KeyLogger() {
   // TODO 3：用 useState 存按键数组，useEffect 里加 window keydown 监听 + 清理
-
+  const [keys,setKeys]=useState<string[]>([])
+  useEffect(()=>{
+    const n=(e:KeyboardEvent)=>{setKeys(prev=>[...prev.slice(-4),e.key])}
+    window.addEventListener('keydown',n)
+    return ()=>{
+      removeEventListener('keydown',n)
+    }
+  },[])
   return (
     <div>
       <p className="hint">随便按几个键，看下面</p>
-      <div className="card">（练习 3 还没实现）</div>
+      <div className="card">
+        {keys.map((n)=>
+          <span>{n}</span>
+          )}
+          </div>
     </div>
   )
 }
@@ -120,14 +139,38 @@ export default function PracticeDay4() {
  *     document.title = `待办（${left}）`
  *   }, [todos])
  *
- * 练习 2：
- *   useEffect(() => {
- *     if (!running || seconds <= 0) return
- *     const id = setInterval(() => {
- *       setSeconds(s => s - 1)          // ⭐ 函数式更新：不依赖外部 seconds
- *     }, 1000)
- *     return () => clearInterval(id)    // ⭐ 清理：暂停/卸载时清掉
- *   }, [running])                       // ⭐ 只依赖 running（因为用了函数式更新）
+ * 练习 2（⚠️ 这一题我第一次给的答案有 bug，已修正）：
+ *
+ *   ❌ 错误写法（依赖写了 [running]，但 effect 里读了 seconds）：
+ *      useEffect(() => {
+ *        if (!running || seconds <= 0) return    // ← 这里"读了" seconds！
+ *        const id = setInterval(() => setSeconds(s => s - 1), 1000)
+ *        return () => clearInterval(id)
+ *      }, [running])
+ *      → 问题：seconds 变了 effect 不会重跑，所以 seconds <= 0 这个判断
+ *             永远等不到第二次机会 → 倒计时会减到负数（我模拟验证过：会到 -4 都不停）
+ *
+ *   ✅ 推荐写法（两个 effect 分工，各管一件事）：
+ *
+ *      // effect A：只管开定时器（注意：内部没有读 seconds）
+ *      useEffect(() => {
+ *        if (!running) return
+ *        const id = setInterval(() => {
+ *          setSeconds(s => Math.max(0, s - 1))   // 函数式更新，不读外部 seconds
+ *        }, 1000)
+ *        return () => clearInterval(id)
+ *      }, [running])
+ *
+ *      // effect B：到 0 就自动停
+ *      useEffect(() => {
+ *        if (seconds === 0) setRunning(false)
+ *      }, [seconds])
+ *
+ *   ⭐ 核心规则（比"函数式更新"更重要）：
+ *      **依赖数组 = effect 函数体里"读过"的所有外部变量（state / props）**
+ *      不是"会变的变量"，而是"你读了的变量"。
+ *      · 只写 setSeconds(s => s - 1) → 没读 seconds → 依赖不用写 seconds ✅
+ *      · 写了 if (seconds <= 0)        → 读了 seconds → 必须写进依赖 ✅
  *
  *   ——注意 setSeconds(s => s - 1) 用的是函数式更新，所以依赖数组里不需要 seconds，
  *     否则每次 seconds 变化都会重建定时器（虽然能跑，但没必要）。
@@ -143,8 +186,9 @@ export default function PracticeDay4() {
  *   }, [])
  *
  * 【做完后想一件事】
- * 练习 2 的依赖数组，为什么可以用 [running] 而不是 [running, seconds]？
- * 答：因为 setSeconds(s => s - 1) 是"函数式更新"——它不读外部的 seconds，
- *     React 会把最新的值传给 s。所以 effect 里没有用到 seconds，就不需要把它写进依赖。
- *     ⭐ 这条是 useEffect 依赖数组的核心原则：**用了什么，才写什么**。
+ * 练习 2 的依赖数组，到底该怎么填？
+ * 答：看 effect 函数体里**读没读**这个变量：
+ *     · 只写 setSeconds(s => s - 1)（函数式更新，不读外部 seconds）→ 依赖不用写 seconds ✅
+ *     · 写了 if (seconds <= 0)（读了 seconds）→ 必须把 seconds 写进依赖 ✅
+ *     ⭐ 依赖数组的核心原则：**用了什么（读了什么），才写什么** —— 不是"会变的都写"。
  * ============================================================ */

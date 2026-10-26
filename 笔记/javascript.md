@@ -220,6 +220,14 @@ document.write(`我今年${age}岁了`)
 
 截取字符串，返回一个新字符串
 
+~~~javascript
+const prev = [1, 2, 3, 4, 5, 6]
+
+prev.slice(-4)  // [3, 4, 5, 6]
+prev.slice(-1)  // [6]
+prev.slice(0)   // [1, 2, 3, 4, 5, 6] 复制整个数组
+~~~
+
 #### includes()
 
 是否包含某个值，会遍历字符串
