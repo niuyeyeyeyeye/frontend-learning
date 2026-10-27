@@ -59,7 +59,7 @@ function Countdown() {
     if(running!==true||seconds<=0)return
     const s = setInterval(()=>setSeconds(n=>n-1),1000)
     return ()=>clearInterval(s)}
-    ,[running])
+    ,[running,seconds])
 
   return (
     <div>
@@ -103,6 +103,7 @@ function KeyLogger() {
     <div>
       <p className="hint">随便按几个键，看下面</p>
       <div className="card">
+        <input/>
         {keys.map((n)=>
           <span>{n}</span>
           )}

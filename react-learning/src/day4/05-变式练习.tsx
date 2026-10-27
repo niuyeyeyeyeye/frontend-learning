@@ -27,6 +27,13 @@ function Stopwatch() {
   const [running, setRunning] = useState(false)
 
   // TODO 1：写 useEffect（定时器 + 清理 + 依赖数组）
+  useEffect(()=>{
+    if(!running)return
+    const s = setInterval(()=>setElapsed((n)=>n+0.1),100)
+    return ()=>{
+      clearInterval(s)
+    }
+    },[running])
 
   return (
     <div>
@@ -57,6 +64,17 @@ function MouseTracker() {
   const [moves, setMoves] = useState(0)
 
   // TODO 2：写 useEffect（mousemove 监听 + 计数 + 清理）
+  useEffect(()=>{
+    const onMove=(e:MouseEvent)=>{
+      setMoves(m=>m+1)
+      setPos({x:e.clientX,y:e.clientY})
+    }
+    window.addEventListener('mousemove',onMove)
+
+    return ()=>{
+      window.removeEventListener('mousemove',onMove)
+    }
+  },[])
 
   return (
     <div>
@@ -82,6 +100,20 @@ function VisibilityTracker() {
   const [isHidden, setIsHidden] = useState(false)
 
   // TODO 3：写 useEffect（visibilitychange 监听 + 清理）
+  useEffect(()=>{
+    const onVisible=()=>{
+      const hidden=document.hidden
+      setIsHidden(hidden)
+      if(hidden){
+        setHiddenCount(n=>n+1)
+      }
+    }
+    document.addEventListener('visibilitychange',onVisible)
+
+    return ()=>{
+      document.removeEventListener('visibilitychange',onVisible)
+    }
+  },[isHidden])
 
   return (
     <div>

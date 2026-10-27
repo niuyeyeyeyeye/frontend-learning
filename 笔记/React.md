@@ -88,15 +88,61 @@ onClick后面跟函数引用，如果跟函数调用会将返回值作为事件�
 
 函数的参数如果是一个确定的值多次调用改变的是同一个旧值
 
-所以要**传一个函数作为参数，传递的函数的参数就是最新的state值**
+~~~react
+const [running, setRunning] = useState(false)
+  const [seconds, setSeconds] = useState(0)
+  const [activeCount, setActiveCount] = useState(0) // 当前有几个定时器在跑
+
+  useEffect(() => {
+    if (!running) return
+
+    setActiveCount((c) => c + 1)
+    const id = setInterval(() => {
+      setSeconds((s) => s + 1)
+    }, 1000)
+
+    // ⭐ 清理函数：组件卸载或下一次 effect 前执行
+    return () => {
+      clearInterval(id)
+      setActiveCount((c) => c - 1)
+    }
+  }, [running]) // running 变化时：先清理旧定时器，再看是否新建
+
+~~~
+
+
+
+所以要**传一个函数作为参数，传递的函数的参数就是上一次的state值**
 
 ## useEffect方法
 
+useEffect(()=>{...return 清理函数}，依赖数组)
+
+### 使用方向
+
 用`window.innerWidth`可以查看浏览器宽度，包括滚动条和边框以内的区域
 
-如果在useEffect中旧定时器没有加清除函数，那后续再加清理函数无法清理旧定时器，就只能靠刷新页面来清除
 
-SSR状态下useEffect不会在服务器上执行，SSR环境没有window，所以window通常放在useEffect中
+
+### 依赖数组
+
+依赖数组包含useEffect用过的引用，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect
+
+### 清理函数
+
+清理函数是前一个参数的返回值，用来清理定时器、监听器，清理函数在第二次useEffect之前执行
+
+### 注意事项
+
+- useEffect清理函数只做销毁和作废，不做修改
+
+
+
+- 如果在useEffect中旧定时器没有加清除函数，那后续再加清理函数无法清理旧定时器，就只能靠刷新页面来清除
+
+
+
+- SSR状态下useEffect不会在服务器上执行，SSR环境没有window，所以window通常放在useEffect中
 
 ## 条件渲染&&
 
