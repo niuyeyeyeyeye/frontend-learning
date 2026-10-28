@@ -24,7 +24,7 @@ JSX是在JS里的HTML语法，React可以编译
 
 ## 组件
 
-返回JSX的函数，首字母大写，使用时像标签
+返回JSX的函数，首字母大写，使用时像标签，严格模式下组件函数会被调用两次，来确保外部传入的props值没有被修改
 
 ### props
 
@@ -114,6 +114,8 @@ const [running, setRunning] = useState(false)
 
 所以要**传一个函数作为参数，传递的函数的参数就是上一次的state值**
 
+`传递值时useState会判断是否为函数，如果是函数就会首次调用后续不调用`
+
 ## useEffect方法
 
 useEffect(()=>{...return 清理函数}，依赖数组)
@@ -127,6 +129,8 @@ useEffect(()=>{...return 清理函数}，依赖数组)
 ### 依赖数组
 
 依赖数组包含useEffect用过的引用，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect
+
+`依赖数组是浅比较，只是比较值`
 
 ### 清理函数
 
@@ -143,6 +147,32 @@ useEffect(()=>{...return 清理函数}，依赖数组)
 
 
 - SSR状态下useEffect不会在服务器上执行，SSR环境没有window，所以window通常放在useEffect中
+
+## useRef方法
+
+useRef方法会返回一个盒子，盒子的值存在current属性中，盒子在组件渲染时保持不变
+
+### DOM和ref属性
+
+ref属性指定DOM的ref盒子
+
+### useRef的两种重载
+
+useRef中参数值会触发两种重载：
+
+~~~typescript
+// 重载 1
+function useRef<T>(initialValue: T): MutableRefObject<T>;
+
+// 重载 2
+function useRef<T>(initialValue: T | null): RefObject<T>;
+~~~
+
+当参数为T属性时Ref返回可修改的MutableRefObject<T>属性
+
+当参数为null时T又不包含null就会返回只读的RefObject<T>属性
+
+但是都是只在编译阶段只读，react运行阶段可以赋值
 
 ## 条件渲染&&
 

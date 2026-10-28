@@ -14,6 +14,10 @@ import CleanupBasics from './day4/02-清理函数'
 import FetchDemo from './day4/03-请求数据'
 import PracticeDay4 from './day4/04-练习'
 import PracticeDay4Variant from './day4/05-变式练习'
+import RefBasics from './day5/01-useRef基础'
+import CustomHooks from './day5/02-自定义hook'
+import SearchDemo from './day5/03-实战-搜索防抖'
+import PracticeDay5 from './day5/04-练习'
 
 function App() {
   return (
@@ -101,6 +105,26 @@ function App() {
       <div className="section">
         <h2>Day4 · 五、变式练习（验证你是不是真的会了）</h2>
         <PracticeDay4Variant />
+      </div>
+
+      <div className="section">
+        <h2>Day5 · 一、useRef（不触发渲染的容器）</h2>
+        <RefBasics />
+      </div>
+
+      <div className="section">
+        <h2>Day5 · 二、自定义 hook（复用逻辑，不复用状态）</h2>
+        <CustomHooks />
+      </div>
+
+      <div className="section">
+        <h2>Day5 · 三、实战：用 useDebounce 重写搜索框</h2>
+        <SearchDemo />
+      </div>
+
+      <div className="section">
+        <h2>Day5 · 四、练习（3 个 TODO）</h2>
+        <PracticeDay5 />
       </div>
     </div>
   )
