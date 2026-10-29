@@ -13,10 +13,18 @@ import { useEffect, useRef, useState } from 'react'
 // ------------------------------------------------------------
 function AutoFocus() {
   // TODO 1：声明 ref，用 effect 聚焦
+  const ref=useRef<HTMLInputElement>(null)
+
+  useEffect(()=>{
+    ref.current?.focus()
+    return ()=>{
+      ref.current?.blur()
+    }
+  },[])
 
   return (
     <div>
-      <input placeholder="我应该在页面加载后自动获得焦点" style={{ padding: 6, width: 320 }} />
+      <input ref={ref} placeholder="我应该在页面加载后自动获得焦点" style={{ padding: 6, width: 320 }} />
       <p className="hint">（如果没自动聚焦，说明还没实现）</p>
     </div>
   )
@@ -29,16 +37,29 @@ function AutoFocus() {
 // 提示：一个 useState<boolean> + 一个 toggle 函数 + return 对象
 // ------------------------------------------------------------
 // TODO 2：在这里写 useToggle
+function useToggle(initial:boolean=false){
+  const [on,setOn]=useState(initial)
+  const toggle=()=>setOn((v)=>!v)
+  return {on,toggle}
+}
 
 function ToggleA() {
   // TODO 2-a：用你的 useToggle
-  return <div className="card">（练习 2 还没实现）</div>
+  const {on,toggle} = useToggle(false)
+  return <div className="card">
+    <span>{on?'开':'关'}</span>
+    <button onClick={toggle}>{'切换'}</button>
+    </div>
 }
 
 function ToggleB() {
   // TODO 2-b：再写一个组件（各自独立）
-  return <div className="card">（练习 2 还没实现）</div>
-}
+  const {on,toggle} = useToggle(false)
+  return <div className="card">
+    <span>{on?'开':'关'}</span>
+    <button onClick={toggle}>{'切换'}</button>
+    </div>
+    }
 
 // ------------------------------------------------------------
 // 练习 3（挑战）：自己写 useDebounce
@@ -51,14 +72,24 @@ function ToggleB() {
 // ------------------------------------------------------------
 // TODO 3：在这里写 useDebounce
 
+function useDebounce<T>(value:T,delay:number=300):T{
+    const [debounced,setDebounced]=useState(value)
+    useEffect(()=>{
+      const li=setTimeout(()=>setDebounced(value),delay)
+      return ()=>clearTimeout(li)
+  },[value,delay])
+  return debounced
+}
+
 function DebounceInput() {
   const [input, setInput] = useState('')
   // TODO 3-a：调用你的 useDebounce(input, 500)
-  const debounced = '（还没实现）'
+  const debounced = useDebounce(input,500)
 
   const [count, setCount] = useState(0)
   // TODO 3-b：（可选）统计防抖后的值变化了几次
-
+  useEffect(()=>setCount(v=>v+1)
+  ,[debounced])
   return (
     <div>
       <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="快速输入" style={{ padding: 4 }} />

@@ -118,9 +118,9 @@
 |---|---|---|
 | Day1 | 项目搭建 + JSX + 组件 + props | ✅ 10-20 |
 | Day2 | 事件处理 + useState + 条件渲染 | ✅ 10-23 |
-| Day3 | 列表 + key 的坑 + 表单 | 🔵 进行中 |
-| Day4 | useEffect | ⬜ |
-| Day5 | useRef + 自定义 hook | ⬜ |
+| Day3 | 列表 + key 的坑 + 表单 | ✅ 进行中 |
+| Day4 | useEffect | ✅ |
+| Day5 | useRef + 自定义 hook | 🔵 |
 | Day6 | 组件通信 + Context | ⬜ |
 | Day7 | React Router | ⬜ |
 | Day8 | Zustand | ⬜ |

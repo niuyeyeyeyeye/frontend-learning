@@ -56,7 +56,7 @@ function useDebounce<T>(value: T, delay: number = 300): T {
 // ---------- 主组件 ----------
 export default function SearchDemo() {
   const [input, setInput] = useState('')
-  const debouncedKeyword = useDebounce(input, 400) // ⭐ 输入停下 400ms 才更新
+  const debouncedKeyword = useDebounce(input) // ⭐ 输入停下 400ms 才更新
 
   const [results, setResults] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
