@@ -60,6 +60,9 @@ HTML/CSS/JS 基础 → JS 深入 → TypeScript → React → 工程化 → 项�
 │   ├── 复习计划.md
 │   ├── 复习-01-JS基础.html
 │   └── 复习-02-Flexbox和Grid.html
+├── react-learning/              ← React 阶段（Day1~Day12）
+│   ├── 00-DayN要做什么.md        ← 每天的任务清单
+│   └── 00-命名对照表.md          ← 组件/hook/变量名中文对照 + 命名套路
 ├── 第一周/
 │   └── day1-函数/
 └── 第二周/
@@ -109,3 +112,8 @@ python -m http.server 8080
 - 资料：[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide)、[现代 JavaScript 教程](https://zh.javascript.info/)、[TypeScript 官方手册](https://www.typescriptlang.org/docs/handbook/intro.html)、[React 中文文档](https://zh-hans.react.dev/)
 - 每个 day 的笔记写在对应文件夹的 `笔记.md` 里，周日回看
 - **每完成一次练习就 git commit**（Git 在 day7 学，之后养成习惯）
+- **代码里的英文名要给中文对照**（2026-10-30 起的要求）：
+  - 每个 `dayN` 文件开头放一份"本文件名字对照表"
+  - 关键声明处直接跟一句中文，如 `function useTodos() // 中文：用待办`
+  - 总表在 `react-learning/00-命名对照表.md`（命名套路 + 词根 + Day1~Day6 全量对照）
+  - 目的：看到陌生名字能靠 `useXxx` / `onXxx` / `isXxx` / `XxxProvider` 这些套路猜出职责

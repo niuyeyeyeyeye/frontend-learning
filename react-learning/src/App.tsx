@@ -18,6 +18,10 @@ import RefBasics from './day5/01-useRef基础'
 import CustomHooks from './day5/02-自定义hook'
 import SearchDemo from './day5/03-实战-搜索防抖'
 import PracticeDay5 from './day5/04-练习'
+import CommunicationBasics from './day6/01-组件通信基础'
+import ContextBasics from './day6/02-Context入门'
+import TodoWithContext from './day6/03-实战-用Context重写待办'
+import PracticeDay6 from './day6/04-练习'
 
 function App() {
   return (
@@ -125,6 +129,26 @@ function App() {
       <div className="section">
         <h2>Day5 · 四、练习（3 个 TODO）</h2>
         <PracticeDay5 />
+      </div>
+
+      <div className="section">
+        <h2>Day6 · 一、组件通信（父传子 / 子传父 / 状态提升 / props 钻地）</h2>
+        <CommunicationBasics />
+      </div>
+
+      <div className="section">
+        <h2>Day6 · 二、Context（跨层级共享 + value 不稳的坑）</h2>
+        <ContextBasics />
+      </div>
+
+      <div className="section">
+        <h2>Day6 · 三、实战：用 Context 重写待办</h2>
+        <TodoWithContext />
+      </div>
+
+      <div className="section">
+        <h2>Day6 · 四、练习（3 个 TODO）</h2>
+        <PracticeDay6 />
       </div>
     </div>
   )

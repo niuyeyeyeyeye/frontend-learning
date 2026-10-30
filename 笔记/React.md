@@ -56,6 +56,8 @@ function Button({ text, variant = 'primary', onClick }: ButtonProps) {
 
 组件标签夹住的内容
 
+children的类型通常是`React.ReactNode`意思是"**任何能显示在屏幕上的东西**"
+
 ### 事件处理
 
 onClick后面跟函数引用，如果跟函数调用会将返回值作为事件处理函数
