@@ -176,6 +176,20 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 但是都是只在编译阶段只读，react运行阶段可以赋值
 
+## Context管道通讯
+
+### createContext
+
+创建一个管道
+
+### useContext
+
+管道中的值一般在父组件中返回`<TodoContext.Provider value={value}>{children}</TodoContext.Provider>`传递
+
+取用管道中的值
+
+
+
 ## 条件渲染&&
 
 {0&& <p>有 {count} 条数据</p>}0这个假值会被渲染

@@ -23,7 +23,7 @@
 //
 // 顺序建议：先做 1（状态提升）→ 再 2（Context）→ 最后 3（挑战）
 
-import { createContext, useContext, useMemo, useState } from 'react'
+import { Children, createContext, useContext, useMemo, useState } from 'react'
 
 // ============================================================
 // 练习 1 ⭐：状态提升 —— 单价 × 数量 = 总价
@@ -54,10 +54,10 @@ function PriceCalc() {
   return (
     <div className="card">
       {/* TODO 1-a / 1-b：把下面两个假的 props 换成真的 */}
-      <PriceInput price={0} onChangePrice={() => {}} />
-      <QtyInput qty={0} onChangeQty={() => {}} />
+      <PriceInput price={price} onChangePrice={setPrice} />
+      <QtyInput qty={qty} onChangeQty={setQty} />
       <p style={{ marginTop: 8 }}>
-        总价：<strong style={{ color: '#cf222e' }}>？（TODO 1-c）</strong>
+        总价：<strong style={{ color: '#cf222e' }}>{qty*price}</strong>
       </p>
     </div>
   )
@@ -115,18 +115,33 @@ const UserContext = createContext<UserCtx | null>(null)
 
 function useUser(): UserCtx {
   // TODO 2-a：这里应该是 const ctx = useContext(UserContext)
+  const ctx=useContext<UserCtx | null>(UserContext)
   //            + if (ctx === null) throw new Error(...)
-  return { user: null, login: () => {}, logout: () => {} }
+  if(ctx === null)throw new Error('必须在provider中使用')
+  return ctx
+}
+
+function UserProvider({children}:{children:React.ReactNode}) {
+  // TODO 2-b：包一层 <UserProvider>
+  const [user,setUser]=useState<User | null>(null)
+  const login =()=>setUser({name:'小明',role:'前端工程师'})
+  const logout=()=>setUser(null)
+
+  const value = useMemo(()=>({
+    user,login,logout
+  }),[user])
+  return (
+    <UserContext.Provider value={value}>{children}</UserContext.Provider>
+  )
 }
 
 function UserProfileDemo() {
-  // TODO 2-b：包一层 <UserProvider>
-  return (
-    <>
-      <div style={{ color: '#999', fontSize: 12 }}>ProfileLayout（不许出现 user props）</div>
-      <ProfileSection />
-    </>
-  )
+     return (
+        <UserProvider>
+          <div style={{ color: '#999', fontSize: 12 }}></div>
+          <ProfileSection />
+        </UserProvider>
+     )
 }
 
 function ProfileSection() {
