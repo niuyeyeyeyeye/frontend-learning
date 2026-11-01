@@ -201,10 +201,107 @@ function ProfileCard() {
 function CartArea() {
   // TODO 3：写完 Context / Provider / useCart 后，在这里挂上你的布局
   return (
-    <p className="hint">
-      TODO 3：从这里开始写你的 CartContext —— 先写 createContext + useCart，
-      再写 CartProvider，最后写 HeaderBadge / ProductList，用 CartLayout 串起来。
-    </p>
+  <div>
+    <CartProvider>
+      <CartLayout></CartLayout>
+    </CartProvider>
+  </div>
+  )
+}
+
+type item ={
+  id:number,
+  name:string,
+  price:number,
+  count:number
+}
+
+type useContextValue={
+  items:item[],
+  totalCount:number,
+  totalPrice:number,
+  addItem:(item:Omit<item,'count'>)=>void,
+  removeItem:(id:number)=>void
+}
+
+const cartContext=createContext<useContextValue|null>(null)
+
+function useCart(){
+  const ctx=useContext(cartContext)
+  if(!ctx)throw new Error('必须在provider里使用context')
+  return ctx
+}
+
+
+
+const cart:item[] =[
+  {id:1,name:'牛奶',price:6,count:2}
+]
+
+
+function CartProvider({children}:{children:React.ReactNode}){
+  const [items,setItems]=useState<item[]>(cart)
+
+  const addItem=(item:Omit<item,'count'>)=>{
+    setItems((n)=>{
+      const bool= n.some(x=>x.id===item.id)
+      if(bool)return n.map((x)=>x.id===item.id?{...x,count : x.count + 1}:x)
+      return [...n,{...item,count:1}]
+    })
+  }
+
+  const removeItem=(id:number)=>{
+    setItems(
+      n=>n.filter((items=>items.id!==id))
+    )
+  }
+
+  const value=useMemo<useContextValue>(()=>({
+      items,
+      totalCount:items.reduce((count,n)=>count+n.count,0),
+      totalPrice:items.reduce((sum,n)=>sum+n.count*n.price,0),
+      addItem,
+      removeItem
+    }
+  ),[items,addItem,removeItem])
+
+  return <cartContext.Provider value={value}>{children}</cartContext.Provider>
+}
+
+function HeaderBadge(){
+  const {items,totalCount,totalPrice,removeItem}=useCart()
+  return (
+  <div>
+        <span>商品数量：{totalCount}总计：{totalPrice}</span>
+        {items.map(n=>(<div key={n.id}>
+          <button onClick={()=>removeItem(n.id)}>删除</button>
+          商品：{n.name}商品单价：{n.price}商品数量：{n.count}
+          </div>))}
+  </div>
+  )
+}
+
+
+function ProductList(){
+  const {addItem}=useCart()
+  const products=[{id:4,name:'鸡蛋',price:2}]
+  return <>{products.map((n)=><ProductCard key={n.id} onAdd={addItem} product={n}></ProductCard>)}</>
+}
+
+function ProductCard({ product, onAdd }: { product: Omit<item,'count'>; onAdd: (p: Omit<item,'count'>) => void }) {
+     return (
+       <div className="card">
+         {product.name} ¥{product.price}
+         <button className="btn" onClick={() => onAdd(product)}>加入购物车</button>
+       </div>
+     )
+   }
+
+function CartLayout(){
+  return (<div>
+    <HeaderBadge></HeaderBadge>
+    <ProductList></ProductList>
+  </div>
   )
 }
 
@@ -329,6 +426,8 @@ export default function PracticeDay6() {
  *     const { totalCount, totalPrice } = useCart()
  *     return <p className="card">🛒 购物车 {totalCount} 件，共 {totalPrice} 元</p>
  *   }
+ * 
+ * 
  *   function ProductList() {
  *     const { addItem } = useCart()
  *     const products = [
@@ -345,6 +444,10 @@ export default function PracticeDay6() {
  *       </div>
  *     )
  *   }
+ * 
+ * 
+ * 
+ * 
  *   function CartArea() {
  *     return (
  *       <CartProvider>
@@ -357,7 +460,7 @@ export default function PracticeDay6() {
  * 1. 练习 3 里 HeaderBadge 和 ProductCard 相隔好几层，它们靠什么共享数据？
  *    答：同一个 Context 的 Provider —— 它们都在 Provider 子树内。
  *
- * 2. 为什么 addItem 里不能写成 items.push(...) 然后 setItems(items)？
+ * 2. 为什么 addItem 里不能写成    ？
  *    答：同一个数组引用，React 认为"没变"，不重新渲染（Day3 的不可变更新）。
  *
  * 3. 如果不用 useCallback 包 addItem 会怎样？
