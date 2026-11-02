@@ -1,34 +1,44 @@
-import JsxBasics from './day1/01-JSX基础'
-import ComponentsProps from './day1/02-组件与props'
-import Practice from './day1/03-练习'
-import EventsBasics from './day2/01-事件处理'
-import UseStateBasics from './day2/02-useState入门'
-import ConditionalBasics from './day2/03-条件渲染'
-import PracticeDay2 from './day2/04-练习'
-import KeyBugDemo from './day3/01-key的坑'
-import ListOperations from './day3/02-列表与不可变更新'
-import TodoApp from './day3/03-表单与待办列表'
-import PracticeDay3 from './day3/04-练习'
-import EffectBasics from './day4/01-useEffect基础'
-import CleanupBasics from './day4/02-清理函数'
-import FetchDemo from './day4/03-请求数据'
-import PracticeDay4 from './day4/04-练习'
-import PracticeDay4Variant from './day4/05-变式练习'
-import RefBasics from './day5/01-useRef基础'
-import CustomHooks from './day5/02-自定义hook'
-import SearchDemo from './day5/03-实战-搜索防抖'
-import PracticeDay5 from './day5/04-练习'
-import CommunicationBasics from './day6/01-组件通信基础'
-import ContextBasics from './day6/02-Context入门'
-import TodoWithContext from './day6/03-实战-用Context重写待办'
-import PracticeDay6 from './day6/04-练习'
+// ============================================================
+// Archive：Day1 ~ Day6 的全部内容（原来 App.tsx 里那一长串）
+// ============================================================
+// 📖 为什么搬家了？
+//   Day7 学路由，App 从"一个页面"变成"一个应用"：
+//   src/router.tsx 才是新的入口，每个 URL 对应一个页面组件。
+//   这一页就是原来的"全部堆一起"，保留下来方便你回看。
+//   地址：http://localhost:5173/archive
+// ============================================================
 
-function App() {
+import JsxBasics from '../day1/01-JSX基础'
+import ComponentsProps from '../day1/02-组件与props'
+import Practice from '../day1/03-练习'
+import EventsBasics from '../day2/01-事件处理'
+import UseStateBasics from '../day2/02-useState入门'
+import ConditionalBasics from '../day2/03-条件渲染'
+import PracticeDay2 from '../day2/04-练习'
+import KeyBugDemo from '../day3/01-key的坑'
+import ListOperations from '../day3/02-列表与不可变更新'
+import TodoApp from '../day3/03-表单与待办列表'
+import PracticeDay3 from '../day3/04-练习'
+import EffectBasics from '../day4/01-useEffect基础'
+import CleanupBasics from '../day4/02-清理函数'
+import FetchDemo from '../day4/03-请求数据'
+import PracticeDay4 from '../day4/04-练习'
+import PracticeDay4Variant from '../day4/05-变式练习'
+import RefBasics from '../day5/01-useRef基础'
+import CustomHooks from '../day5/02-自定义hook'
+import SearchDemo from '../day5/03-实战-搜索防抖'
+import PracticeDay5 from '../day5/04-练习'
+import CommunicationBasics from '../day6/01-组件通信基础'
+import ContextBasics from '../day6/02-Context入门'
+import TodoWithContext from '../day6/03-实战-用Context重写待办'
+import PracticeDay6 from '../day6/04-练习'
+
+export default function Archive() {
   return (
     <div>
-      <h1>React 学习：JSX → 组件 → 事件 → 状态</h1>
+      <h1>React 学习：JSX → 组件 → 事件 → 状态（Day1~Day6 归档）</h1>
       <p className="hint">
-        改 src 下的文件，页面会自动刷新。打开控制台（F12）能看到我埋的提示。
+        这是 Day1~Day6 的全部内容堆在一页。想复习哪天就翻到对应标题。
       </p>
 
       <div className="section">
@@ -153,5 +163,3 @@ function App() {
     </div>
   )
 }
-
-export default App

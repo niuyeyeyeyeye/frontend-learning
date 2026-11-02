@@ -188,7 +188,15 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 取用管道中的值
 
+## useNavigate方法
 
+返回一个函数，调用时会跳转到对应参数的地址
+
+`useNavigate(-1)`返回上一页
+
+## useParams方法
+
+返回一个对象，包含`router文件（路由）`写好的动态段,字段的值是**字符串类型**
 
 ## 条件渲染&&
 

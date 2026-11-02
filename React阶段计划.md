@@ -61,7 +61,7 @@
 
 | 天 | 主题 | 学完要能做出 |
 |---|---|---|
-| **Day11** | **工程化 + 部署** | 配 Prettier/ESLint；环境变量；**部署到 Vercel 拿到线上链接** |
+| **Day11** | **工程化 + 部署** | 配 Prettier/ESLint；环境变量；**依赖管理（npm ci / lock / .nvmrc）**；**部署到 Vercel 拿到线上链接** |
 | **Day12** | **综合 + 复习** | 把前 11 天的东西拼成一个多页面应用；过一遍面试题 |
 
 ---
@@ -121,8 +121,8 @@
 | Day3 | 列表 + key 的坑 + 表单 | ✅ 10-24 |
 | Day4 | useEffect | ✅ 10-27 |
 | Day5 | useRef + 自定义 hook | ✅ 10-29 |
-| Day6 | 组件通信 + Context | 🔵 文件已生成（10-30） |
-| Day7 | React Router | ⬜ |
+| Day6 | 组件通信 + Context | ✅ 10-30 |
+| Day7 | React Router | 🔵 文件已生成（10-30） |
 | Day8 | Zustand | ⬜ |
 | Day9 | axios + 三种状态 | ⬜ |
 | Day10 | 性能优化 | ⬜ |
