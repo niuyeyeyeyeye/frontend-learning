@@ -190,7 +190,7 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 ## useNavigate方法
 
-返回一个函数，调用时会跳转到对应参数的地址
+返回一个函数，调用时会跳转到对应参数的地址，会显示所在页面
 
 `useNavigate(-1)`返回上一页
 
