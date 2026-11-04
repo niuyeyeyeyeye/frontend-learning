@@ -62,6 +62,12 @@ export function ArticleList() {
         <p className="hint" style={{ marginTop: 0 }}>
           TODO 2-a：还没写。目标是 6 条链接，点进 /day7/articles/:id。
         </p>
+        {ARTICLES.map((item)=>(
+          <div key={item.id}>
+            <Link to={`/day7/articles/${item.id}`}>{item.title}</Link>
+            <span>{item.tag}</span>
+          </div>
+          ))}
       </div>
     </div>
   )
@@ -71,14 +77,28 @@ export function ArticleDetail() {
   const navigate = useNavigate()
   // TODO 2-b：用 useParams 取 id，找到文章，处理"找不到"
   const params = useParams()
+  const titleId =params.id
+
+  const title = titleId===undefined?undefined:ARTICLES.find((n)=>String(n.id)===titleId)
 
   void navigate
+  if(title===undefined){
+    return (<div>
+      <p>文章不存在</p>
+      <div><button
+      onClick={()=>navigate(-1)}
+      >
+        返回</button></div>
+        </div>
+        )
+      }
   return (
     <div>
       <h2>文章详情</h2>
       <div className="card">
         <p className="hint" style={{ marginTop: 0 }}>
           TODO 2-b：还没写。现在地址里的 id 是 <code>{String(params.id)}</code>。
+          {title.body}
         </p>
         <button className="btn-ghost" onClick={() => navigate(-1)}>
           ← 返回（navigate(-1)）

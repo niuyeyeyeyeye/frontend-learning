@@ -190,13 +190,52 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 ## useNavigate方法
 
-返回一个函数，调用时会跳转到对应参数的地址，会显示所在页面
+**返回一个函数，函数有一个`必选参数`和一个`options对象`作为参数，调用时会跳转到对应参数的地址，会显示所在页面**
 
-`useNavigate(-1)`返回上一页
+`const navigate = useNavigate()`
+
+- navigate(-1) 返回上一页
+- navigate('url',{replace,state,preventScrollReset等})
+
+`replace:true作用是下一页会覆盖本页的历史记录`
 
 ## useParams方法
 
-返回一个对象，包含`router文件（路由）`写好的动态段,字段的值是**字符串类型**
+返回一个对象，包含`router文件（路由）`写好的动态段key,字段的值是**字符串类型**，通常用来与当前URL的value配对返回
+
+## useSearchParams方法
+
+**返回一个元组，有两个返回值，第一个返回值是一个`URLSearchParams`对象，只包括URL查询字符串部分，也就是`?`后，第二个返回值是函数，接收两个参数，可以更新当前URL查询字符串部分**
+
+
+
+函数的第一个参数：
+
+- 字符串：`setSearchParams("?tab=1")`
+- 对象：`setSearchParams({ tab: "1" })`
+- 数组（支持多值）：`setSearchParams({ brand: ["nike", "reebok"] })`
+- `URLSearchParams` 实例：`setSearchParams(new URLSearchParams("?tab=1"))`
+
+还可以接收第二个可选参数：类型和useNavigate方法的第二个参数相同
+
+
+
+## useLocation方法
+
+读取当前URL后返回一个对象，包含：
+
+| `pathname` | `"/settings/profile"` | 路径部分                                    |
+| ---------- | --------------------- | ------------------------------------------- |
+| `search`   | `"?tab=security"`     | 查询字符串，**带 ?**                        |
+| `hash`     | `"#password"`         | 锚点，**带 #**                              |
+| `state`    | `null` 或你传的对象   | `navigate(..., { state })` 传过来的隐式数据 |
+| `key`      | `"abc123"`            | 这条历史记录的唯一标识                      |
+
+## Link组件
+
+## NavLink组件
+
+
 
 ## 条件渲染&&
 

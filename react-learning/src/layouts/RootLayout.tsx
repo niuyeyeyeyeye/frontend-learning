@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { to: '/', label: '首页', end: true },
   { to: '/day7', label: 'Day7 路由', end: false },
   { to: '/archive', label: 'Day1~6 归档', end: false },
+  { to: '/about', label: 'About 关于', end:false }
 ]
 
 export default function RootLayout() {
