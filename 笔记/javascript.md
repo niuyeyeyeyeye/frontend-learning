@@ -322,7 +322,7 @@ let str = '123'
 
 **显式转换**（你主动去转）：
 
-- Number('123') → 123，Number('abc') → NaN
+- Number('123') → 123，Number('abc') → NaN，Number(null)→0
 - parseInt('12px') → 12（只取整数部分，碰到非数字就停）
 - parseFloat('12.34px') → 12.34（保留小数）
 

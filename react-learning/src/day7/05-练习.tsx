@@ -55,19 +55,70 @@ export const ARTICLES = [
 
 export function ArticleList() {
   // TODO 2-a：把 ARTICLES 渲染成链接列表
+
+  const [searchParams,setSearchParams]=useSearchParams()
+
+  const keyDown = searchParams.get('q')??''
+
+  const [input,setInput]=useState(keyDown)
+  const page = Math.max(1,Number(searchParams.get('page'))||1)
+
+  const filtered = ARTICLES.filter((n)=>n.title.toLowerCase().includes(input.trim().toLowerCase()))
+  const totalPage=Math.max(1,Math.ceil(filtered.length/3))
+  const safePage=Math.min(page,totalPage)
+  const pageItems=filtered.slice((safePage-1)*3,safePage*3)
+
+  const keyDownChange =(next:string)=>{
+    setInput(next)
+    const p=new URLSearchParams(searchParams)
+    if(next.trim()===''){
+      p.delete('q')
+    }else{
+      p.set('q',next.trim())
+    }
+    p.delete('page')
+    setSearchParams(p,{replace:true})
+  }
+
+  const nextPage=(next:number)=>{
+    const p=new URLSearchParams(searchParams)
+    if(next<=1){
+      p.delete('page')
+    }else{
+      p.set('page',String(next))
+    }
+    setSearchParams(p)
+  }
+
   return (
     <div>
       <h2>文章列表</h2>
+      <input
+      placeholder='搜索'
+      value={input}
+      onChange={(e)=>keyDownChange(e.target.value)}
+      ></input>
       <div className="card">
         <p className="hint" style={{ marginTop: 0 }}>
           TODO 2-a：还没写。目标是 6 条链接，点进 /day7/articles/:id。
         </p>
-        {ARTICLES.map((item)=>(
+        {pageItems.map((item)=>(
           <div key={item.id}>
             <Link to={`/day7/articles/${item.id}`}>{item.title}</Link>
             <span>{item.tag}</span>
           </div>
           ))}
+          <button
+          onClick={()=>nextPage(safePage-1)}
+          disabled={safePage<=1}
+          >上一页</button>
+          <span>第{safePage}页/共{totalPage}页</span>
+          <button
+          onClick={()=>nextPage(safePage+1)}
+          disabled={safePage>=totalPage}
+          >
+            下一页
+            </button>
       </div>
     </div>
   )
@@ -79,10 +130,13 @@ export function ArticleDetail() {
   const params = useParams()
   const titleId =params.id
 
-  const title = titleId===undefined?undefined:ARTICLES.find((n)=>String(n.id)===titleId)
 
-  void navigate
-  if(title===undefined){
+  const index=ARTICLES.findIndex((n)=>String(n.id)===titleId)
+  const prev=ARTICLES[index-1]
+  const cur=ARTICLES[index]
+  const next=ARTICLES[index+1]
+
+  if(cur===undefined){
     return (<div>
       <p>文章不存在</p>
       <div><button
@@ -94,15 +148,22 @@ export function ArticleDetail() {
       }
   return (
     <div>
-      <h2>文章详情</h2>
+      <h2>{cur.title}</h2>
       <div className="card">
         <p className="hint" style={{ marginTop: 0 }}>
           TODO 2-b：还没写。现在地址里的 id 是 <code>{String(params.id)}</code>。
-          {title.body}
+          <br />
+          {cur.body}
         </p>
+        {prev&&<Link to={`/day7/articles/${prev.id}`}>上一篇</Link>}
+        <span>第{index+1}篇/共{ARTICLES.length}篇</span>
+        {next&&<Link to={`/day7/articles/${next.id}`}>下一篇</Link>}
+
+        <div>
         <button className="btn-ghost" onClick={() => navigate(-1)}>
           ← 返回（navigate(-1)）
         </button>
+        </div>
       </div>
     </div>
   )
@@ -130,10 +191,12 @@ function SearchHint() {
   const [typed, setTyped] = useState('')
   void setTyped
   return (
+  <div>
     <p className="hint">
       练习 3 目标：让地址变成 <code>/day7/articles?q={typed || 'react'}</code>；
       当前 URL 的 q = <code>{searchParams.get('q') ?? '（空）'}</code>
     </p>
+  </div>
   )
 }
 
