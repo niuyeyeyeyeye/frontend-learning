@@ -20,8 +20,9 @@ const APP_START = new Date().toLocaleTimeString('zh-CN', { hour12: false })
 const NAV_ITEMS = [
   { to: '/', label: '首页', end: true },
   { to: '/day7', label: 'Day7 路由', end: false },
+  { to: '/day8', label: 'Day8 状态', end: false },
   { to: '/archive', label: 'Day1~6 归档', end: false },
-  { to: '/about', label: 'About 关于', end:false }
+  { to: '/about', label: 'About 关于', end: false },
 ]
 
 export default function RootLayout() {

@@ -14,10 +14,10 @@ export default function About() {
       <h1>关于我</h1>
       <div className="card">
         <p className="hint" style={{ marginTop: 0 }}>
-          名字：
-          目标：前端实习
-          学习进度：react到router路由了
-          技术栈：HTML、CSS、JavaScript、TypeScript。
+          <p>名字：</p>
+          <p>目标：前端实习</p>
+          <p>学习进度：react到router路由了</p>
+          <p>技术栈：HTML、CSS、JavaScript、TypeScript。</p>
           现在学到哪儿了、会用哪些技术。<strong>这是你以后项目里"个人介绍页"的原型。</strong>
         </p>
       </div>

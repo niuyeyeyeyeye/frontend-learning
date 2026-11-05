@@ -32,6 +32,13 @@ import SettingsLayout, {
 } from './day7/04-嵌套路由与Outlet'
 import PracticeDay7, { ArticleList, ArticleDetail } from './day7/05-练习'
 
+import Day8Layout from './day8/Layout'
+import WhyZustand from './day8/00-为什么需要Zustand'
+import ZustandBasics from './day8/01-zustand基础'
+import SelectorDemo from './day8/02-选择性订阅'
+import TodoWithZustand from './day8/03-实战-用Zustand重写待办'
+import PracticeDay8 from './day8/04-练习'
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -63,6 +70,18 @@ export const routes: RouteObject[] = [
           { path: 'articles', element: <ArticleList /> }, //  /day7/articles（练习 2/3）
           { path: 'articles/:id', element: <ArticleDetail /> }, //  /day7/articles/:id
           { path: 'practice', element: <PracticeDay7 /> }, //  /day7/practice
+        ],
+      },
+
+      {
+        path: 'day8',
+        element: <Day8Layout />,
+        children: [
+          { index: true, element: <WhyZustand /> }, //  /day8
+          { path: 'basics', element: <ZustandBasics /> }, //  /day8/basics
+          { path: 'selector', element: <SelectorDemo /> }, //  /day8/selector
+          { path: 'todo', element: <TodoWithZustand /> }, //  /day8/todo
+          { path: 'practice', element: <PracticeDay8 /> }, //  /day8/practice
         ],
       },
 
