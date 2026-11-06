@@ -28,7 +28,7 @@
 //   **Context 不是"全局变量"，它是"某个子树范围内的共享值"。**
 //   不要拿它当状态管理库用 —— 它没有性能优化，只解决"传得烦"。
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, memo, useContext, useEffect, useMemo, useState } from 'react'
 
 // ============================================================
 // 一、最小可用版本：主题（light / dark）
@@ -132,12 +132,18 @@ function InnerCard() {
 // 五、⚠️ 最常见的坑：value 不稳 → 无谓的重新渲染
 // ============================================================
 // 下面两个 Provider 的**唯一区别**是 value 有没有 useMemo：
-//   ❌ badValue  = { count }                 → 每次父组件渲染都新建
-//   ✅ goodValue = useMemo(() => ({count}), [count])
+//   ❌ badValue  = { count }                          → 每次父组件渲染都新建对象
+//   ✅ goodValue = useMemo(() => ({count}), [count])  → count 没变就是同一个对象
+//
+// ⚠️⚠️ 一个必须先搞懂的前提（2026-11-06 修正）：
+//   **父组件一旦重渲染，子组件就会跟着重渲染** —— 跟 Context 的值稳不稳没有关系！
+//   所以如果消费者是普通组件，点 tick 时两个都会重渲染，"value 稳不稳"根本看不出差别。
+//   要想看出差别，消费者必须用 memo 包起来（props 没变就"跳过"重渲染），
+//   跳过之后，**Context 的值变没变**才是唯一能把它叫醒的东西。
 //
 // 动手验证：打开 F12 控制台 → 点"tick +1"（这个 state 跟 count 完全无关）
-//   → 你会看到 [❌ 没 useMemo] 的日志又打了一次，而 [✅ 用了 useMemo] 没有。
-//   → 这就是"provider 白渲染，消费者跟着白渲染"。
+//   → 只有 [❌ 没 useMemo] 打日志，[✅ 用了 useMemo] 不打。
+//   → 这就是"value 每帧都是新对象 → 消费者被白白叫醒一次"。
 
 type CountContextValue = { count: number }
 const CountContext = createContext<CountContextValue>({ count: 0 })
@@ -155,10 +161,10 @@ function RerenderDemo() {
         count = <strong>{count}</strong>，tick = <strong>{tick}</strong>
       </p>
       <button className="btn" style={{ marginRight: 8 }} onClick={() => setCount((c) => c + 1)}>
-        count +1（应该引起消费者渲染）
+        count +1（两个都会渲染，因为值真的变了）
       </button>
       <button className="btn-ghost" onClick={() => setTick((t) => t + 1)}>
-        tick +1（不该引起消费者渲染）
+        tick +1（只有 ❌ 那个会渲染）
       </button>
 
       <CountContext.Provider value={badValue}>
@@ -170,13 +176,16 @@ function RerenderDemo() {
       </CountContext.Provider>
 
       <p className="hint">
-        👆 打开 F12 控制台，然后只点"tick +1"，看哪一行日志多出来了。
+        👆 打开 F12 控制台，然后<strong>只点"tick +1"</strong>：应该只出现{' '}
+        <code>[❌ 没 useMemo]</code> 那一行。两个都出现 = <code>memo</code> 被去掉了。
       </p>
     </div>
   )
 }
 
-function RenderLogger({ name }: { name: string }) {
+// ⭐ memo 是这个实验成立的前提：props（name）没变 → 父组件重渲染时它"跳过"
+//   跳过之后，只有"Context 的值变了"这一件事还能把它叫醒。
+const RenderLogger = memo(function RenderLogger({ name }: { name: string }) {
   const { count } = useContext(CountContext)
   // 没有依赖数组的 effect = 每次提交（commit）后都跑一次，正好当"渲染日志"用
   // ⚠️ 页面刚打开时每条会打印两次 —— 这是 StrictMode 在 dev 下故意把 effect 跑两遍
@@ -189,7 +198,7 @@ function RenderLogger({ name }: { name: string }) {
       {name}：count = <strong>{count}</strong>
     </div>
   )
-}
+})
 
 // ============================================================
 // 展示区

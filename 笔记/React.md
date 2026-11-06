@@ -80,13 +80,17 @@ onClick后面跟函数引用，如果跟函数调用会将返回值作为事件�
 
 
 
-## useState方法
+## hook
+
+hook是以use开头的函数，只能放在顶层或自定义hook中，不能放在循环和判断中
+
+### useState方法
 
 声明：`const[值，改值的函数（set值）]=useState(初始值)`
 
 改值必须要用useState本身的函数，单独改变值不会重渲染组件，会把函数的参数给react的state，state会再次创建一个新值
 
-### setXXX()
+#### setXXX()
 
 函数的参数如果是一个确定的值多次调用改变的是同一个旧值
 
@@ -118,27 +122,25 @@ const [running, setRunning] = useState(false)
 
 `传递值时useState会判断是否为函数，如果是函数就会首次调用后续不调用`
 
-## useEffect方法
+### useEffect方法
 
 useEffect(()=>{...return 清理函数}，依赖数组)
 
-### 使用方向
+#### 使用方向
 
 用`window.innerWidth`可以查看浏览器宽度，包括滚动条和边框以内的区域
 
-
-
-### 依赖数组
+#### 依赖数组
 
 依赖数组包含useEffect用过的引用，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect
 
 `依赖数组是浅比较，只是比较值`
 
-### 清理函数
+#### 清理函数
 
 清理函数是前一个参数的返回值，用来清理定时器、监听器，清理函数在第二次useEffect之前执行
 
-### 注意事项
+#### 注意事项
 
 - useEffect清理函数只做销毁和作废，不做修改
 
@@ -150,15 +152,15 @@ useEffect(()=>{...return 清理函数}，依赖数组)
 
 - SSR状态下useEffect不会在服务器上执行，SSR环境没有window，所以window通常放在useEffect中
 
-## useRef方法
+### useRef方法
 
 useRef方法会返回一个盒子，盒子的值存在current属性中，盒子在组件渲染时保持不变
 
-### DOM和ref属性
+#### DOM和ref属性
 
 ref属性指定DOM的ref盒子
 
-### useRef的两种重载
+#### useRef的两种重载
 
 useRef中参数值会触发两种重载：
 
@@ -176,19 +178,19 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 但是都是只在编译阶段只读，react运行阶段可以赋值
 
-## Context管道通讯
+### Context管道通讯
 
-### createContext
+#### createContext
 
 创建一个管道
 
-### useContext
+#### useContext
 
 管道中的值一般在父组件中返回`<TodoContext.Provider value={value}>{children}</TodoContext.Provider>`传递
 
 取用管道中的值
 
-## useNavigate方法
+### useNavigate方法
 
 **返回一个函数，函数有一个`必选参数`和一个`options对象`作为参数，调用时会跳转到对应参数的地址，会显示所在页面**
 
@@ -199,11 +201,11 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 `replace:true作用是下一页会覆盖本页的历史记录`
 
-## useParams方法
+### useParams方法
 
 返回一个对象，包含`router文件（路由）`写好的动态段key,字段的值是**字符串类型**，通常用来与当前URL的value配对返回
 
-## useSearchParams方法
+### useSearchParams方法
 
 **返回一个元组，有两个返回值，第一个返回值是一个`URLSearchParams`对象，只包括URL查询字符串部分，也就是`?`后，第二个返回值是函数，接收两个参数，可以更新当前URL查询字符串部分**
 
@@ -218,9 +220,7 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 还可以接收第二个可选参数：类型和useNavigate方法的第二个参数相同
 
-
-
-## useLocation方法
+### useLocation方法
 
 读取当前URL后返回一个对象，包含：
 
@@ -240,3 +240,38 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 ## 条件渲染&&
 
 {0&& <p>有 {count} 条数据</p>}0这个假值会被渲染
+
+---
+
+## ⏳ 提前出现 / 正式讲解在后面（2026-11-05 加）
+
+> **为什么加这一节**：有些 API 会提前出现在某天的代码里，但正式讲解在后面几天。
+> 我以前的心理是"感觉是后面的内容，就不记了" → 一周后完全想不起来见过。
+>
+> **判断标准要改：**
+> - ❌ 旧：这属于哪天？→ 不是今天的 → 不记
+> - ✅ 新：**它出现在我今天要读懂的代码里吗？** → 是 → 记一行（不要求懂）
+>
+> **不要求懂，只要求留一行。20 秒的事。**
+
+| API / 概念 | 第一次见到 | 现在能说的（一句话） | 还不懂什么 | 正式讲 |
+|---|---|---|---|---|
+| `useMemo` | Day6 `02-Context入门`（稳住 Provider 的 value） | 把一个值缓存起来，依赖不变就不重算 | 什么时候该用/不该用；为什么依赖里塞新函数就失效 | Day10 |
+| `useCallback` | Day6 `03-实战-用Context重写待办`（包 addTodo 等） | 和 useMemo 一伙的，专门稳住**函数**的引用 | 同上 | Day10 |
+| `Children` | Day6 `04-练习.tsx` 的 import 里（我抄进去的，**从来没用过**） | —— | 它是什么、干什么用 | 待查（其实很少用） |
+
+### 记录模板（复制这一行，改掉内容）
+
+```
+| `xxx` | Day? 文件名 | 一句话 | 一句话 | Day? |
+```
+
+### 已经正式讲过的（对照用，别再重复记）
+
+| API | 哪天讲的 |
+|---|---|
+| `useState` `useEffect` `useRef` | Day2 / Day4 / Day5 |
+| `createContext` `useContext` | Day6 |
+| `Link` `NavLink` `Outlet` `useParams` `useNavigate` `useSearchParams` `useLocation` | Day7 |
+| `create` `useShallow` `persist` | Day8 |
+| `useMemo` `useCallback` `React.memo` `lazy` `Suspense` | **Day10（还没讲）** |
