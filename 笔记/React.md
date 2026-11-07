@@ -132,9 +132,7 @@ useEffect(()=>{...return 清理函数}，依赖数组)
 
 #### 依赖数组
 
-依赖数组包含useEffect用过的引用，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect
-
-`依赖数组是浅比较，只是比较值`
+依赖数组包含useEffect用过的引用，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect，如果没有依赖数组就会随组件渲染`依赖数组是浅比较，只是比较值`
 
 #### 清理函数
 
@@ -230,6 +228,34 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 | `hash`     | `"#password"`         | 锚点，**带 #**                              |
 | `state`    | `null` 或你传的对象   | `navigate(..., { state })` 传过来的隐式数据 |
 | `key`      | `"abc123"`            | 这条历史记录的唯一标识                      |
+
+## create方法
+
+创建一个store，state是参数，有selector方法可以单独取需要的字段，selector方法具体就是
+
+通常用`create()(initializer)`来调用，因为不柯里化前面的类型和initializer的类型不匹配报错会很难读
+
+### initializer 函数
+
+create接收一个**initializer 函数**，这个**initializer 函数**负责接收`set/get`方法和返回初始state
+
+### store
+
+store包括一份`state`和
+
+- useBearStore.getState()
+- useBearStore.setState()
+- useBearStore.subscribe()
+
+#### setState()/getState()方法
+
+不会触发渲染，只是拿到`store的state`快照
+
+### selector函数
+
+用来获取`state`依赖部分，只有绑定的部分变化会触发渲染，也就是组件渲染只监听订阅部分的字段变化
+
+`state=>state.字段`
 
 ## Link组件
 
