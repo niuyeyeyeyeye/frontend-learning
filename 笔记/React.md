@@ -231,13 +231,17 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 ## create方法
 
-创建一个store，state是参数，有selector方法可以单独取需要的字段，selector方法具体就是
+是Zustand的入口，创建一个store，state是参数，有selector方法可以单独取需要的字段，selector方法具体就是
 
 通常用`create()(initializer)`来调用，因为不柯里化前面的类型和initializer的类型不匹配报错会很难读
 
 ### initializer 函数
 
 create接收一个**initializer 函数**，这个**initializer 函数**负责接收`set/get`方法和返回初始state
+
+`initializer(set, get, api)`
+
+set和get可以省略，set返回一个对象，get返回字段
 
 ### store
 
@@ -256,6 +260,66 @@ store包括一份`state`和
 用来获取`state`依赖部分，只有绑定的部分变化会触发渲染，也就是组件渲染只监听订阅部分的字段变化
 
 `state=>state.字段`
+
+- 只订阅单个字段时单独返回字段即可
+- 返回多个字段时可分别返回
+- 可返回一个对象或数组，再进行解构，同时返回性能略微差些，但是代码可读性更好，使用useShallow进行浅比较，不然每次和新创建的数组或对象深比较都会触发渲染
+
+### persist持久化
+
+将状态保存到浏览器存储中，来保证数据不会轻易丢失
+
+将initializer初始化函数作为第一个参数，第二个参数必须包含name的对象，也就是在本地存储的键名
+
+- **partialize**：要求部分持久化的字段
+- **storage**：存储内容的方式
+
+~~~ react
+const noopStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+}
+
+
+export const useTodoStore = create<TodoStore>()(
+  persist(
+    (set, get) => ({
+      todos: INITIAL_TODOS,
+      nextId: 4,
+
+      addTodo: (text) => {
+        const trimmed = text.trim()
+        if (trimmed === '') return
+        const id = get().nextId // ⭐ get() 读当前状态（不在 set 里也能读）
+        set((s) => ({
+          todos: [...s.todos, { id, text: trimmed, done: false }], // 不可变更新，Day3 的老规矩
+          nextId: s.nextId + 1,
+        }))
+      },
+
+      toggleTodo: (id) =>
+        set((s) => ({
+          todos: s.todos.map((t) => (t.id === id ? { ...t, done: !t.done } : t)),
+        })),
+
+      removeTodo: (id) => set((s) => ({ todos: s.todos.filter((t) => t.id !== id) })),
+
+      clearDone: () => set((s) => ({ todos: s.todos.filter((t) => !t.done) })),
+    }),
+    {
+      name: 'day8-todos', // localStorage 的 key
+      storage: createJSONStorage(() =>
+        typeof window === 'undefined' ? noopStorage : window.localStorage,
+      ),
+      // 只存数据，不存函数
+      partialize: (s) => ({ todos: s.todos, nextId: s.nextId }),
+    },
+  ),
+)
+~~~
+
+`本地存储会保留旧数据，如果字段被改了，旧数据覆盖新数据可能会覆盖不到，所以要加上版本号，并且开始要清旧数据，比如version + migrate`
 
 ## Link组件
 

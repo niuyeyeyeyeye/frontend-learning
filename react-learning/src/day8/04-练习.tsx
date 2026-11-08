@@ -12,6 +12,7 @@
 
 import { useEffect, useState } from 'react'
 import { create } from 'zustand'
+import { createJSONStorage,persist } from 'zustand/middleware'
 
 // ============================================================
 // 练习 1 ⭐：写一个计数器 store，两个组件共享同一个数字
@@ -33,11 +34,11 @@ const useCountStore = create<CountStore>()((set) => ({
   count: 0,
   // TODO 1-a：补完 inc
   inc: () => {
-    set((s) => ({ count: s.count }))
+    set((s) => ({ count: s.count+1 }))
   },
   // TODO 1-b：补完 reset
   reset: () => {
-    set((s) => ({ count: s.count }))
+    set({ count: 0 })
   },
 }))
 
@@ -86,14 +87,32 @@ type CartStore = {
   removeItem: (id: number) => void
   clear: () => void
 }
+const noopStorage = {
+  getItem: () => null,
+  setItem: () => {},
+  removeItem: () => {},
+}
 
-const useCartStore = create<CartStore>()((set) => ({
+const useCartStore = create<CartStore>()(persist((set) => ({
   items: [{ id: 1, name: '牛奶', price: 6, count: 1 }],
   // TODO 2-a ~ 2-c
-  addItem: () => {},
-  removeItem: () => {},
-  clear: () => {},
-}))
+  addItem: (item) =>set((s)=>{
+    const n=s.items.find((n)=>n.id===item.id)
+    if(n!==undefined)return {items:s.items.map((n)=>n.id===item.id?{ ...n, count: n.count + 1 }:n)}
+    return {items:[...s.items,{...item,count:1}]}
+  }),
+  removeItem: (id) => set((s)=>({items:s.items.filter((n)=>n.id!==id)}) ),
+  clear: () => set({items:[]}),
+}),
+{
+  name:'day8-cart',
+  storage: createJSONStorage(() =>
+        typeof window === 'undefined' ? noopStorage : window.localStorage,
+      ),
+  partialize:(s)=>({items:s.items})
+}
+),
+)
 
 const PRODUCTS: Omit<CartItem, 'count'>[] = [
   { id: 1, name: '牛奶', price: 6 },
@@ -108,8 +127,8 @@ function CartDemo() {
   const clear = useCartStore((s) => s.clear)
 
   // TODO 2-d：从 items 算出总件数和总价（reduce）
-  const totalCount = 0
-  const totalPrice = 0
+  const totalCount = items.reduce((sum,n)=>sum+=n.count,0)
+  const totalPrice = items.reduce((sum,n)=>sum+=n.count*n.price,0)
 
   return (
     <div className="card">
@@ -176,10 +195,18 @@ function PriceOnly() {
 }
 
 // 这个字段跟价格完全无关，用来验证"订阅范围"是否生效
-const useNoteStore = create<{ note: string; setNote: (n: string) => void }>()((set) => ({
-  note: '',
-  setNote: (n) => set({ note: n }),
-}))
+const useNoteStore = create<{ note: string; setNote: (n: string) => void }>()(
+  persist(
+    (set) => ({
+      note: '',
+      setNote: (n) => set({ note: n }),
+    }),
+    {
+      name:'day8-note',
+      partialize:(s)=>({note:s.note})
+    }
+  )
+)
 
 function NoteBox() {
   const note = useNoteStore((s) => s.note)
