@@ -39,6 +39,13 @@ import SelectorDemo from './day8/02-选择性订阅'
 import TodoWithZustand from './day8/03-实战-用Zustand重写待办'
 import PracticeDay8 from './day8/04-练习'
 
+import Day9Layout from './day9/Layout'
+import WhyWrapRequest from './day9/00-为什么要封装请求'
+import AxiosBasics from './day9/01-axios基础'
+import InterceptorDemo from './day9/02-拦截器与封装'
+import RaceDemo from './day9/03-竞态与取消'
+import PracticeDay9 from './day9/04-练习'
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -82,6 +89,18 @@ export const routes: RouteObject[] = [
           { path: 'selector', element: <SelectorDemo /> }, //  /day8/selector
           { path: 'todo', element: <TodoWithZustand /> }, //  /day8/todo
           { path: 'practice', element: <PracticeDay8 /> }, //  /day8/practice
+        ],
+      },
+
+      {
+        path: 'day9',
+        element: <Day9Layout />,
+        children: [
+          { index: true, element: <WhyWrapRequest /> }, //  /day9
+          { path: 'basics', element: <AxiosBasics /> }, //  /day9/basics
+          { path: 'interceptor', element: <InterceptorDemo /> }, //  /day9/interceptor
+          { path: 'race', element: <RaceDemo /> }, //  /day9/race
+          { path: 'practice', element: <PracticeDay9 /> }, //  /day9/practice
         ],
       },
 

@@ -29,6 +29,11 @@ const ROUTE_MAP: RouteRow[] = [
   { path: '/day8/selector', file: 'day8/02-选择性订阅.tsx', note: '选择性订阅（少渲染的关键）' },
   { path: '/day8/todo', file: 'day8/03-实战-用Zustand重写待办.tsx', note: '重写待办 + persist 持久化' },
   { path: '/day8/practice', file: 'day8/04-练习.tsx', note: 'Day8 练习' },
+  { path: '/day9', file: 'day9/00-为什么要封装请求.tsx', note: 'Day9：三态 + axios vs fetch' },
+  { path: '/day9/basics', file: 'day9/01-axios基础.tsx', note: 'axios 错误分类（4 种错误都能撞）' },
+  { path: '/day9/interceptor', file: 'day9/02-拦截器与封装.tsx', note: '拦截器 + request<T> 封装' },
+  { path: '/day9/race', file: 'day9/03-竞态与取消.tsx', note: '⭐ 竞态与 AbortController' },
+  { path: '/day9/practice', file: 'day9/04-练习.tsx', note: 'Day9 练习' },
   { path: '/archive', file: 'pages/Archive.tsx', note: 'Day1~6 全部内容归档' },
   { path: '*', file: 'pages/NotFound.tsx', note: '404（任何没配过的地址）' },
 ]
