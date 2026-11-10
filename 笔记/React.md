@@ -205,7 +205,7 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 ### useSearchParams方法
 
-**返回一个元组，有两个返回值，第一个返回值是一个`URLSearchParams`对象，只包括URL查询字符串部分，也就是`?`后，第二个返回值是函数，接收两个参数，可以更新当前URL查询字符串部分**
+**返回一个元组，有两个返回值，第一个返回值是一个`URLSearchParams`对象，第二个返回值是函数，接收两个参数，可以更新当前URL查询字符串部分**
 
 
 
@@ -217,6 +217,10 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 - `URLSearchParams` 实例：`setSearchParams(new URLSearchParams("?tab=1"))`
 
 还可以接收第二个可选参数：类型和useNavigate方法的第二个参数相同
+
+#### URLSearchParams
+
+包含的键和值类型都是字符串，只包括URL查询字符串部分，也就是`?`后，只能用get，set方法，不能用'.'来取属性值
 
 ### useLocation方法
 
@@ -320,6 +324,14 @@ export const useTodoStore = create<TodoStore>()(
 ~~~
 
 `本地存储会保留旧数据，如果字段被改了，旧数据覆盖新数据可能会覆盖不到，所以要加上版本号，并且开始要清旧数据，比如version + migrate`
+
+## axios
+
+用来替代fetch做请求和拦截以及回应，包含Axios，AxiosError，CanceledError，AxiosHeaders四个类
+
+### Axios
+
+
 
 ## Link组件
 
