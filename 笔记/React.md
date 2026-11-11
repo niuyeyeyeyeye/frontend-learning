@@ -132,7 +132,7 @@ useEffect(()=>{...return 清理函数}，依赖数组)
 
 #### 依赖数组
 
-依赖数组包含useEffect用过的引用，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect，如果没有依赖数组就会随组件渲染`依赖数组是浅比较，只是比较值`
+依赖数组包含useEffect用过的引用，如果没有组件渲染就不会比较依赖数组，用过就必须放进依赖数组，变量被改变时就会重新执行useEffect，如果没有依赖数组就会随组件渲染`依赖数组是浅比较，只是比较值`
 
 #### 清理函数
 
@@ -259,6 +259,10 @@ store包括一份`state`和
 
 不会触发渲染，只是拿到`store的state`快照
 
+### useShallow方法
+
+浅比较store的值
+
 ### selector函数
 
 用来获取`state`依赖部分，只有绑定的部分变化会触发渲染，也就是组件渲染只监听订阅部分的字段变化
@@ -330,6 +334,52 @@ export const useTodoStore = create<TodoStore>()(
 用来替代fetch做请求和拦截以及回应，包含Axios，AxiosError，CanceledError，AxiosHeaders四个类
 
 ### Axios
+
+axios上的实例类，但是axios实例不用`new axios.Axios`创建,而是使用axios实例的`create方法`创建
+
+### axios实例
+
+是axios.create()工厂函数创建的可调用函数对象，包含实例方法
+
+| 方法      | 说明                                     | 签名示例                                |
+| --------- | ---------------------------------------- | --------------------------------------- |
+| `request` | **核心请求方法**，接受一个完整的配置对象 | `instance.request(config)`              |
+| `get`     | 发起 `GET` 请求                          | `instance.get(url[, config])`           |
+| `delete`  | 发起 `DELETE` 请求                       | `instance.delete(url[, config])`        |
+| `head`    | 发起 `HEAD` 请求                         | `instance.head(url[, config])`          |
+| `options` | 发起 `OPTIONS` 请求                      | `instance.options(url[, config])`       |
+| `post`    | 发起 `POST` 请求                         | `instance.post(url[, data[, config]])`  |
+| `put`     | 发起 `PUT` 请求                          | `instance.put(url[, data[, config]])`   |
+| `patch`   | 发起 `PATCH` 请求                        | `instance.patch(url[, data[, config]])` |
+| `getUri`  | 根据配置生成完整的请求 URL               | `instance.getUri([config])`             |
+
+#### use()方法
+
+request和response的方法，用来注册请求拦截器和响应拦截器
+
+`request.use(fn，error)`
+
+`response.use(fn，error)`
+
+
+
+#### defaults属性
+
+实例上用来放默认config
+
+### 常用api接口
+
+#### AxiosRequestConfig
+
+#### AxiosResponse
+
+#### AxiosError
+
+#### AxiosInstance
+
+#### AxiosAdapter
+
+#### CanceledError
 
 
 

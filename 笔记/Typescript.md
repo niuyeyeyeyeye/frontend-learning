@@ -314,10 +314,14 @@ const parsed = JSON.parse(rawJson) as { name: string; age: number }
 console.log(parsed.name, parsed.age)
 ~~~
 
+**两个类型没有共同之处就需要两个断言，强行过类型检查**
+
 ~~~typescript
 // ❌ 危险场景：as 不是"转换"，它不做任何检查
 const notANumber = '5' as unknown as number   // 强行骗过 TS
 ~~~
+
+
 
 ### 非空断言！
 
