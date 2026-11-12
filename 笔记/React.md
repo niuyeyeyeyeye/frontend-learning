@@ -353,17 +353,35 @@ axios上的实例类，但是axios实例不用`new axios.Axios`创建,而是使�
 | `patch`   | 发起 `PATCH` 请求                        | `instance.patch(url[, data[, config]])` |
 | `getUri`  | 根据配置生成完整的请求 URL               | `instance.getUri([config])`             |
 
-#### use()方法
+### 拦截器use()方法
 
-request和response的方法，用来注册请求拦截器和响应拦截器
+在`interceptors`上的`request和response`的方法，用来注册请求拦截器和响应拦截器
 
-`request.use(fn，error)`
+`axios.interceptors.request.use(fn，error)`请求拦截器
 
-`response.use(fn，error)`
+`axios.interceptors.response.use(fn，error)`响应拦截器
+
+#### 请求拦截器
+
+`axios.interceptors.request.use(fn，error)`
+
+通常判token是否为空，不为空在`config.headers.Authorization`请求头加上用户加token
+
+#### 响应拦截器
+
+`axios.interceptors.response.use(fn，error)`
+
+error函数的返回值不能返回throw new Error(err),要return一个AxiosError错误，不能创建一个普通错误
+
+return Promise.reject(err)
 
 
 
-#### defaults属性
+### error.code
+
+
+
+### defaults属性
 
 实例上用来放默认config
 
@@ -387,7 +405,9 @@ request和response的方法，用来注册请求拦截器和响应拦截器
 
 ## NavLink组件
 
+## 函数式更新
 
+当
 
 ## 条件渲染&&
 
