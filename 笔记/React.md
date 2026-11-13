@@ -233,6 +233,22 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 | `state`    | `null` 或你传的对象   | `navigate(..., { state })` 传过来的隐式数据 |
 | `key`      | `"abc123"`            | 这条历史记录的唯一标识                      |
 
+### useMemo方法
+
+用来防止每次渲染都重复计算昂贵计算，会将计算结果缓存，只在依赖数组改变时重新计算
+
+`useMemo(fn,依赖数组)`
+
+**`在开发环境StrictMode下，组件会两次渲染，而被useMemo包裹的计算会在第一次渲染中执行两次，取第一次的结果，第二次渲染会命中缓存`**
+
+
+
+### useCallback方法
+
+用来缓存函数，用来保持函数的引用不变，常用来配合React.memo来防止子组件因引用改变重渲染
+
+用法跟useMemo相同，语义不同
+
 ## create方法
 
 是Zustand的入口，创建一个store，state是参数，有selector方法可以单独取需要的字段，selector方法具体就是

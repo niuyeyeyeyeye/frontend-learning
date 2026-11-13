@@ -46,6 +46,13 @@ import InterceptorDemo from './day9/02-拦截器与封装'
 import RaceDemo from './day9/03-竞态与取消'
 import PracticeDay9 from './day9/04-练习'
 
+import Day10Layout from './day10/Layout'
+import Day10Overview from './day10/00-重渲染怎么发生'
+import MemoCallbackDemo from './day10/01-useMemo与useCallback'
+import StatePlacementDemo from './day10/02-把state往下挪'
+import LazyDemo from './day10/03-懒加载与代码分割'
+import PracticeDay10 from './day10/04-练习'
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -101,6 +108,18 @@ export const routes: RouteObject[] = [
           { path: 'interceptor', element: <InterceptorDemo /> }, //  /day9/interceptor
           { path: 'race', element: <RaceDemo /> }, //  /day9/race
           { path: 'practice', element: <PracticeDay9 /> }, //  /day9/practice
+        ],
+      },
+
+      {
+        path: 'day10',
+        element: <Day10Layout />,
+        children: [
+          { index: true, element: <Day10Overview /> }, //  /day10
+          { path: 'memo', element: <MemoCallbackDemo /> }, //  /day10/memo
+          { path: 'placement', element: <StatePlacementDemo /> }, //  /day10/placement
+          { path: 'lazy', element: <LazyDemo /> }, //  /day10/lazy
+          { path: 'practice', element: <PracticeDay10 /> }, //  /day10/practice
         ],
       },
 

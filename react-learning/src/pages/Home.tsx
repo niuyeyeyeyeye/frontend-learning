@@ -34,6 +34,11 @@ const ROUTE_MAP: RouteRow[] = [
   { path: '/day9/interceptor', file: 'day9/02-拦截器与封装.tsx', note: '拦截器 + request<T> 封装' },
   { path: '/day9/race', file: 'day9/03-竞态与取消.tsx', note: '⭐ 竞态与 AbortController' },
   { path: '/day9/practice', file: 'day9/04-练习.tsx', note: 'Day9 练习' },
+  { path: '/day10', file: 'day10/00-重渲染怎么发生.tsx', note: 'Day10：重渲染 + memo 的三种失效' },
+  { path: '/day10/memo', file: 'day10/01-useMemo与useCallback.tsx', note: 'useMemo/useCallback 的真实作用与代价' },
+  { path: '/day10/placement', file: 'day10/02-把state往下挪.tsx', note: '⭐ 最有效的优化：挪 state / children 技巧' },
+  { path: '/day10/lazy', file: 'day10/03-懒加载与代码分割.tsx', note: 'lazy + Suspense（治首屏慢）' },
+  { path: '/day10/practice', file: 'day10/04-练习.tsx', note: 'Day10 练习' },
   { path: '/archive', file: 'pages/Archive.tsx', note: 'Day1~6 全部内容归档' },
   { path: '*', file: 'pages/NotFound.tsx', note: '404（任何没配过的地址）' },
 ]
