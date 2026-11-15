@@ -1279,6 +1279,7 @@ getUserData();
 - 变量可以有多个名字
 - 同一个模块被 import 多次，只会执行一次（单例）
 - 想按条件加载，用动态导入：const m = await import('./utils.js')
+- 返回一个Promise函数
 
 `可以同时具名和改名，变量或函数可以拥有多个名字`
 

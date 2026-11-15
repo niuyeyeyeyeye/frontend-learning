@@ -9,7 +9,7 @@
 //
 // 规则：补完 TODO → 保存 → 浏览器看效果（用渲染次数判断对错）
 
-import { memo, useCallback, useRef, useState } from 'react'
+import { Children, memo, ReactNode, useCallback, useRef, useState, useMemo } from 'react'
 import { lazy, Suspense } from 'react'
 
 // 小工具：显示渲染次数（不用改）
@@ -46,7 +46,7 @@ function BigList() {
   )
 }
 
-function WrongPlace() {
+function WrongPlace({children}:{children:ReactNode}) {
   // ❌ TODO 1：把这个 state 挪到该去的地方
   const [keyword, setKeyword] = useState('')
   void setKeyword
@@ -63,8 +63,15 @@ function WrongPlace() {
           style={{ padding: 4, width: 260 }}
         />
       </p>
-      <BigList />
+      {children}
     </div>
+  )
+}
+function Shell(){
+  return (
+    <WrongPlace>
+      <BigList></BigList>
+    </WrongPlace>
   )
 }
 
@@ -78,7 +85,7 @@ function WrongPlace() {
 
 type Filters = { sort: 'asc' | 'desc' }
 
-const BadMemoList = ({ filters, onPick }: { filters: Filters; onPick: (id: number) => void }) => {
+const BadMemoList = memo(({ filters, onPick }: { filters: Filters; onPick: (id: number) => void }) => {
   return (
     <div className="card" style={{ padding: 8 }}>
       列表（排序：{filters.sort}）
@@ -89,7 +96,7 @@ const BadMemoList = ({ filters, onPick }: { filters: Filters; onPick: (id: numbe
       </button>
     </div>
   )
-}
+})
 
 function Counter() {
   const r = useRef(0)
@@ -105,12 +112,12 @@ function BadMemoListParent() {
   const [tick, setTick] = useState(0)
 
   // TODO 2-a：用 useMemo 稳住 filters（依赖数组自己判断）
-  const filters: Filters = { sort: 'asc' }
+  const filters: Filters = useMemo(()=>({ sort: 'asc' }),[])
 
   // TODO 2-b：用 useCallback 稳住 onPick
-  const onPick = (id: number) => {
+  const onPick = useCallback((id: number) => {
     void id
-  }
+  },[])
 
   return (
     <div className="card">
@@ -152,10 +159,11 @@ function HeavyContent() {
 // ❌ TODO 3：现在它是普通 import（一进页面就加载了）
 //    改成：const LazyContent = lazy(() => import(...))
 //    然后下面用 <Suspense fallback={...}><LazyContent /></Suspense>
-const LazyContent = HeavyContent
+const LazyContent = lazy(async ()=>({default:HeavyContent}))
 
 function LazyPractice() {
   const [show, setShow] = useState(false)
+
   return (
     <div className="card">
       <button className="btn" onClick={() => setShow((s) => !s)}>
@@ -178,7 +186,7 @@ export default function PracticeDay10() {
   return (
     <div>
       <h2>练习 1 ⭐⭐：state 放错位置</h2>
-      <WrongPlace />
+      <Shell />
 
       <h2>练习 2 ⭐⭐⭐：memo + 稳定 props</h2>
       <BadMemoListParent />

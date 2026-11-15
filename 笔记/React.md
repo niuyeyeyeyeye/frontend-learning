@@ -345,9 +345,25 @@ export const useTodoStore = create<TodoStore>()(
 
 `本地存储会保留旧数据，如果字段被改了，旧数据覆盖新数据可能会覆盖不到，所以要加上版本号，并且开始要清旧数据，比如version + migrate`
 
+## lazy懒加载
+
+会把昂贵非紧急渲染包起来，延迟渲染，参数必须是加载函数，也就是，返回值是对象的异步函数，import也行
+
+### Suspense
+
+内置组件，自动捕获最近的`lazy`，在此处显示
+
+#### falllback
+
+lazy挂起时，当lazy内容没被加载完时，显示fallback属性内容
+
+#### children
+
+`Suspense`组件包裹内容，加载后显示children内容
+
 ## axios
 
-用来替代fetch做请求和拦截以及回应，包含Axios，AxiosError，CanceledError，AxiosHeaders四个类
+用来替代fetch做请求和拦截以及回应，包含Axios，AxiosError，CanceledError，AxiosHeaders类
 
 ### Axios
 
