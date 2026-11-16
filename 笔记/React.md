@@ -347,7 +347,9 @@ export const useTodoStore = create<TodoStore>()(
 
 ## lazy懒加载
 
-会把昂贵非紧急渲染包起来，延迟渲染，参数必须是加载函数，也就是，返回值是对象的异步函数，import也行
+会把昂贵非紧急渲染包起来，延迟渲染，参数必须是加载函数，也就是，返回值是`{ default: 组件 }`对象的异步函数，import也行
+
+
 
 ### Suspense
 
