@@ -48,10 +48,7 @@ function NavigateIntroCard() {
       <p style={{ marginBottom: 6 }}>
         <strong>③ replace：替换历史记录</strong>（登录后跳首页，用户按"后退"不该回到登录页）：
       </p>
-      <button
-        className="btn-ghost"
-        onClick={() => navigate('/day7/basics', { replace: true })}
-      >
+      <button className="btn-ghost" onClick={() => navigate('/day7/basics', { replace: true })}>
         navigate('/day7/basics', {'{ replace: true }'})
       </button>
 
@@ -150,8 +147,8 @@ function UrlStateDemo() {
       </div>
 
       <p className="hint">
-        👆 <strong>验证三件事</strong>：① 搜索 + 翻页后按 F5 刷新，条件还在；
-        ② 把地址复制到新标签页打开，条件还在；③ 按浏览器后退，能回到上一页（因为翻页用的是 push）。
+        👆 <strong>验证三件事</strong>：① 搜索 + 翻页后按 F5 刷新，条件还在； ②
+        把地址复制到新标签页打开，条件还在；③ 按浏览器后退，能回到上一页（因为翻页用的是 push）。
       </p>
 
       <p className="hint">
@@ -195,7 +192,8 @@ function WhenToUseWhat() {
         </tbody>
       </table>
       <p className="hint">
-        最后一条是个很实际的判断标准：<strong>链接用 Link（可右键新开），动作/流程用 navigate。</strong>
+        最后一条是个很实际的判断标准：
+        <strong>链接用 Link（可右键新开），动作/流程用 navigate。</strong>
       </p>
     </div>
   )

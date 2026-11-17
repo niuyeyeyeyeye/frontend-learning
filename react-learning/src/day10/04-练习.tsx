@@ -46,7 +46,7 @@ function BigList() {
   )
 }
 
-function WrongPlace({children}:{children:ReactNode}) {
+function WrongPlace({ children }: { children: ReactNode }) {
   // ❌ TODO 1：把这个 state 挪到该去的地方
   const [keyword, setKeyword] = useState('')
   void setKeyword
@@ -67,7 +67,7 @@ function WrongPlace({children}:{children:ReactNode}) {
     </div>
   )
 }
-function Shell(){
+function Shell() {
   return (
     <WrongPlace>
       <BigList></BigList>
@@ -85,18 +85,19 @@ function Shell(){
 
 type Filters = { sort: 'asc' | 'desc' }
 
-const BadMemoList = memo(({ filters, onPick }: { filters: Filters; onPick: (id: number) => void }) => {
-  return (
-    <div className="card" style={{ padding: 8 }}>
-      列表（排序：{filters.sort}）
-      {/* 用一个 ref 计数，避免额外 state */}
-      <Counter />
-      <button className="btn-ghost" style={{ marginLeft: 8 }} onClick={() => onPick(1)}>
-        pick 1
-      </button>
-    </div>
-  )
-})
+const BadMemoList = memo(
+  ({ filters, onPick }: { filters: Filters; onPick: (id: number) => void }) => {
+    return (
+      <div className="card" style={{ padding: 8 }}>
+        列表（排序：{filters.sort}）{/* 用一个 ref 计数，避免额外 state */}
+        <Counter />
+        <button className="btn-ghost" style={{ marginLeft: 8 }} onClick={() => onPick(1)}>
+          pick 1
+        </button>
+      </div>
+    )
+  },
+)
 
 function Counter() {
   const r = useRef(0)
@@ -112,12 +113,12 @@ function BadMemoListParent() {
   const [tick, setTick] = useState(0)
 
   // TODO 2-a：用 useMemo 稳住 filters（依赖数组自己判断）
-  const filters: Filters = useMemo(()=>({ sort: 'asc' }),[])
+  const filters: Filters = useMemo(() => ({ sort: 'asc' }), [])
 
   // TODO 2-b：用 useCallback 稳住 onPick
   const onPick = useCallback((id: number) => {
     void id
-  },[])
+  }, [])
 
   return (
     <div className="card">
@@ -159,7 +160,7 @@ function HeavyContent() {
 // ❌ TODO 3：现在它是普通 import（一进页面就加载了）
 //    改成：const LazyContent = lazy(() => import(...))
 //    然后下面用 <Suspense fallback={...}><LazyContent /></Suspense>
-const LazyContent = lazy(async ()=>({default:HeavyContent}))
+const LazyContent = lazy(async () => ({ default: HeavyContent }))
 
 function LazyPractice() {
   const [show, setShow] = useState(false)

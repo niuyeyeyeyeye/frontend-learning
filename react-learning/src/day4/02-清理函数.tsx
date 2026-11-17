@@ -23,12 +23,20 @@ export default function CleanupBasics() {
       <h3>3. 清理函数的执行时机</h3>
       <div className="card">
         <p>
-          <code>useEffect(() =&gt; {'{'} ... return 清理函数 {'}'}, [依赖])</code>
+          <code>
+            useEffect(() =&gt; {'{'} ... return 清理函数 {'}'}, [依赖])
+          </code>
         </p>
-        <p><b>清理函数在这两种时候执行：</b></p>
+        <p>
+          <b>清理函数在这两种时候执行：</b>
+        </p>
         <ul style={{ paddingLeft: 20 }}>
-          <li>① 组件<strong>卸载</strong>时（从页面上消失）</li>
-          <li>② <strong>下一次 effect 执行前</strong>（依赖变了 → 先清理旧的，再跑新的）</li>
+          <li>
+            ① 组件<strong>卸载</strong>时（从页面上消失）
+          </li>
+          <li>
+            ② <strong>下一次 effect 执行前</strong>（依赖变了 → 先清理旧的，再跑新的）
+          </li>
         </ul>
         <p className="hint">
           ⭐ 为什么这样设计：effect 代表"建立了一个连接/订阅/定时器"，
@@ -65,7 +73,8 @@ function TimerDemo() {
   return (
     <div className="card">
       <p>
-        计时：<strong>{seconds}</strong> 秒　|　当前活跃定时器：<strong style={{ color: activeCount > 1 ? '#cf222e' : '#1f883d' }}>{activeCount}</strong> 个
+        计时：<strong>{seconds}</strong> 秒　|　当前活跃定时器：
+        <strong style={{ color: activeCount > 1 ? '#cf222e' : '#1f883d' }}>{activeCount}</strong> 个
       </p>
       <button className={running ? 'btn-ghost' : 'btn'} onClick={() => setRunning(!running)}>
         {running ? '停止' : '开始'}
@@ -75,8 +84,8 @@ function TimerDemo() {
         归零
       </button>
       <p className="hint">
-        ✅ 正常情况：点"开始/停止"时，活跃定时器数量始终是 0 或 1。<br />
-        ❌ 如果清理函数写错（比如没写 clearInterval），你多次点"开始"会看到数量变成 2、3、4…
+        ✅ 正常情况：点"开始/停止"时，活跃定时器数量始终是 0 或 1。
+        <br />❌ 如果清理函数写错（比如没写 clearInterval），你多次点"开始"会看到数量变成 2、3、4…
         而且计时速度越来越快 —— 这就是<strong>内存泄漏 + 重复执行</strong>。
       </p>
     </div>
@@ -111,11 +120,13 @@ function ResizeDemo() {
         窗口宽度：<strong>{width}</strong> px
       </p>
       <p className="hint">
-        拖动浏览器窗口大小，上面数字会实时变化。<br />
+        拖动浏览器窗口大小，上面数字会实时变化。
+        <br />
         打开控制台能看到"绑定监听"的日志 —— 在 StrictMode 下可能会看到两次（见 Day4 说明）。
       </p>
       <p className="hint">
-        ⚠️ 经典坑：清理时写 <code>window.removeEventListener('resize', () =&gt; setWidth(window.innerWidth))</code>
+        ⚠️ 经典坑：清理时写{' '}
+        <code>window.removeEventListener('resize', () =&gt; setWidth(window.innerWidth))</code>
         —— <b>不行！</b>因为每次写的箭头函数都是"新的函数"，移除不了。
         必须先把函数存到变量里，用同一个引用移除。
       </p>

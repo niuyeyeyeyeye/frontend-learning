@@ -57,7 +57,8 @@ export default function UseStateBasics() {
         你输入了：<strong>{text || '（空）'}</strong>（{text.length} 个字）
       </p>
       <p className="hint">
-        受控 = value 绑 state + onChange 更新 state。<br />
+        受控 = value 绑 state + onChange 更新 state。
+        <br />
         ⚠️ 只写 value 不写 onChange，输入框会变得**输不进去**（值被 state 锁死了）
       </p>
 
@@ -88,7 +89,7 @@ export default function UseStateBasics() {
         </button>
       </div>
       <p className="hint">
-        ⭐ 这里用到了对象展开 {'{...obj, 字段: 新值}'} —— 和 Day6 的 {"{...t, done}"} 是同一个手法
+        ⭐ 这里用到了对象展开 {'{...obj, 字段: 新值}'} —— 和 Day6 的 {'{...t, done}'} 是同一个手法
       </p>
 
       <h3>6. 一个重要的坑：setState 是异步的、会批处理</h3>
@@ -109,8 +110,8 @@ export default function UseStateBasics() {
           连写三次 setCount(count + 1)（看看加了几）
         </button>
         <p className="hint">
-          点一下你会发现只 +1 —— 因为三次读的都是渲染时的同一个 count。
-          要连续累加必须用 <code>setCount((c) =&gt; c + 1)</code>（函数式更新）
+          点一下你会发现只 +1 —— 因为三次读的都是渲染时的同一个 count。 要连续累加必须用{' '}
+          <code>setCount((c) =&gt; c + 1)</code>（函数式更新）
         </p>
       </div>
     </div>

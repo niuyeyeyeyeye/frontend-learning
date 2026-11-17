@@ -49,9 +49,9 @@ export default function LazyDemo() {
         <p className="hint" style={{ marginBottom: 0 }}>
           👆 点一下会先看到「正在加载组件文件……」，1.2 秒后变成真正的内容。
           <br />
-          再点「卸载它」→ 再点「加载」→ <strong>这次立刻就出来了</strong>（模块已经被缓存，不会重复下载）。
-          打开 F12 → Network 能看到这个文件多了一个请求（开发环境下路径类似{' '}
-          <code>LazyHeavy.tsx</code>）。
+          再点「卸载它」→ 再点「加载」→ <strong>这次立刻就出来了</strong>
+          （模块已经被缓存，不会重复下载）。 打开 F12 → Network
+          能看到这个文件多了一个请求（开发环境下路径类似 <code>LazyHeavy.tsx</code>）。
         </p>
       </div>
 
@@ -77,11 +77,9 @@ const Chart = lazy(() => import('./Chart'))
 </Suspense>`}</pre>
         <p style={{ margin: 0 }}>
           <strong>两个必须知道的点：</strong>
-          <br />
-          ① <code>lazy</code> 的组件<strong>必须</strong>包在 <code>Suspense</code> 里，
+          <br />① <code>lazy</code> 的组件<strong>必须</strong>包在 <code>Suspense</code> 里，
           否则整个页面会被"暂停"导致白屏/报错
-          <br />
-          ② <code>fallback</code> 不能是 <code>null</code> 加上忘记处理 ——
+          <br />② <code>fallback</code> 不能是 <code>null</code> 加上忘记处理 ——
           加载失败时你需要错误边界（<code>ErrorBoundary</code>），这一块超出今天范围，先知道有这回事
         </p>
       </div>
@@ -89,7 +87,8 @@ const Chart = lazy(() => import('./Chart'))
       <div className="card">
         <h3 style={{ marginTop: 0 }}>⭐ 最高收益的用法：路由级懒加载</h3>
         <p style={{ marginTop: 0 }}>
-          你 Day7 写的路由表，现在每打开首页都会把 <strong>Day7/Day8/Day9 的代码全部下载一遍</strong>。
+          你 Day7 写的路由表，现在每打开首页都会把{' '}
+          <strong>Day7/Day8/Day9 的代码全部下载一遍</strong>。
           改造之后，只有点进那一天才下载那一天的代码：
         </p>
         <pre
@@ -114,12 +113,12 @@ const Day9Layout = lazy(() => import('./day9/Layout'))
   </Suspense>
 </div>`}</pre>
         <p className="hint" style={{ marginBottom: 0 }}>
-          这在真实项目里几乎是标配：一个后台管理系统几十个页面，
-          用户打开首页只要几百 KB，而不是把几十个页面的代码全拉下来。
+          这在真实项目里几乎是标配：一个后台管理系统几十个页面， 用户打开首页只要几百
+          KB，而不是把几十个页面的代码全拉下来。
           <br />
           ⚠️ 诚实说明：<strong>我这边验证不了"构建后拆成几个 chunk"</strong>（沙箱里跑不了{' '}
-          <code>vite build</code>）。你可以自己跑 <code>npm run build</code>，
-          看 <code>dist/assets/</code> 下的文件数量变化。
+          <code>vite build</code>）。你可以自己跑 <code>npm run build</code>， 看{' '}
+          <code>dist/assets/</code> 下的文件数量变化。
         </p>
       </div>
 
@@ -130,19 +129,37 @@ const Day9Layout = lazy(() => import('./day9/Layout'))
             <tr style={{ textAlign: 'left', color: '#57606a' }}>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>症状</th>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>用什么</th>
-              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>用错了会怎样</th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>
+                用错了会怎样
+              </th>
             </tr>
           </thead>
           <tbody>
             {[
-              ['首屏加载慢（白屏久）', '懒加载 / 代码分割', 'memo/useMemo 完全无效（那些是运行时的）'],
-              ['交互卡（打字、点击延迟）', '挪 state / 拆组件 / memo', '懒加载无效（代码已经在了）'],
+              [
+                '首屏加载慢（白屏久）',
+                '懒加载 / 代码分割',
+                'memo/useMemo 完全无效（那些是运行时的）',
+              ],
+              [
+                '交互卡（打字、点击延迟）',
+                '挪 state / 拆组件 / memo',
+                '懒加载无效（代码已经在了）',
+              ],
               ['长列表滚动卡', '虚拟列表', 'memo 只能缓解，治不了根'],
             ].map(([a, b, c]) => (
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{b}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{c}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {c}
+                </td>
               </tr>
             ))}
           </tbody>

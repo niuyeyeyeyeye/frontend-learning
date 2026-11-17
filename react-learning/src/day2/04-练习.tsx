@@ -17,13 +17,13 @@ function Toggle() {
   // TODO: 声明一个 boolean state（默认 false = 隐藏）
   // TODO: 按钮文字根据 state 变化（显示 / 隐藏）
   // TODO: state 为 true 时渲染那段文字
-  const [toggle,setToggle]=useState(false)
-  return <div>
-    <button onClick={
-      ()=>setToggle(!toggle)
-      }>{toggle?'隐藏':'显示'}</button>
-    {toggle && <p>{'我是被隐藏的内容'}</p>}
-  </div>
+  const [toggle, setToggle] = useState(false)
+  return (
+    <div>
+      <button onClick={() => setToggle(!toggle)}>{toggle ? '隐藏' : '显示'}</button>
+      {toggle && <p>{'我是被隐藏的内容'}</p>}
+    </div>
+  )
 }
 
 // ------------------------------------------------------------
@@ -36,16 +36,14 @@ function Temperature() {
   // TODO: 用 useState 存输入框的值
   // TODO: 输入框用 value + onChange 变成受控组件
   // TODO: 计算华氏度并显示（注意输入为空时不要显示 NaN）
-  const [C,setC]=useState('')
-  const F =isNaN(Number(C))||C===''?'--':Number(C)*9/5+32
-  return <div>
-    <input
-    onChange={(e)=>setC(e.target.value)}
-    value={C}
-    placeholder='请输入摄氏温度'
-    ></input>
-    <p>{F}</p>
-  </div>
+  const [C, setC] = useState('')
+  const F = isNaN(Number(C)) || C === '' ? '--' : (Number(C) * 9) / 5 + 32
+  return (
+    <div>
+      <input onChange={(e) => setC(e.target.value)} value={C} placeholder="请输入摄氏温度"></input>
+      <p>{F}</p>
+    </div>
+  )
 }
 
 // ------------------------------------------------------------
@@ -63,13 +61,15 @@ function ColorPicker() {
   // TODO: 用 useState 存当前颜色（默认第一个）
   // TODO: 三个按钮，onClick 里传参调用 set 函数
   // TODO: 下面渲染一个方块，背景色用当前的 state
-  const [color,setColor]=useState(COLORS[0].value)
-  return <div>
-    <button onClick={()=>setColor(COLORS[0].value)}>{COLORS[0].name}</button>
-    <button onClick={()=>setColor(COLORS[1].value)}>{COLORS[1].name}</button>
-    <button onClick={()=>setColor(COLORS[2].value)}>{COLORS[2].name}</button>
-    <div style={{background:color, height:100, width:100}}></div>
-  </div>
+  const [color, setColor] = useState(COLORS[0].value)
+  return (
+    <div>
+      <button onClick={() => setColor(COLORS[0].value)}>{COLORS[0].name}</button>
+      <button onClick={() => setColor(COLORS[1].value)}>{COLORS[1].name}</button>
+      <button onClick={() => setColor(COLORS[2].value)}>{COLORS[2].name}</button>
+      <div style={{ background: color, height: 100, width: 100 }}></div>
+    </div>
+  )
 }
 
 // ------------------------------------------------------------

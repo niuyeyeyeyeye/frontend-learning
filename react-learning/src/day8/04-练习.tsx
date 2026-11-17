@@ -12,7 +12,7 @@
 
 import { useEffect, useState } from 'react'
 import { create } from 'zustand'
-import { createJSONStorage,persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 
 // ============================================================
 // 练习 1 ⭐：写一个计数器 store，两个组件共享同一个数字
@@ -34,7 +34,7 @@ const useCountStore = create<CountStore>()((set) => ({
   count: 0,
   // TODO 1-a：补完 inc
   inc: () => {
-    set((s) => ({ count: s.count+1 }))
+    set((s) => ({ count: s.count + 1 }))
   },
   // TODO 1-b：补完 reset
   reset: () => {
@@ -93,25 +93,31 @@ const noopStorage = {
   removeItem: () => {},
 }
 
-const useCartStore = create<CartStore>()(persist((set) => ({
-  items: [{ id: 1, name: '牛奶', price: 6, count: 1 }],
-  // TODO 2-a ~ 2-c
-  addItem: (item) =>set((s)=>{
-    const n=s.items.find((n)=>n.id===item.id)
-    if(n!==undefined)return {items:s.items.map((n)=>n.id===item.id?{ ...n, count: n.count + 1 }:n)}
-    return {items:[...s.items,{...item,count:1}]}
-  }),
-  removeItem: (id) => set((s)=>({items:s.items.filter((n)=>n.id!==id)}) ),
-  clear: () => set({items:[]}),
-}),
-{
-  name:'day8-cart',
-  storage: createJSONStorage(() =>
+const useCartStore = create<CartStore>()(
+  persist(
+    (set) => ({
+      items: [{ id: 1, name: '牛奶', price: 6, count: 1 }],
+      // TODO 2-a ~ 2-c
+      addItem: (item) =>
+        set((s) => {
+          const n = s.items.find((n) => n.id === item.id)
+          if (n !== undefined)
+            return {
+              items: s.items.map((n) => (n.id === item.id ? { ...n, count: n.count + 1 } : n)),
+            }
+          return { items: [...s.items, { ...item, count: 1 }] }
+        }),
+      removeItem: (id) => set((s) => ({ items: s.items.filter((n) => n.id !== id) })),
+      clear: () => set({ items: [] }),
+    }),
+    {
+      name: 'day8-cart',
+      storage: createJSONStorage(() =>
         typeof window === 'undefined' ? noopStorage : window.localStorage,
       ),
-  partialize:(s)=>({items:s.items})
-}
-),
+      partialize: (s) => ({ items: s.items }),
+    },
+  ),
 )
 
 const PRODUCTS: Omit<CartItem, 'count'>[] = [
@@ -127,8 +133,8 @@ function CartDemo() {
   const clear = useCartStore((s) => s.clear)
 
   // TODO 2-d：从 items 算出总件数和总价（reduce）
-  const totalCount = items.reduce((sum,n)=>sum+=n.count,0)
-  const totalPrice = items.reduce((sum,n)=>sum+=n.count*n.price,0)
+  const totalCount = items.reduce((sum, n) => (sum += n.count), 0)
+  const totalPrice = items.reduce((sum, n) => (sum += n.count * n.price), 0)
 
   return (
     <div className="card">
@@ -202,10 +208,10 @@ const useNoteStore = create<{ note: string; setNote: (n: string) => void }>()(
       setNote: (n) => set({ note: n }),
     }),
     {
-      name:'day8-note',
-      partialize:(s)=>({note:s.note})
-    }
-  )
+      name: 'day8-note',
+      partialize: (s) => ({ note: s.note }),
+    },
+  ),
 )
 
 function NoteBox() {
@@ -213,7 +219,8 @@ function NoteBox() {
   const setNote = useNoteStore((s) => s.setNote)
   return (
     <div className="card">
-      备注（跟价格无关）：<input value={note} onChange={(e) => setNote(e.target.value)} />
+      备注（跟价格无关）：
+      <input value={note} onChange={(e) => setNote(e.target.value)} />
       <p className="hint" style={{ marginBottom: 0 }}>
         TODO 3-b：改这里的时候，上面 PriceOnly 不该重新渲染（看控制台）。它现在其实是对的 ——
         但你要能说出为什么。
@@ -238,9 +245,7 @@ export default function PracticeDay8() {
       <h2>练习 3 ⭐⭐⭐：选择性订阅 + 持久化</h2>
       <PriceOnly />
       <NoteBox />
-      <p className="hint">
-        做完 3-c 之后刷新页面，购物车里的东西应该还在。
-      </p>
+      <p className="hint">做完 3-c 之后刷新页面，购物车里的东西应该还在。</p>
     </div>
   )
 }

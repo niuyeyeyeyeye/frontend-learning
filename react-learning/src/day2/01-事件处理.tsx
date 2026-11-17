@@ -35,15 +35,17 @@ export default function EventsBasics() {
         {`onClick={handleClick}`} 里的 handleClick 是**函数本身**，点击时才调用
       </p>
 
-      <h3>2. ⚠️ 经典错误：onClick={'{'}fn(){'}'} 和 onClick={'{'}fn{'}'} 的区别</h3>
+      <h3>
+        2. ⚠️ 经典错误：onClick={'{'}fn(){'}'} 和 onClick={'{'}fn{'}'} 的区别
+      </h3>
       <div className="card">
         <p>
           ❌ <code>{'onClick={handleClick()}'}</code>
           <br />
           <span className="hint">
-            渲染时**立刻**执行 handleClick()，然后把它的**返回值**当事件处理函数。
-            因为 handleClick 没返回值（undefined），React 会报警告：
-            "Expected onClick listener to be a function, instead got undefined"
+            渲染时**立刻**执行 handleClick()，然后把它的**返回值**当事件处理函数。 因为 handleClick
+            没返回值（undefined），React 会报警告： "Expected onClick listener to be a function,
+            instead got undefined"
           </span>
         </p>
         <p>
@@ -53,8 +55,8 @@ export default function EventsBasics() {
           ✅ <code>{'onClick={() => handleClick()}'}</code> —— 需要传参时这么包一层
         </p>
         <p className="hint" style={{ color: '#cf222e' }}>
-          👉 打开控制台：每次组件渲染你都会看到「[渲染] EventsBasics 渲染了一次」。
-          如果写成 {'onClick={handleClick()}'}，控制台会**每渲染一次就多打一条**点击日志 —— 这就是 bug。
+          👉 打开控制台：每次组件渲染你都会看到「[渲染] EventsBasics 渲染了一次」。 如果写成{' '}
+          {'onClick={handleClick()}'}，控制台会**每渲染一次就多打一条**点击日志 —— 这就是 bug。
         </p>
       </div>
 
@@ -75,10 +77,7 @@ export default function EventsBasics() {
       <h3>4. 给事件处理函数传参数（三种写法）</h3>
       <div>
         {/* 写法 A：箭头函数包一层（最常用） */}
-        <button
-          className="btn-ghost"
-          onClick={() => setMessage('A：箭头函数传参 → 收到 "hello"')}
-        >
+        <button className="btn-ghost" onClick={() => setMessage('A：箭头函数传参 → 收到 "hello"')}>
           传参 A
         </button>
         {'　'}
@@ -109,7 +108,7 @@ export default function EventsBasics() {
             onClick={(e) => {
               e.stopPropagation() // ← 阻止事件冒泡到外层
               setMessage('内层被点了，但冒泡被阻止了')
-            }} 
+            }}
           >
             点我（阻止冒泡）
           </button>

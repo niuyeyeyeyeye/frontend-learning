@@ -95,9 +95,11 @@ export default function FetchDemo() {
           <b>快速连点 "用户 1" 和 "用户 2"</b>，观察会不会显示错的数据。
         </p>
         <p className="hint">
-          如果没有 <code>cancelled</code> 这个标记：先发的请求可能后返回，把后发请求的结果<strong>覆盖掉</strong> →
-          你点了"用户 2"，却显示了"用户 1"的数据。<br />
-          这就是<strong>竞态</strong>：多个请求的返回顺序不确定。<br />
+          如果没有 <code>cancelled</code> 这个标记：先发的请求可能后返回，把后发请求的结果
+          <strong>覆盖掉</strong> → 你点了"用户 2"，却显示了"用户 1"的数据。
+          <br />
+          这就是<strong>竞态</strong>：多个请求的返回顺序不确定。
+          <br />
           我加了 <code>cancelled</code> 标记（清理函数里置 true），保证"过期的请求结果直接丢弃"。
         </p>
         <p className="hint">
@@ -106,8 +108,17 @@ export default function FetchDemo() {
       </div>
 
       <h3>3. 记住这个写法（以后写项目直接用）</h3>
-      <pre style={{ background: '#0d1117', color: '#c9d1d9', padding: 10, borderRadius: 6, fontSize: 12, overflowX: 'auto' }}>
-{`useEffect(() => {
+      <pre
+        style={{
+          background: '#0d1117',
+          color: '#c9d1d9',
+          padding: 10,
+          borderRadius: 6,
+          fontSize: 12,
+          overflowX: 'auto',
+        }}
+      >
+        {`useEffect(() => {
   let cancelled = false
   setLoading(true); setError(null)
 

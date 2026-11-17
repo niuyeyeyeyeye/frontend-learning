@@ -42,9 +42,7 @@ export default function EffectBasics() {
   return (
     <div>
       <h3>1. 三种依赖数组的区别</h3>
-      <p className="hint">
-        打开控制台看日志。点下面的按钮，观察 [①][②][③] 分别执行了几次：
-      </p>
+      <p className="hint">打开控制台看日志。点下面的按钮，观察 [①][②][③] 分别执行了几次：</p>
       <button className="btn" onClick={() => setCount(count + 1)}>
         count + 1（当前 {count}）
       </button>
@@ -71,8 +69,17 @@ export default function EffectBasics() {
         <p>
           下面这个组件开了个定时器，每秒打印一次 count。但它<b>故意</b>没把 count 写进依赖：
         </p>
-        <pre style={{ background: '#0d1117', color: '#c9d1d9', padding: 10, borderRadius: 6, fontSize: 12, overflowX: 'auto' }}>
-{`useEffect(() => {
+        <pre
+          style={{
+            background: '#0d1117',
+            color: '#c9d1d9',
+            padding: 10,
+            borderRadius: 6,
+            fontSize: 12,
+            overflowX: 'auto',
+          }}
+        >
+          {`useEffect(() => {
   const id = setInterval(() => {
     console.log(count)     // ← 永远打印 0！
   }, 1000)
@@ -80,8 +87,9 @@ export default function EffectBasics() {
 }, [])                     // ← 依赖是空数组，effect 只跑了一次`}
         </pre>
         <p className="hint">
-          <b>为什么永远打印 0</b>：effect 只在挂载时执行一次，回调里捕获的是<b>那一次渲染的 count（0）</b>。
-          之后 count 变了，但定时器里的闭包还是旧的 —— 这就是<b>闭包陷阱</b>（你 Day4 学过闭包，这里正好是它的实战场景）。
+          <b>为什么永远打印 0</b>：effect 只在挂载时执行一次，回调里捕获的是
+          <b>那一次渲染的 count（0）</b>。 之后 count 变了，但定时器里的闭包还是旧的 —— 这就是
+          <b>闭包陷阱</b>（你 Day4 学过闭包，这里正好是它的实战场景）。
         </p>
         <ClosureTrap />
       </div>
@@ -113,8 +121,9 @@ function ClosureTrap() {
         {log.length === 0 ? '（等一秒看日志）' : log.map((l, i) => <div key={i}>{l}</div>)}
       </div>
       <p className="hint">
-        👉 你会发现：<strong>不管 count 变成多少，定时器打印的永远是 0</strong>（应该显示"当前 count = N"）。
-        修法：把 count 写进依赖 <code>[count]</code> —— 但那样定时器每秒都会被重建（也不是最优）。
+        👉 你会发现：<strong>不管 count 变成多少，定时器打印的永远是 0</strong>（应该显示"当前 count
+        = N"）。 修法：把 count 写进依赖 <code>[count]</code> ——
+        但那样定时器每秒都会被重建（也不是最优）。
         <strong>最优解是函数式更新</strong>：<code>setCount(c =&gt; c + 1)</code>
         ，effect 里不读 count 就不用依赖它。
       </p>

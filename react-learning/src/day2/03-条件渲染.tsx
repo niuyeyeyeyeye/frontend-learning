@@ -50,9 +50,8 @@ export default function ConditionalBasics() {
           <p>空字符串：{emptyStr && <span>看不到我</span>}（渲染为空，看着像没渲染）</p>
         </div>
         <p className="hint" style={{ color: '#cf222e' }}>
-          ⭐ 规律：{'{false && X}'} 和 {'{null && X}'} 什么都不渲染；
-          但 {'{0 && X}'} 会渲染出 <strong>0</strong>。
-          所以用 &amp;&amp; 之前，**左边一定要是 boolean**。
+          ⭐ 规律：{'{false && X}'} 和 {'{null && X}'} 什么都不渲染； 但 {'{0 && X}'} 会渲染出{' '}
+          <strong>0</strong>。 所以用 &amp;&amp; 之前，**左边一定要是 boolean**。
         </p>
       </div>
 
@@ -68,9 +67,7 @@ export default function ConditionalBasics() {
           const color = isLogin ? '#1f883d' : '#cf222e'
           return <p style={{ color }}>状态：{label}</p>
         })()}
-        <p className="hint">
-          复杂条件不要全塞进 JSX 里，先算出变量再引用（可读性会好很多）
-        </p>
+        <p className="hint">复杂条件不要全塞进 JSX 里，先算出变量再引用（可读性会好很多）</p>
       </div>
     </div>
   )

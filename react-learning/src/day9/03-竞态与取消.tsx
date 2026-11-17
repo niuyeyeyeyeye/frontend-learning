@@ -74,7 +74,8 @@ function WithoutCancel() {
         你最后点的是：<strong>{clicked || '（还没点）'}</strong>
       </p>
       <p style={{ margin: '4px 0' }}>
-        屏幕上显示：<strong>{loading ? '加载中…' : shownKw ? `「${shownKw}」的结果` : '（空）'}</strong>
+        屏幕上显示：
+        <strong>{loading ? '加载中…' : shownKw ? `「${shownKw}」的结果` : '（空）'}</strong>
       </p>
       <p style={{ margin: '4px 0', color: mismatch ? '#cf222e' : '#1f883d', fontWeight: 600 }}>
         {mismatch ? '⚠️ 不一致！旧请求把新结果覆盖了（竞态）' : '✅ 目前一致'}
@@ -145,16 +146,18 @@ function WithCancel() {
         你最后点的是：<strong>{kw || '（还没点）'}</strong>
       </p>
       <p style={{ margin: '4px 0' }}>
-        屏幕上显示：<strong>{loading ? '加载中…' : shownKw ? `「${shownKw}」的结果` : '（空）'}</strong>
+        屏幕上显示：
+        <strong>{loading ? '加载中…' : shownKw ? `「${shownKw}」的结果` : '（空）'}</strong>
       </p>
       <p style={{ margin: '4px 0', color: mismatch ? '#cf222e' : '#1f883d', fontWeight: 600 }}>
         {mismatch ? '⚠️ 不一致（不该发生）' : '✅ 永远一致'}
       </p>
       <p className="hint" style={{ marginBottom: 0 }}>
-        同样的操作顺序：<strong>先点慢的，再快速点快的</strong>。
-        慢的请求在点快的瞬间就被 abort 了，所以永远不会覆盖。
+        同样的操作顺序：<strong>先点慢的，再快速点快的</strong>。 慢的请求在点快的瞬间就被 abort
+        了，所以永远不会覆盖。
         <br />
-        ⚠️ 注意：两栏的按钮文字一样，<strong>请分别点这一栏里的按钮</strong>（鼠标悬停时看边框颜色区分）。
+        ⚠️ 注意：两栏的按钮文字一样，<strong>请分别点这一栏里的按钮</strong>
+        （鼠标悬停时看边框颜色区分）。
       </p>
     </div>
   )
@@ -174,7 +177,14 @@ export default function RaceDemo() {
       <div className="card">
         <h3 style={{ marginTop: 0 }}>治法就三行</h3>
         <pre
-          style={{ background: '#f6f8fa', padding: 12, borderRadius: 6, fontSize: 12.5, overflowX: 'auto', margin: '8px 0' }}
+          style={{
+            background: '#f6f8fa',
+            padding: 12,
+            borderRadius: 6,
+            fontSize: 12.5,
+            overflowX: 'auto',
+            margin: '8px 0',
+          }}
         >{`useEffect(() => {
   const controller = new AbortController()
 
@@ -189,8 +199,8 @@ export default function RaceDemo() {
 }, [keyword])                                          // ← keyword 变就重跑`}</pre>
         <p style={{ margin: 0 }}>
           <strong>为什么必须是 cleanup 里 abort？</strong>
-          因为 React 的规则是：依赖变了 → 先跑上一次的 cleanup → 再跑新一次 effect。
-          把 abort 放在 cleanup 里，顺序就天然正确：先掐掉旧的，再发新的。
+          因为 React 的规则是：依赖变了 → 先跑上一次的 cleanup → 再跑新一次 effect。 把 abort 放在
+          cleanup 里，顺序就天然正确：先掐掉旧的，再发新的。
         </p>
       </div>
 
@@ -220,8 +230,24 @@ export default function RaceDemo() {
               ],
             ].map(([a, b]) => (
               <tr key={a}>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', whiteSpace: 'nowrap' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {a}
+                </td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -234,9 +260,17 @@ export default function RaceDemo() {
           <strong>Q：搜索框快速输入，结果错乱，你怎么排查和修复？</strong>
         </p>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
-          <li>先判断是<strong>竞态</strong>：响应回来的顺序 ≠ 请求发出的顺序</li>
-          <li>修复：每次新请求前 <code>abort()</code> 旧请求（<code>AbortController</code> + <code>signal</code>）</li>
-          <li>补充：<code>catch</code> 里忽略 <code>ERR_CANCELED</code>；<code>loading</code> 不要放 <code>finally</code></li>
+          <li>
+            先判断是<strong>竞态</strong>：响应回来的顺序 ≠ 请求发出的顺序
+          </li>
+          <li>
+            修复：每次新请求前 <code>abort()</code> 旧请求（<code>AbortController</code> +{' '}
+            <code>signal</code>）
+          </li>
+          <li>
+            补充：<code>catch</code> 里忽略 <code>ERR_CANCELED</code>；<code>loading</code> 不要放{' '}
+            <code>finally</code>
+          </li>
           <li>
             加分：<strong>再叠一层防抖</strong>（Day5 的 <code>useDebounce</code>）—— 减少请求数，
             abort 解决"顺序"，防抖解决"次数"，两个一起用才是完整方案

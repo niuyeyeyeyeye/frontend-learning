@@ -78,7 +78,9 @@ export function SettingsIndex() {
         三个 tab 共享同一个外壳（标题 + tab 栏）。如果不嵌套，你得在三个页面里各写一遍外壳 ——
         改一处要改三遍，还容易不一致。
       </p>
-      <p>嵌套路由的配置长这样（见 <code>src/router.tsx</code>）：</p>
+      <p>
+        嵌套路由的配置长这样（见 <code>src/router.tsx</code>）：
+      </p>
       <pre
         style={{
           background: '#f6f8fa',
@@ -100,16 +102,20 @@ export function SettingsIndex() {
 
       <ul style={{ margin: '8px 0 0', paddingLeft: 20, lineHeight: 1.9 }}>
         <li>
-          <strong>父路由的 element 必须有 <code>&lt;Outlet /&gt;</code></strong>，
-          否则子路由没地方渲染（页面看着就是"只有外壳、内容空白"，这个坑很常见）。
+          <strong>
+            父路由的 element 必须有 <code>&lt;Outlet /&gt;</code>
+          </strong>
+          ， 否则子路由没地方渲染（页面看着就是"只有外壳、内容空白"，这个坑很常见）。
         </li>
         <li>
           <strong>子路由的 path 不要加前导斜杠</strong>（写 <code>'profile'</code>，不要写{' '}
           <code>'/day7/nested/profile'</code>）。加了斜杠就变成绝对路径，父层的关系就断了。
         </li>
         <li>
-          <strong><code>index: true</code></strong> 表示"父路径本身就是我"，所以{' '}
-          <code>/day7/nested</code> 显示的就是本页。
+          <strong>
+            <code>index: true</code>
+          </strong>{' '}
+          表示"父路径本身就是我"，所以 <code>/day7/nested</code> 显示的就是本页。
         </li>
       </ul>
 
@@ -130,12 +136,12 @@ export function SettingsProfile() {
       <h3 style={{ marginTop: 0 }}>资料 tab（/day7/nested/profile）</h3>
       <p>
         注意：这个组件和 <code>SettingsLayout</code> 是<strong>父子关系</strong>，
-        但它拿不到父组件的 state —— 除非通过 props（用 <code>useOutletContext</code>）
-        或 Context（Day6 学的）。
+        但它拿不到父组件的 state —— 除非通过 props（用 <code>useOutletContext</code>） 或
+        Context（Day6 学的）。
       </p>
       <p className="hint">
-        真实项目里，这种"设置页"通常是：外壳 + 3 个 tab，
-        每个 tab 的数据各自请求，切 tab 时不重新请求外壳的东西。
+        真实项目里，这种"设置页"通常是：外壳 + 3 个 tab， 每个 tab 的数据各自请求，切 tab
+        时不重新请求外壳的东西。
       </p>
       <Link to="/day7/nested/security">去「安全」tab →</Link>
     </div>
@@ -149,9 +155,9 @@ export function SettingsSecurity() {
       <p>同样的外壳，不同的内容。</p>
       <p className="hint">
         面试常问：<strong>"嵌套路由的父子组件怎么传值？"</strong>
-        答：父组件 <code>&lt;Outlet context={'{...}'} /&gt;</code>，
-        子组件 <code>const ctx = useOutletContext&lt;T&gt;()</code>。
-        它的作用和 Context 一样，但只在"这一条路由"里有效。
+        答：父组件 <code>&lt;Outlet context={'{...}'} /&gt;</code>， 子组件{' '}
+        <code>const ctx = useOutletContext&lt;T&gt;()</code>。 它的作用和 Context
+        一样，但只在"这一条路由"里有效。
       </p>
       <Link to="/day7/nested">← 回说明</Link>
     </div>

@@ -67,8 +67,8 @@ function CounterDemo() {
         重置（合并式 set）
       </button>
       <p className="hint" style={{ marginBottom: 0 }}>
-        这个 store 在别的页面也能读到 —— 去{' '}
-        <code>/day8/selector</code> 那条路我们用的是另一个 store，互不影响。
+        这个 store 在别的页面也能读到 —— 去 <code>/day8/selector</code> 那条路我们用的是另一个
+        store，互不影响。
       </p>
     </div>
   )
@@ -125,8 +125,8 @@ function ListDemo() {
         ))}
       </ul>
       <p className="hint" style={{ marginBottom: 0 }}>
-        ⚠️ 别写成 <code>s.fruits.push(name)</code> —— 数组引用没变，selector 比较不出来，
-        用 <code>[...s.fruits, name]</code>。这条规矩从 Day3 到现在没变过。
+        ⚠️ 别写成 <code>s.fruits.push(name)</code> —— 数组引用没变，selector 比较不出来， 用{' '}
+        <code>[...s.fruits, name]</code>。这条规矩从 Day3 到现在没变过。
       </p>
     </div>
   )
@@ -157,9 +157,7 @@ function OutsideComponentDemo() {
 
   return (
     <div className="card">
-      <p style={{ marginTop: 0 }}>
-        每 3 秒自动读一次最新 count（你可以不停点 +1 试试）：
-      </p>
+      <p style={{ marginTop: 0 }}>每 3 秒自动读一次最新 count（你可以不停点 +1 试试）：</p>
       <ul style={{ margin: '0 0 8px', paddingLeft: 20, minHeight: 64 }}>
         {log.length === 0 && <li style={{ color: '#8b949e' }}>（等一下，3 秒后出现）</li>}
         {log.map((l, i) => (
@@ -213,7 +211,13 @@ export default function ZustandBasics() {
             ].map(([a, b, c]) => (
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
                   <code>{b}</code>
                 </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>

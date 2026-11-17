@@ -13,7 +13,11 @@
 // ------------------------------------------------------------
 function SkillTag({ label, color = '#0969da' }: { label: string; color?: string }) {
   // TODO: 把下面这行换成真正的标签
-  return <span className="tag" style={{color:color}}>{label}</span>
+  return (
+    <span className="tag" style={{ color: color }}>
+      {label}
+    </span>
+  )
 }
 
 // ------------------------------------------------------------
@@ -36,11 +40,11 @@ const users: User[] = [
 function UserList({ users }: { users: User[] }) {
   // TODO: 用 users.map 渲染列表，记得加 key
   return (
-    <ul>{
-    users.map((user)=>(
-    <li key={user.id}>{`姓名：${user.name} 年龄：${user.age}`}</li> 
-  ))
-}</ul>
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{`姓名：${user.name} 年龄：${user.age}`}</li>
+      ))}
+    </ul>
   )
 }
 
@@ -52,13 +56,12 @@ function UserList({ users }: { users: User[] }) {
 // ------------------------------------------------------------
 function Alert({ type, children }: { type: 'info' | 'warn' | 'error'; children: React.ReactNode }) {
   // TODO: 根据 type 选颜色，再把 children 渲染进去
-  const colors ={
-    info:'#ddf4ff',
-    warn:'yellow',
-    error:'red'
-    
+  const colors = {
+    info: '#ddf4ff',
+    warn: 'yellow',
+    error: 'red',
   }
-  return <div style={{background:colors[type]??'#333'}}>{children}</div>
+  return <div style={{ background: colors[type] ?? '#333' }}>{children}</div>
 }
 
 // ------------------------------------------------------------
@@ -68,7 +71,12 @@ function Alert({ type, children }: { type: 'info' | 'warn' | 'error'; children: 
 // ------------------------------------------------------------
 function Stat({ label, value, unit = '' }: { label: string; value: number; unit?: string }) {
   // TODO
-  return (<div>{label}：<strong style={{fontSize: '20px'}}>{value}</strong>{unit}</div>)
+  return (
+    <div>
+      {label}：<strong style={{ fontSize: '20px' }}>{value}</strong>
+      {unit}
+    </div>
+  )
 }
 
 // ------------------------------------------------------------

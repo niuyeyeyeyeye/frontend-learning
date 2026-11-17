@@ -24,7 +24,9 @@ export default function WhyWrapRequest() {
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
           <div className="card" style={{ padding: 10 }}>
-            <div style={{ color: '#57606a', fontSize: 12, marginBottom: 6 }}>① loading（加载中）</div>
+            <div style={{ color: '#57606a', fontSize: 12, marginBottom: 6 }}>
+              ① loading（加载中）
+            </div>
             <div style={{ background: '#eaeef2', height: 10, borderRadius: 4, marginBottom: 6 }} />
             <div style={{ background: '#eaeef2', height: 10, borderRadius: 4, marginBottom: 6 }} />
             <div style={{ background: '#eaeef2', height: 10, borderRadius: 4, width: '60%' }} />
@@ -54,16 +56,14 @@ export default function WhyWrapRequest() {
 
         <p className="hint" style={{ marginBottom: 0 }}>
           ⚠️ 最常见的三个坑：① 只判断 `data.length &gt; 0`，忘了 loading 时也是 0 →
-          会闪一下"暂无数据"；② 出错后 loading 没关 → 一直转圈；
-          ③ 空数据当成错误提示 → 用户以为系统坏了。
+          会闪一下"暂无数据"；② 出错后 loading 没关 → 一直转圈； ③ 空数据当成错误提示 →
+          用户以为系统坏了。
         </p>
       </div>
 
       <div className="card">
         <h3 style={{ marginTop: 0 }}>为什么不用 fetch？</h3>
-        <p style={{ marginTop: 0 }}>
-          fetch 能用，但每写一个接口你都要重复这四件事：
-        </p>
+        <p style={{ marginTop: 0 }}>fetch 能用，但每写一个接口你都要重复这四件事：</p>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
             <tr style={{ textAlign: 'left', color: '#57606a' }}>
@@ -82,15 +82,24 @@ export default function WhyWrapRequest() {
             ].map(([a, b, c]) => (
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{c}</td>
               </tr>
             ))}
           </tbody>
         </table>
         <p className="hint" style={{ marginBottom: 0 }}>
-          <strong>第一条最关键</strong>：fetch 在 404/500 时<strong>不会</strong>抛错，只有断网才抛。
-          所以你写 <code>fetch().then(r =&gt; r.json())</code> 拿到 500 的报错 JSON，还以为成功了。
+          <strong>第一条最关键</strong>：fetch 在 404/500 时<strong>不会</strong>
+          抛错，只有断网才抛。 所以你写 <code>fetch().then(r =&gt; r.json())</code> 拿到 500 的报错
+          JSON，还以为成功了。
         </p>
       </div>
 
@@ -122,7 +131,8 @@ export default function WhyWrapRequest() {
             <Link to="/day9/basics">2. axios 与错误分类</Link> —— 点按钮，把 4 种错误都撞一遍
           </li>
           <li>
-            <Link to="/day9/interceptor">3. 拦截器与封装</Link> —— 自动带 token、自动剥 data、401 统一处理
+            <Link to="/day9/interceptor">3. 拦截器与封装</Link> —— 自动带 token、自动剥 data、401
+            统一处理
           </li>
           <li>
             <Link to="/day9/race">4. ⭐ 竞态与取消</Link> —— 快速切页时"旧结果覆盖新结果"怎么治

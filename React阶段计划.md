@@ -126,8 +126,42 @@
 | Day8 | Zustand | 🔵 文件已生成（11-05） |
 | Day9 | axios + 三种状态 | 🔵 文件已生成（11-09） |
 | Day10 | 性能优化 | 🔵 文件已生成（11-10） |
-| Day11 | 工程化 + 部署 | ⬜ |
+| Day11 | 工程化 + 部署 | 🔵 文件已生成（11-17）：Prettier ✅ / ESLint 因 TS7 冲突暂缺 |
 | Day12 | 综合 + 复习 | ⬜ |
+
+---
+
+## 七之二、⭐ Day12 之后去哪（2026-11-17 补充）
+
+> 详细的 6 周排期在 `大厂实习与春招计划.md` §0.1。这里只记 React 侧的收尾顺序。
+
+```
+Day12 综合复习（0.5~1 天）
+   ↓
+补课 5 节（约 6 小时，按优先级）
+   ① ErrorBoundary + createPortal（UI 基建两件套，做项目立刻用）
+   ② useReducer（+ Context 组合 = 手写 mini-Redux）
+   ③ React 19 新特性（Actions / use() / useOptimistic / ref 当 prop）
+   ④ 受控/非受控 + 中文输入法（IME）坑
+   ⑤ Vite（为什么快 + server.proxy）+ CSS 方案选型
+   ↓
+Next.js 入门（官方 tutorial 走一遍，约 12h）
+   ↓
+项目：Next + Prisma + 认证 + Vercel（约 65h）
+```
+
+### 为什么必须补这 5 节（核对代码后的缺口）
+
+| 项 | 证据 |
+|---|---|
+| `createPortal` / `forwardRef` / `useImperativeHandle` / `useTransition` / `useActionState` / `useOptimistic` / `useId` | **整个项目 0 处使用** |
+| `ErrorBoundary` | 只在 `day10/03` 一句话里出现过（"超出今天范围，先知道有这回事"） |
+| `useReducer` | 只在 `day6/02`、`day8/01` 的注释里被提过，**从没讲** |
+| Vite | Day1 建项目时用的，11 天没正式讲过 |
+| CSS 组织 | 全程只有 `index.css` + 内联 style |
+
+> 这是我排 12 天课程时的遗漏，不是你的问题。补课不算"加新内容"，
+> 是**把已经用过但没讲清的东西补齐** —— 所以优先级高于 Next。
 
 ---
 

@@ -435,6 +435,38 @@ return Promise.reject(err)
 
 
 
+## Vite
+
+### import.meta.env
+
+Vite在启动时hi把环境信息注入到`import.meta.env`对象
+
+常见内置变量：
+
+| 变量       | 含义         | 什么时候变                                                   |
+| ---------- | ------------ | ------------------------------------------------------------ |
+| `MODE`     | 当前模式     | `npm run dev` → `development`；`npm run build` → `production` |
+| `DEV`      | 是否开发环境 | 开发时 `true`，构建后 `false`                                |
+| `PROD`     | 是否生产环境 | 构建后 `true`                                                |
+| `BASE_URL` | 部署基础路径 | 部署到子路径时会变（比如 `/my-app/`）                        |
+
+### VITE_前缀变量
+
+**`.env文件中以 VITE_ 开头的变量才会被 Vite 打包进前端代码`**
+
+### .env...文件
+
+这些文件按优先级合并，再按`VITE_`过滤塞入**`import.meta.env`**对象
+
+- .env                  （所有模式都加载）
+- .env.local            （所有模式都加载，不提交 git）
+- .env.[mode]           （只加载匹配当前 mode 的，比如 .env.development）
+- .env.[mode].local     （只加载匹配当前 mode 的，不提交 git）
+
+### 警告
+
+自定义对象还要补充类型
+
 ## Link组件
 
 ## NavLink组件

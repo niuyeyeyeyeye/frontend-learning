@@ -36,17 +36,15 @@ export default function UsersList() {
     <div>
       <h2>用户列表</h2>
       <p className="hint" style={{ marginTop: 0 }}>
-        👆 点任意一个人进详情。注意地址从 <code>/day7/users</code> 变成了{' '}
-        <code>/day7/users/2</code> —— 页面没刷新。
+        👆 点任意一个人进详情。注意地址从 <code>/day7/users</code> 变成了 <code>/day7/users/2</code>{' '}
+        —— 页面没刷新。
       </p>
 
       <div className="card">
         {USERS.map((u) => (
           // ⭐ to 里用模板字符串把 id 拼进地址
           <div key={u.id} style={{ padding: '6px 0', borderBottom: '1px solid #f6f8fa' }}>
-            <Link to={`/day7/users/${u.id}`}>
-              {u.name}
-            </Link>
+            <Link to={`/day7/users/${u.id}`}>{u.name}</Link>
             <span style={{ color: '#8b949e', marginLeft: 8, fontSize: 13 }}>
               {u.role} · {u.city}
             </span>
@@ -64,8 +62,8 @@ export default function UsersList() {
           <Link to="/day7/users/999">/day7/users/999（不存在的 id）</Link>
         </p>
         <p className="hint">
-          直接在地址栏改数字回车也行 —— 因为地址是"真"的，不是内存里藏着的状态。
-          这就是"URL 是数据源"的好处：能收藏、能分享、刷新不丢。
+          直接在地址栏改数字回车也行 —— 因为地址是"真"的，不是内存里藏着的状态。 这就是"URL
+          是数据源"的好处：能收藏、能分享、刷新不丢。
         </p>
       </div>
     </div>
@@ -123,9 +121,9 @@ export function UserDetail() {
           ))}
         </p>
         <p className="hint">
-          URL 里 id = <code>{rawId}</code>，类型是 <code>string</code>；
-          我用 <code>String(u.id) === rawId</code> 来比较，就是因为一个是字符串一个是数字。
-          （用 <code>Number(rawId)</code> 转成数字再比也行，但 <code>'='</code> 这种脏数据会变成 NaN。）
+          URL 里 id = <code>{rawId}</code>，类型是 <code>string</code>； 我用{' '}
+          <code>String(u.id) === rawId</code> 来比较，就是因为一个是字符串一个是数字。 （用{' '}
+          <code>Number(rawId)</code> 转成数字再比也行，但 <code>'='</code> 这种脏数据会变成 NaN。）
         </p>
         <Link className="btn-ghost" to="/day7/users">
           ← 回列表

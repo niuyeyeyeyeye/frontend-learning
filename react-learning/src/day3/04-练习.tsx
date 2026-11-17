@@ -29,24 +29,22 @@ function TodoCore() {
   function add() {
     // 提示：先 trim 判断空；再 setTodos([...todos, { id: nextId, text, done: false }])；
     //       然后 setNextId(nextId + 1) 和 setInput('')
-    if(input.trim()==='') return
-    setTodos(()=>[...todos,{id:nextId,text:input.trim(),done:false}])
-    setNextId(nextId+1)
+    if (input.trim() === '') return
+    setTodos(() => [...todos, { id: nextId, text: input.trim(), done: false }])
+    setNextId(nextId + 1)
     setInput('')
   }
 
   // TODO 1-b：实现切换完成
   function toggle(id: number) {
     // 提示：setTodos(todos.map(...)) —— 找到 id 的那项要造新对象
-    setTodos(todos.map((n)=>n.id===id?{...n,done:!n.done}:n))
+    setTodos(todos.map((n) => (n.id === id ? { ...n, done: !n.done } : n)))
   }
 
   // TODO 1-c：实现删除
   function remove(id: number) {
     // 提示：setTodos(todos.filter(...))
-    setTodos(todos.filter((n)=>
-      n.id!=id
-    ))
+    setTodos(todos.filter((n) => n.id != id))
   }
 
   return (
@@ -58,7 +56,12 @@ function TodoCore() {
         }}
         style={{ display: 'flex', gap: 8, marginBottom: 8 }}
       >
-        <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="输入待办" style={{ flex: 1, padding: 4 }} />
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="输入待办"
+          style={{ flex: 1, padding: 4 }}
+        />
         <button className="btn" type="submit">
           添加
         </button>
@@ -68,9 +71,20 @@ function TodoCore() {
 
       {todos.map((t) => (
         <div key={t.id} className="card" style={{ display: 'flex', alignItems: 'center' }}>
-          <input type="checkbox" checked={t.done} onChange={() => toggle(t.id)} style={{ marginRight: 8 }} />
-          <span style={{ flex: 1, textDecoration: t.done ? 'line-through' : 'none' }}>{t.text}</span>
-          <button className="btn-ghost" style={{ fontSize: 12, padding: '2px 8px' }} onClick={() => remove(t.id)}>
+          <input
+            type="checkbox"
+            checked={t.done}
+            onChange={() => toggle(t.id)}
+            style={{ marginRight: 8 }}
+          />
+          <span style={{ flex: 1, textDecoration: t.done ? 'line-through' : 'none' }}>
+            {t.text}
+          </span>
+          <button
+            className="btn-ghost"
+            style={{ fontSize: 12, padding: '2px 8px' }}
+            onClick={() => remove(t.id)}
+          >
             删除
           </button>
         </div>
@@ -95,17 +109,23 @@ function TodoFilter() {
   const [filter, setFilter] = useState<'all' | 'active' | 'done'>('all')
 
   // TODO 2：算出 visibleTodos 和 doneCount
-  const visibleTodos = todos.filter((n)=>
-    filter==='all'?true:filter==='done'?n.done:!n.done
+  const visibleTodos = todos.filter((n) =>
+    filter === 'all' ? true : filter === 'done' ? n.done : !n.done,
   ) // ← 改这里
-  const doneCount = todos.filter((n)=>n.done===true).length// ← 改这里
+  const doneCount = todos.filter((n) => n.done === true).length // ← 改这里
 
   return (
     <div>
       <div style={{ marginBottom: 8 }}>
-        <button className="btn-ghost" onClick={() => setFilter('all')}>全部</button>
-        <button className="btn-ghost" onClick={() => setFilter('active')}>未完成</button>
-        <button className="btn-ghost" onClick={() => setFilter('done')}>已完成</button>
+        <button className="btn-ghost" onClick={() => setFilter('all')}>
+          全部
+        </button>
+        <button className="btn-ghost" onClick={() => setFilter('active')}>
+          未完成
+        </button>
+        <button className="btn-ghost" onClick={() => setFilter('done')}>
+          已完成
+        </button>
       </div>
       <p className="hint">
         已完成 {doneCount} / 共 {todos.length}（当前筛选 {visibleTodos.length} 条）
@@ -130,16 +150,16 @@ function TodoEdit() {
     { id: 2, text: '再双击我', done: false },
   ])
   // TODO 3：加 editingId 和 draft 两个 state，实现编辑
-  const [editingId,setEditingId]=useState<number|null>(null)
-  const [draft,setDraft]=useState('')
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [draft, setDraft] = useState('')
 
-  function startEdit(t:Todo){
+  function startEdit(t: Todo) {
     setEditingId(t.id)
     setDraft(t.text)
   }
-  function saveEdit(){
-    if(draft.trim()!==''&&editingId!==null){
-      setTodos(todos.map((n)=>n.id===editingId?{...n,text:draft}:n))
+  function saveEdit() {
+    if (draft.trim() !== '' && editingId !== null) {
+      setTodos(todos.map((n) => (n.id === editingId ? { ...n, text: draft } : n)))
     }
     setEditingId(null)
     setDraft('')
@@ -149,17 +169,19 @@ function TodoEdit() {
     <div>
       {todos.map((t) => (
         <div key={t.id} className="card">
-          {editingId===t.id?
-          (<input
-          autoFocus
-          value={draft}
-          onBlur={saveEdit}
-          onChange={(e)=>setDraft(e.target.value)}
-          onKeyDown={(e)=>{
-            if(e.key==='Enter')saveEdit()
-              if(e.key==='Escape')setEditingId(null)
-          }}
-          ></input>):(<span onDoubleClick={()=>startEdit(t)}>{t.text}</span>
+          {editingId === t.id ? (
+            <input
+              autoFocus
+              value={draft}
+              onBlur={saveEdit}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') saveEdit()
+                if (e.key === 'Escape') setEditingId(null)
+              }}
+            ></input>
+          ) : (
+            <span onDoubleClick={() => startEdit(t)}>{t.text}</span>
           )}
         </div>
       ))}

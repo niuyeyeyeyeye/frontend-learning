@@ -20,10 +20,10 @@ function TitleSync() {
   ])
 
   // TODO 1：写 useEffect，把 document.title 改成 `待办（${未完成数}）`
-  useEffect(()=>{
-    const ti=todos.filter(n=>!n.done).length
-    document.title=`待办（${ti}）`
-  },[todos])
+  useEffect(() => {
+    const ti = todos.filter((n) => !n.done).length
+    document.title = `待办（${ti}）`
+  }, [todos])
   return (
     <div>
       <p className="hint">看浏览器标签，应该显示"待办（2）"；点下面按钮后数字要跟着变</p>
@@ -55,11 +55,11 @@ function Countdown() {
   const [running, setRunning] = useState(false)
 
   // TODO 2：写 useEffect，实现倒计时 + 清理函数
-  useEffect(()=>{
-    if(running!==true||seconds<=0)return
-    const s = setInterval(()=>setSeconds(n=>n-1),1000)
-    return ()=>clearInterval(s)}
-    ,[running,seconds])
+  useEffect(() => {
+    if (running !== true || seconds <= 0) return
+    const s = setInterval(() => setSeconds((n) => n - 1), 1000)
+    return () => clearInterval(s)
+  }, [running, seconds])
 
   return (
     <div>
@@ -74,8 +74,7 @@ function Countdown() {
         }}
       >
         开始倒计时
-      </button>
-      {' '}
+      </button>{' '}
       <button className="btn-ghost" onClick={() => setRunning(false)}>
         暂停
       </button>
@@ -91,23 +90,25 @@ function Countdown() {
 // ------------------------------------------------------------
 function KeyLogger() {
   // TODO 3：用 useState 存按键数组，useEffect 里加 window keydown 监听 + 清理
-  const [keys,setKeys]=useState<string[]>([])
-  useEffect(()=>{
-    const n=(e:KeyboardEvent)=>{setKeys(prev=>[...prev.slice(-4),e.key])}
-    window.addEventListener('keydown',n)
-    return ()=>{
-      removeEventListener('keydown',n)
+  const [keys, setKeys] = useState<string[]>([])
+  useEffect(() => {
+    const n = (e: KeyboardEvent) => {
+      setKeys((prev) => [...prev.slice(-4), e.key])
     }
-  },[])
+    window.addEventListener('keydown', n)
+    return () => {
+      removeEventListener('keydown', n)
+    }
+  }, [])
   return (
     <div>
       <p className="hint">随便按几个键，看下面</p>
       <div className="card">
-        <input/>
-        {keys.map((n)=>
+        <input />
+        {keys.map((n) => (
           <span>{n}</span>
-          )}
-          </div>
+        ))}
+      </div>
     </div>
   )
 }

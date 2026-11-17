@@ -13,3 +13,10 @@ Thumbs.db
 # 日志与临时文件
 *.log
 *.tmp
+
+# 本地环境变量（含真实地址/密钥，绝不提交）
+.env.local
+.env.*.local
+
+# 我的临时验证目录
+react-learning/_*/

@@ -57,7 +57,7 @@ function PriceCalc() {
       <PriceInput price={price} onChangePrice={setPrice} />
       <QtyInput qty={qty} onChangeQty={setQty} />
       <p style={{ marginTop: 8 }}>
-        总价：<strong style={{ color: '#cf222e' }}>{qty*price}</strong>
+        总价：<strong style={{ color: '#cf222e' }}>{qty * price}</strong>
       </p>
     </div>
   )
@@ -115,33 +115,36 @@ const UserContext = createContext<UserCtx | null>(null)
 
 function useUser(): UserCtx {
   // TODO 2-a：这里应该是 const ctx = useContext(UserContext)
-  const ctx=useContext<UserCtx | null>(UserContext)
+  const ctx = useContext<UserCtx | null>(UserContext)
   //            + if (ctx === null) throw new Error(...)
-  if(ctx === null)throw new Error('必须在provider中使用')
+  if (ctx === null) throw new Error('必须在provider中使用')
   return ctx
 }
 
-function UserProvider({children}:{children:React.ReactNode}) {
+function UserProvider({ children }: { children: React.ReactNode }) {
   // TODO 2-b：包一层 <UserProvider>
-  const [user,setUser]=useState<User | null>(null)
-  const login =()=>setUser({name:'小明',role:'前端工程师'})
-  const logout=()=>setUser(null)
+  const [user, setUser] = useState<User | null>(null)
+  const login = () => setUser({ name: '小明', role: '前端工程师' })
+  const logout = () => setUser(null)
 
-  const value = useMemo(()=>({
-    user,login,logout
-  }),[user])
-  return (
-    <UserContext.Provider value={value}>{children}</UserContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      login,
+      logout,
+    }),
+    [user],
   )
+  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
 
 function UserProfileDemo() {
-     return (
-        <UserProvider>
-          <div style={{ color: '#999', fontSize: 12 }}></div>
-          <ProfileSection />
-        </UserProvider>
-     )
+  return (
+    <UserProvider>
+      <div style={{ color: '#999', fontSize: 12 }}></div>
+      <ProfileSection />
+    </UserProvider>
+  )
 }
 
 function ProfileSection() {
@@ -175,9 +178,7 @@ function ProfileCard() {
           </button>
         </>
       )}
-      <p className="hint">
-        👆 如果点了没反应，说明 TODO 2-a / 2-b 还没做完（现在用的是假 hook）。
-      </p>
+      <p className="hint">👆 如果点了没反应，说明 TODO 2-a / 2-b 还没做完（现在用的是假 hook）。</p>
     </div>
   )
 }
@@ -201,107 +202,120 @@ function ProfileCard() {
 function CartArea() {
   // TODO 3：写完 Context / Provider / useCart 后，在这里挂上你的布局
   return (
-  <div>
-    <CartProvider>
-      <CartLayout></CartLayout>
-    </CartProvider>
-  </div>
+    <div>
+      <CartProvider>
+        <CartLayout></CartLayout>
+      </CartProvider>
+    </div>
   )
 }
 
-type item ={
-  id:number,
-  name:string,
-  price:number,
-  count:number
+type item = {
+  id: number
+  name: string
+  price: number
+  count: number
 }
 
-type useContextValue={
-  items:item[],
-  totalCount:number,
-  totalPrice:number,
-  addItem:(item:Omit<item,'count'>)=>void,
-  removeItem:(id:number)=>void
+type useContextValue = {
+  items: item[]
+  totalCount: number
+  totalPrice: number
+  addItem: (item: Omit<item, 'count'>) => void
+  removeItem: (id: number) => void
 }
 
-const cartContext=createContext<useContextValue|null>(null)
+const cartContext = createContext<useContextValue | null>(null)
 
-function useCart(){
-  const ctx=useContext(cartContext)
-  if(!ctx)throw new Error('必须在provider里使用context')
+function useCart() {
+  const ctx = useContext(cartContext)
+  if (!ctx) throw new Error('必须在provider里使用context')
   return ctx
 }
 
+const cart: item[] = [{ id: 1, name: '牛奶', price: 6, count: 2 }]
 
+function CartProvider({ children }: { children: React.ReactNode }) {
+  const [items, setItems] = useState<item[]>(cart)
 
-const cart:item[] =[
-  {id:1,name:'牛奶',price:6,count:2}
-]
-
-
-function CartProvider({children}:{children:React.ReactNode}){
-  const [items,setItems]=useState<item[]>(cart)
-
-  const addItem=(item:Omit<item,'count'>)=>{
-    setItems((n)=>{
-      const bool= n.some(x=>x.id===item.id)
-      if(bool)return n.map((x)=>x.id===item.id?{...x,count : x.count + 1}:x)
-      return [...n,{...item,count:1}]
+  const addItem = (item: Omit<item, 'count'>) => {
+    setItems((n) => {
+      const bool = n.some((x) => x.id === item.id)
+      if (bool) return n.map((x) => (x.id === item.id ? { ...x, count: x.count + 1 } : x))
+      return [...n, { ...item, count: 1 }]
     })
   }
 
-  const removeItem=(id:number)=>{
-    setItems(
-      n=>n.filter((items=>items.id!==id))
-    )
+  const removeItem = (id: number) => {
+    setItems((n) => n.filter((items) => items.id !== id))
   }
 
-  const value=useMemo<useContextValue>(()=>({
+  const value = useMemo<useContextValue>(
+    () => ({
       items,
-      totalCount:items.reduce((count,n)=>count+n.count,0),
-      totalPrice:items.reduce((sum,n)=>sum+n.count*n.price,0),
+      totalCount: items.reduce((count, n) => count + n.count, 0),
+      totalPrice: items.reduce((sum, n) => sum + n.count * n.price, 0),
       addItem,
-      removeItem
-    }
-  ),[items,addItem,removeItem])
+      removeItem,
+    }),
+    [items, addItem, removeItem],
+  )
 
   return <cartContext.Provider value={value}>{children}</cartContext.Provider>
 }
 
-function HeaderBadge(){
-  const {items,totalCount,totalPrice,removeItem}=useCart()
+function HeaderBadge() {
+  const { items, totalCount, totalPrice, removeItem } = useCart()
   return (
-  <div>
-        <span>商品数量：{totalCount}总计：{totalPrice}</span>
-        {items.map(n=>(<div key={n.id}>
-          <button onClick={()=>removeItem(n.id)}>删除</button>
+    <div>
+      <span>
+        商品数量：{totalCount}总计：{totalPrice}
+      </span>
+      {items.map((n) => (
+        <div key={n.id}>
+          <button onClick={() => removeItem(n.id)}>删除</button>
           商品：{n.name}商品单价：{n.price}商品数量：{n.count}
-          </div>))}
-  </div>
+        </div>
+      ))}
+    </div>
   )
 }
 
-
-function ProductList(){
-  const {addItem}=useCart()
-  const products=[{id:4,name:'鸡蛋',price:2}]
-  return <>{products.map((n)=><ProductCard key={n.id} onAdd={addItem} product={n}></ProductCard>)}</>
+function ProductList() {
+  const { addItem } = useCart()
+  const products = [{ id: 4, name: '鸡蛋', price: 2 }]
+  return (
+    <>
+      {products.map((n) => (
+        <ProductCard key={n.id} onAdd={addItem} product={n}></ProductCard>
+      ))}
+    </>
+  )
 }
 
-function ProductCard({ product, onAdd }: { product: Omit<item,'count'>; onAdd: (p: Omit<item,'count'>) => void }) {
-     return (
-       <div className="card">
-         {product.name} ¥{product.price}
-         <button className="btn" onClick={() => onAdd(product)}>加入购物车</button>
-       </div>
-     )
-   }
+function ProductCard({
+  product,
+  onAdd,
+}: {
+  product: Omit<item, 'count'>
+  onAdd: (p: Omit<item, 'count'>) => void
+}) {
+  return (
+    <div className="card">
+      {product.name} ¥{product.price}
+      <button className="btn" onClick={() => onAdd(product)}>
+        加入购物车
+      </button>
+    </div>
+  )
+}
 
-function CartLayout(){
-  return (<div>
-    <HeaderBadge></HeaderBadge>
-    <ProductList></ProductList>
-  </div>
+function CartLayout() {
+  return (
+    <div>
+      <HeaderBadge></HeaderBadge>
+      <ProductList></ProductList>
+    </div>
   )
 }
 
@@ -426,8 +440,8 @@ export default function PracticeDay6() {
  *     const { totalCount, totalPrice } = useCart()
  *     return <p className="card">🛒 购物车 {totalCount} 件，共 {totalPrice} 元</p>
  *   }
- * 
- * 
+ *
+ *
  *   function ProductList() {
  *     const { addItem } = useCart()
  *     const products = [
@@ -444,10 +458,10 @@ export default function PracticeDay6() {
  *       </div>
  *     )
  *   }
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  *   function CartArea() {
  *     return (
  *       <CartProvider>

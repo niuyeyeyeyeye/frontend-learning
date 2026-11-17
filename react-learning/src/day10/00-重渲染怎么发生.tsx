@@ -159,9 +159,9 @@ function MemoTrapDemo() {
       <ChildMemoBadFn onAction={() => {}} />
 
       <p className="hint" style={{ marginBottom: 0 }}>
-        👆 每点一次，<strong>只有第 2 个（用 useRef 稳住的对象）会跳过渲染</strong>。
-        第 3、4 个虽然包了 memo，但拿到的是<strong>每次新建的对象/函数</strong>，
-        memo 比较引用 → 永远"变了" → 白包。
+        👆 每点一次，<strong>只有第 2 个（用 useRef 稳住的对象）会跳过渲染</strong>。 第 3、4
+        个虽然包了 memo，但拿到的是<strong>每次新建的对象/函数</strong>， memo 比较引用 → 永远"变了"
+        → 白包。
         <br />
         <strong>这就是 useMemo / useCallback 存在的唯一理由：给 memo 提供稳定的 props。</strong>
       </p>
@@ -186,12 +186,34 @@ export default function Day10Overview() {
           </thead>
           <tbody>
             {[
-              ['“重渲染 = 性能问题”', '重渲染只是"再调用一次函数"，绝大多数时候便宜到看不见。真正的瓶颈通常是别的东西（大列表、同步计算、频繁布局）'],
-              ['“多加 memo / useMemo 准没错”', '每个 memo 都要做一次比较，useMemo 要存缓存。**包里不该包的，反而更慢，还多了 bug 面**'],
+              [
+                '“重渲染 = 性能问题”',
+                '重渲染只是"再调用一次函数"，绝大多数时候便宜到看不见。真正的瓶颈通常是别的东西（大列表、同步计算、频繁布局）',
+              ],
+              [
+                '“多加 memo / useMemo 准没错”',
+                '每个 memo 都要做一次比较，useMemo 要存缓存。**包里不该包的，反而更慢，还多了 bug 面**',
+              ],
             ].map(([a, b]) => (
               <tr key={a}>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', whiteSpace: 'nowrap' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {a}
+                </td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -216,15 +238,31 @@ export default function Day10Overview() {
           </thead>
           <tbody>
             {[
-              ['输入框打字卡', '输入时整棵列表都在重渲染', '拆组件 + memo 列表项；输入用防抖/受控优化'],
+              [
+                '输入框打字卡',
+                '输入时整棵列表都在重渲染',
+                '拆组件 + memo 列表项；输入用防抖/受控优化',
+              ],
               ['几百行列表滚动卡', 'DOM 太多', '虚拟列表（不是 memo 能解决的）'],
               ['首屏加载慢', 'JS 包太大', '路由懒加载 / 代码分割'],
-              ['点一下页面整个闪', '一个 state 放在了太上层', '把 state 往下挪（最常见、最有效的"优化"）'],
+              [
+                '点一下页面整个闪',
+                '一个 state 放在了太上层',
+                '把 state 往下挪（最常见、最有效的"优化"）',
+              ],
               ['什么都不卡', '——', '**什么都别做**'],
             ].map(([a, b, c]) => (
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{c}</td>
               </tr>
             ))}

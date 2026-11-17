@@ -27,13 +27,13 @@ function Stopwatch() {
   const [running, setRunning] = useState(false)
 
   // TODO 1：写 useEffect（定时器 + 清理 + 依赖数组）
-  useEffect(()=>{
-    if(!running)return
-    const s = setInterval(()=>setElapsed((n)=>n+0.1),100)
-    return ()=>{
+  useEffect(() => {
+    if (!running) return
+    const s = setInterval(() => setElapsed((n) => n + 0.1), 100)
+    return () => {
       clearInterval(s)
     }
-    },[running])
+  }, [running])
 
   return (
     <div>
@@ -42,9 +42,14 @@ function Stopwatch() {
       </p>
       <button className={running ? 'btn-ghost' : 'btn'} onClick={() => setRunning(!running)}>
         {running ? '暂停' : '开始'}
-      </button>
-      {' '}
-      <button className="btn-ghost" onClick={() => { setRunning(false); setElapsed(0) }}>
+      </button>{' '}
+      <button
+        className="btn-ghost"
+        onClick={() => {
+          setRunning(false)
+          setElapsed(0)
+        }}
+      >
         重置
       </button>
     </div>
@@ -64,22 +69,26 @@ function MouseTracker() {
   const [moves, setMoves] = useState(0)
 
   // TODO 2：写 useEffect（mousemove 监听 + 计数 + 清理）
-  useEffect(()=>{
-    const onMove=(e:MouseEvent)=>{
-      setMoves(m=>m+1)
-      setPos({x:e.clientX,y:e.clientY})
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      setMoves((m) => m + 1)
+      setPos({ x: e.clientX, y: e.clientY })
     }
-    window.addEventListener('mousemove',onMove)
+    window.addEventListener('mousemove', onMove)
 
-    return ()=>{
-      window.removeEventListener('mousemove',onMove)
+    return () => {
+      window.removeEventListener('mousemove', onMove)
     }
-  },[])
+  }, [])
 
   return (
     <div>
       <p>
-        坐标：<strong>({pos.x}, {pos.y})</strong>　移动次数：<strong>{moves}</strong>
+        坐标：
+        <strong>
+          ({pos.x}, {pos.y})
+        </strong>
+        　移动次数：<strong>{moves}</strong>
       </p>
       <p className="hint">在页面上移动鼠标试试</p>
     </div>
@@ -100,26 +109,26 @@ function VisibilityTracker() {
   const [isHidden, setIsHidden] = useState(false)
 
   // TODO 3：写 useEffect（visibilitychange 监听 + 清理）
-  useEffect(()=>{
-    const onVisible=()=>{
-      const hidden=document.hidden
+  useEffect(() => {
+    const onVisible = () => {
+      const hidden = document.hidden
       setIsHidden(hidden)
-      if(hidden){
-        setHiddenCount(n=>n+1)
+      if (hidden) {
+        setHiddenCount((n) => n + 1)
       }
     }
-    document.addEventListener('visibilitychange',onVisible)
+    document.addEventListener('visibilitychange', onVisible)
 
-    return ()=>{
-      document.removeEventListener('visibilitychange',onVisible)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible)
     }
-  },[isHidden])
+  }, [isHidden])
 
   return (
     <div>
       <p>
-        当前状态：<strong>{isHidden ? '已切走' : '当前页'}</strong>　
-        切走次数：<strong>{hiddenCount}</strong>
+        当前状态：<strong>{isHidden ? '已切走' : '当前页'}</strong>　 切走次数：
+        <strong>{hiddenCount}</strong>
       </p>
       <p className="hint">切到别的标签页再切回来，看数字变化（切回来时能看到）</p>
     </div>

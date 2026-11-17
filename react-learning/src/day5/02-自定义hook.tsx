@@ -121,10 +121,18 @@ function CounterPanel({ label }: { label: string }) {
   const { count, increment, decrement, reset } = useCounter(0)
   return (
     <div className="card">
-      <span style={{ marginRight: 8 }}>{label}：<strong>{count}</strong></span>
-      <button className="btn-ghost" style={{ marginRight: 4 }} onClick={increment}>+1</button>
-      <button className="btn-ghost" style={{ marginRight: 4 }} onClick={decrement}>-1</button>
-      <button className="btn-ghost" onClick={reset}>重置</button>
+      <span style={{ marginRight: 8 }}>
+        {label}：<strong>{count}</strong>
+      </span>
+      <button className="btn-ghost" style={{ marginRight: 4 }} onClick={increment}>
+        +1
+      </button>
+      <button className="btn-ghost" style={{ marginRight: 4 }} onClick={decrement}>
+        -1
+      </button>
+      <button className="btn-ghost" onClick={reset}>
+        重置
+      </button>
     </div>
   )
 }
@@ -147,8 +155,12 @@ function TogglePanel() {
   const { on, toggle } = useToggle(false)
   return (
     <div className="card">
-      <p>状态：<strong>{on ? '开' : '关'}</strong></p>
-      <button className="btn" onClick={toggle}>切换</button>
+      <p>
+        状态：<strong>{on ? '开' : '关'}</strong>
+      </p>
+      <button className="btn" onClick={toggle}>
+        切换
+      </button>
     </div>
   )
 }
@@ -181,9 +193,12 @@ function PreviousPanel() {
   return (
     <div className="card">
       <p>
-        当前：<strong>{count}</strong>　上一次：<strong>{prev === undefined ? '（无）' : prev}</strong>
+        当前：<strong>{count}</strong>　上一次：
+        <strong>{prev === undefined ? '（无）' : prev}</strong>
       </p>
-      <button className="btn" onClick={() => setCount(count + 1)}>+1</button>
+      <button className="btn" onClick={() => setCount(count + 1)}>
+        +1
+      </button>
     </div>
   )
 }

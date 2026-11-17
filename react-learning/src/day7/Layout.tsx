@@ -32,7 +32,8 @@ export default function Day7Layout() {
         当前地址：<code>{location.pathname}</code>
         {location.search && (
           <>
-            {' '}查询参数：<code>{location.search}</code>
+            {' '}
+            查询参数：<code>{location.search}</code>
           </>
         )}
       </p>

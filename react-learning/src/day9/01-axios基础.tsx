@@ -53,7 +53,12 @@ export default function AxiosBasics() {
             ['断网', '?_network=1'],
             ['慢 1.5 秒（看 loading）', '?_delay=1500'],
           ].map(([label, q]) => (
-            <button key={label} className="btn-ghost" style={{ marginRight: 6, marginBottom: 6 }} onClick={() => load(q)}>
+            <button
+              key={label}
+              className="btn-ghost"
+              style={{ marginRight: 6, marginBottom: 6 }}
+              onClick={() => load(q)}
+            >
               {label}
             </button>
           ))}
@@ -67,7 +72,9 @@ export default function AxiosBasics() {
 
       <div className="card">
         <h3 style={{ marginTop: 0 }}>结果区（这就是“三态”的写法）</h3>
-        {state.loading && <p style={{ color: '#57606a' }}>⏳ 加载中……（慢 1.5 秒那个按钮能看清）</p>}
+        {state.loading && (
+          <p style={{ color: '#57606a' }}>⏳ 加载中……（慢 1.5 秒那个按钮能看清）</p>
+        )}
 
         {state.error !== null && (
           <p style={{ color: '#cf222e' }}>
@@ -107,8 +114,12 @@ export default function AxiosBasics() {
             <tr style={{ textAlign: 'left', color: '#57606a' }}>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>情况</th>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>err.code</th>
-              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>err.response</th>
-              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>给用户说什么</th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>
+                err.response
+              </th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>
+                给用户说什么
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -124,23 +135,39 @@ export default function AxiosBasics() {
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
                   <code>{b}</code>
                 </td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{c}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {c}
+                </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{d}</td>
               </tr>
             ))}
           </tbody>
         </table>
         <p className="hint" style={{ marginBottom: 0 }}>
-          <strong>判断顺序很重要</strong>：先看 <code>err.code</code>（网络/超时/取消都没有 response），
-          再在 <code>err.response.status</code> 里分 4xx / 5xx。
-          <code>toFriendlyError()</code> 就是按这个顺序写的，你可以去 <code>mock/mockApi.ts</code> 看。
+          <strong>判断顺序很重要</strong>：先看 <code>err.code</code>（网络/超时/取消都没有
+          response）， 再在 <code>err.response.status</code> 里分 4xx / 5xx。
+          <code>toFriendlyError()</code> 就是按这个顺序写的，你可以去 <code>mock/mockApi.ts</code>{' '}
+          看。
         </p>
       </div>
 
       <div className="card">
         <h3 style={{ marginTop: 0 }}>顺带：两个必会的写法</h3>
         <pre
-          style={{ background: '#f6f8fa', padding: 12, borderRadius: 6, fontSize: 13, overflowX: 'auto', margin: '8px 0' }}
+          style={{
+            background: '#f6f8fa',
+            padding: 12,
+            borderRadius: 6,
+            fontSize: 13,
+            overflowX: 'auto',
+            margin: '8px 0',
+          }}
         >{`// ① GET 带参数：params 比手拼字符串安全（自动编码中文/特殊字符）
 await api.get('/posts', { params: { keyword: 'React', page: 2 } })
 // 实际变成 /posts?keyword=React&page=2

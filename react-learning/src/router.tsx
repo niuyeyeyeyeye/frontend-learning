@@ -53,6 +53,13 @@ import StatePlacementDemo from './day10/02-把state往下挪'
 import LazyDemo from './day10/03-懒加载与代码分割'
 import PracticeDay10 from './day10/04-练习'
 
+import Day11Layout from './day11/Layout'
+import EngineeringIntro from './day11/00-工程化解决什么'
+import PrettierDemo from './day11/01-Prettier与依赖冲突'
+import EnvDemo from './day11/02-环境变量'
+import DeployDemo from './day11/03-构建与部署'
+import PracticeDay11 from './day11/04-练习'
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -120,6 +127,18 @@ export const routes: RouteObject[] = [
           { path: 'placement', element: <StatePlacementDemo /> }, //  /day10/placement
           { path: 'lazy', element: <LazyDemo /> }, //  /day10/lazy
           { path: 'practice', element: <PracticeDay10 /> }, //  /day10/practice
+        ],
+      },
+
+      {
+        path: 'day11',
+        element: <Day11Layout />,
+        children: [
+          { index: true, element: <EngineeringIntro /> }, //  /day11
+          { path: 'prettier', element: <PrettierDemo /> }, //  /day11/prettier
+          { path: 'env', element: <EnvDemo /> }, //  /day11/env
+          { path: 'deploy', element: <DeployDemo /> }, //  /day11/deploy
+          { path: 'practice', element: <PracticeDay11 /> }, //  /day11/practice
         ],
       },
 

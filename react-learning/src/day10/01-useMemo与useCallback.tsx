@@ -76,7 +76,9 @@ function ExpensiveDemo() {
             <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
               加了 useMemo（n 没变就不算）
             </td>
-            <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{totalWithMemo}</td>
+            <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
+              {totalWithMemo}
+            </td>
             <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
               <strong style={{ color: '#1f883d' }}>{costWithMemo.toFixed(2)} ms</strong>
             </td>
@@ -85,8 +87,8 @@ function ExpensiveDemo() {
       </table>
 
       <p className="hint" style={{ marginBottom: 0 }}>
-        👆 <strong>连点几次「点我（跟求和无关）」</strong>：上面那行的时间一直很高（每次渲染都白算一遍），
-        下面那行接近 0。
+        👆 <strong>连点几次「点我（跟求和无关）」</strong>
+        ：上面那行的时间一直很高（每次渲染都白算一遍）， 下面那行接近 0。
         <br />
         ⚠️ 但注意：<strong>第一次渲染时 useMemo 也要算</strong>，而且它自己还有"比较依赖"的开销。
         如果你把 n 改成 1000（算起来不到 0.01ms），加 useMemo 纯属自找麻烦。
@@ -145,8 +147,8 @@ function CallbackDemo() {
       <p className="hint" style={{ marginBottom: 0 }}>
         👆 连点几次按钮：<strong>A 的渲染次数一直涨，B 不动</strong>。
         <br />
-        <strong>这就是 useCallback 的全部意义</strong>：不是为了"函数快一点"，而是为了让下游的 memo 能生效。
-        如果子组件没包 memo，useCallback 一点用都没有。
+        <strong>这就是 useCallback 的全部意义</strong>：不是为了"函数快一点"，而是为了让下游的 memo
+        能生效。 如果子组件没包 memo，useCallback 一点用都没有。
       </p>
     </div>
   )
@@ -194,12 +196,13 @@ function DepsTrapDemo() {
           <span className="hint">　→ 每次都"变"，缓存白存（结果对，但没省任何东西）</span>
         </li>
         <li>
-          ✅ 依赖是原始值 <code>[count]</code>：<strong style={{ color: '#1f883d' }}>{goodValue}</strong>
+          ✅ 依赖是原始值 <code>[count]</code>：
+          <strong style={{ color: '#1f883d' }}>{goodValue}</strong>
         </li>
       </ul>
       <p className="hint" style={{ marginBottom: 0 }}>
-        <strong>两种失败方式完全相反</strong>：漏依赖 → 结果错（更难查）；
-        多依赖/依赖不稳定 → 结果对但白费（看不出来，只是没变快）。
+        <strong>两种失败方式完全相反</strong>：漏依赖 → 结果错（更难查）； 多依赖/依赖不稳定 →
+        结果对但白费（看不出来，只是没变快）。
       </p>
     </div>
   )
@@ -228,8 +231,8 @@ export default function MemoCallbackDemo() {
             答不出来就别加
           </li>
           <li>
-            <strong>加它本身要花多少？</strong>—— 一次依赖比较 + 一块缓存内存。
-            对于 0.01ms 的计算，这纯属负优化
+            <strong>加它本身要花多少？</strong>—— 一次依赖比较 + 一块缓存内存。 对于 0.01ms
+            的计算，这纯属负优化
           </li>
           <li>
             <strong>它会不会让代码更难懂？</strong>—— 依赖数组就是"隐藏的约束"，

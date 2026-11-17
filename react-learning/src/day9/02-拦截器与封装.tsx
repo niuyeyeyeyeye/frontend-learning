@@ -119,17 +119,25 @@ export default function InterceptorDemo() {
           </button>
         </p>
         <p className="hint" style={{ marginBottom: 0 }}>
-          👆 <strong>先不登录点下面的「需要登录的接口」</strong> → 拦截器没 token → 后端返回 401
-          → 响应拦截器自动清掉登录态。<strong>然后再点「登录」，再请求一次</strong> → 成功。
+          👆 <strong>先不登录点下面的「需要登录的接口」</strong> → 拦截器没 token → 后端返回 401 →
+          响应拦截器自动清掉登录态。<strong>然后再点「登录」，再请求一次</strong> → 成功。
         </p>
       </div>
 
       <div className="card">
         <h3 style={{ marginTop: 0 }}>发请求（注意：调用方没有写 .data、没有写 if 401）</h3>
-        <button className="btn" style={{ marginRight: 8 }} onClick={() => call('需要登录', '/posts?_auth=1')}>
+        <button
+          className="btn"
+          style={{ marginRight: 8 }}
+          onClick={() => call('需要登录', '/posts?_auth=1')}
+        >
           需要登录的接口
         </button>
-        <button className="btn-ghost" style={{ marginRight: 8 }} onClick={() => call('公开接口', '/posts')}>
+        <button
+          className="btn-ghost"
+          style={{ marginRight: 8 }}
+          onClick={() => call('公开接口', '/posts')}
+        >
           公开接口
         </button>
         <button className="btn-ghost" onClick={() => call('服务器 500', '/posts?_status=500')}>
@@ -158,7 +166,14 @@ export default function InterceptorDemo() {
       <div className="card">
         <h3 style={{ marginTop: 0 }}>这三段代码，你应该能背下来结构</h3>
         <pre
-          style={{ background: '#f6f8fa', padding: 12, borderRadius: 6, fontSize: 12, overflowX: 'auto', margin: '8px 0' }}
+          style={{
+            background: '#f6f8fa',
+            padding: 12,
+            borderRadius: 6,
+            fontSize: 12,
+            overflowX: 'auto',
+            margin: '8px 0',
+          }}
         >{`// 1) 实例：域名/超时只写一次
 const http = axios.create({ baseURL: '/api', timeout: 10000 })
 
@@ -181,8 +196,9 @@ http.interceptors.response.use(
 // 4) 业务代码：干净得只剩"拿什么"
 const posts = await request<Post[]>('/posts')`}</pre>
         <p className="hint" style={{ marginBottom: 0 }}>
-          <strong>两个致命错误</strong>：① 请求拦截器忘了 <code>return config</code> → 所有请求变 undefined；
-          ② 响应拦截器忘了 <code>Promise.reject</code> → 错误被吞掉，页面永远停在 loading。
+          <strong>两个致命错误</strong>：① 请求拦截器忘了 <code>return config</code> → 所有请求变
+          undefined； ② 响应拦截器忘了 <code>Promise.reject</code> → 错误被吞掉，页面永远停在
+          loading。
         </p>
       </div>
     </div>

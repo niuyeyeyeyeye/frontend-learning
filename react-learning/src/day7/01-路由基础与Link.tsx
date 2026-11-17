@@ -78,9 +78,8 @@ function MountLogger() {
         +1
       </button>
       <p className="hint">
-        👆 加几次，然后点下面的链接切走再切回来 —— 数字归零了。
-        打开 F12 能看到「挂载 / 卸载」两条日志。<strong>切路由 = 卸载 + 挂载</strong>，
-        不是"把页面藏起来"。
+        👆 加几次，然后点下面的链接切走再切回来 —— 数字归零了。 打开 F12 能看到「挂载 /
+        卸载」两条日志。<strong>切路由 = 卸载 + 挂载</strong>， 不是"把页面藏起来"。
       </p>
       <p>
         <Link to="/day7/basics" style={{ marginRight: 12 }}>
@@ -128,8 +127,8 @@ function NavLinkDemo() {
         ))}
       </div>
       <p className="hint">
-        ⚠️ <code>end</code> 的作用：<code>/day7</code> 是 <code>/day7/basics</code> 的前缀，
-        不加 <code>end</code> 的话，你在子页面时"概览"也会一直亮着。
+        ⚠️ <code>end</code> 的作用：<code>/day7</code> 是 <code>/day7/basics</code> 的前缀， 不加{' '}
+        <code>end</code> 的话，你在子页面时"概览"也会一直亮着。
       </p>
     </div>
   )

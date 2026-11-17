@@ -19,8 +19,8 @@ export default function Day10Layout() {
     <div>
       <h1 style={{ marginBottom: 4 }}>Day10 · 性能优化（React 最后一座高峰）</h1>
       <p className="hint" style={{ marginTop: 0 }}>
-        当前地址：<code>{location.pathname}</code>　|　
-        每页都有<strong>渲染次数计数器</strong>：数字不再涨，就说明优化生效了。
+        当前地址：<code>{location.pathname}</code>　|　 每页都有<strong>渲染次数计数器</strong>
+        ：数字不再涨，就说明优化生效了。
       </p>
 
       <nav

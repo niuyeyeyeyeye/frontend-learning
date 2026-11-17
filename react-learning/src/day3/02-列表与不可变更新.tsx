@@ -70,28 +70,46 @@ export default function ListOperations() {
           <tbody>
             <tr>
               <td style={{ padding: 4 }}>添加一项</td>
-              <td>❌ <code>todos.push(x)</code></td>
-              <td>✅ <code>setTodos([...todos, x])</code></td>
+              <td>
+                ❌ <code>todos.push(x)</code>
+              </td>
+              <td>
+                ✅ <code>setTodos([...todos, x])</code>
+              </td>
             </tr>
             <tr>
               <td style={{ padding: 4 }}>删除一项</td>
-              <td>❌ <code>todos.splice(i, 1)</code></td>
-              <td>✅ <code>setTodos(todos.filter(t =&gt; t.id !== id))</code></td>
+              <td>
+                ❌ <code>todos.splice(i, 1)</code>
+              </td>
+              <td>
+                ✅ <code>setTodos(todos.filter(t =&gt; t.id !== id))</code>
+              </td>
             </tr>
             <tr>
               <td style={{ padding: 4 }}>修改一项</td>
-              <td>❌ <code>todos[i].done = true</code></td>
-              <td>✅ <code>setTodos(todos.map(t =&gt; t.id === id ? {'{...t, done}'} : t))</code></td>
+              <td>
+                ❌ <code>todos[i].done = true</code>
+              </td>
+              <td>
+                ✅ <code>setTodos(todos.map(t =&gt; t.id === id ? {'{...t, done}'} : t))</code>
+              </td>
             </tr>
             <tr>
               <td style={{ padding: 4 }}>排序</td>
-              <td>❌ <code>todos.sort(...)</code>（sort 会改原数组！）</td>
-              <td>✅ <code>setTodos([...todos].sort(...))</code></td>
+              <td>
+                ❌ <code>todos.sort(...)</code>（sort 会改原数组！）
+              </td>
+              <td>
+                ✅ <code>setTodos([...todos].sort(...))</code>
+              </td>
             </tr>
             <tr>
               <td style={{ padding: 4 }}>清空已完成</td>
               <td>❌ 循环 splice</td>
-              <td>✅ <code>setTodos(todos.filter(t =&gt; !t.done))</code></td>
+              <td>
+                ✅ <code>setTodos(todos.filter(t =&gt; !t.done))</code>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -124,7 +142,9 @@ export default function ListOperations() {
         style={{ padding: '4px 8px', width: 220, marginBottom: 8 }}
       />
       <p className="hint">
-        {keyword.trim() ? `匹配到 ${visibleTodos.length} 条（共 ${todos.length} 条）` : `共 ${todos.length} 条`}
+        {keyword.trim()
+          ? `匹配到 ${visibleTodos.length} 条（共 ${todos.length} 条）`
+          : `共 ${todos.length} 条`}
       </p>
 
       <h3>4. 渲染出来</h3>
@@ -136,18 +156,26 @@ export default function ListOperations() {
             <span style={{ marginRight: 10 }}>
               {todo.done ? '✅' : '⬜'} {todo.text}
             </span>
-            <button className="btn-ghost" style={{ fontSize: 12, padding: '2px 8px' }} onClick={() => toggle(todo.id)}>
+            <button
+              className="btn-ghost"
+              style={{ fontSize: 12, padding: '2px 8px' }}
+              onClick={() => toggle(todo.id)}
+            >
               {todo.done ? '取消完成' : '完成'}
-            </button>
-            {' '}
-            <button className="btn-ghost" style={{ fontSize: 12, padding: '2px 8px' }} onClick={() => remove(todo.id)}>
+            </button>{' '}
+            <button
+              className="btn-ghost"
+              style={{ fontSize: 12, padding: '2px 8px' }}
+              onClick={() => remove(todo.id)}
+            >
               删除
             </button>
           </div>
         ))
       )}
       <p className="hint">
-        ⭐ 注意这里同时用到了「过滤 + 渲染」：`visibleTodos` 是算出来的，不是改 todos。<br />
+        ⭐ 注意这里同时用到了「过滤 + 渲染」：`visibleTodos` 是算出来的，不是改 todos。
+        <br />
         原数组 `todos` 一直没被动过 —— 这就是"不可变"的好处：**你想怎么过滤排序都行，
         数据源永远是干净的**。
       </p>

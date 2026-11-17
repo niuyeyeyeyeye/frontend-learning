@@ -118,8 +118,8 @@ export default function SelectorDemo() {
         </button>
         <p className="hint">
           <strong>点 count +1</strong> 时，控制台应该只出现
-          <code>[① 只订 count]</code> 和 <code>[③ 整店订阅]</code>；
-          <code>[② 只订 text]</code> 不出现。
+          <code>[① 只订 count]</code> 和 <code>[③ 整店订阅]</code>；<code>[② 只订 text]</code>{' '}
+          不出现。
           <br />
           <strong>改 text</strong> 时，只有 <code>[②]</code>（还有 ③④）出现。
         </p>
@@ -182,8 +182,8 @@ const text  = useShop((s) => s.text)
 // ✅ 办法二：要一次拿多个，就用 useShallow 包一层
 const { count, text } = useShop(useShallow((s) => ({ count: s.count, text: s.text })))`}</pre>
         <p className="hint" style={{ marginBottom: 0 }}>
-          <strong>为什么上面④用了 useShallow 就没事？</strong>因为它内部用{' '}
-          <code>useRef</code> 记住了上一次的结果，浅比较（每个字段都相等）成立时
+          <strong>为什么上面④用了 useShallow 就没事？</strong>因为它内部用 <code>useRef</code>{' '}
+          记住了上一次的结果，浅比较（每个字段都相等）成立时
           <strong>返回上一次那个对象的同一个引用</strong> —— React 一比较，引用没变，就不渲染。
           <br />
           <strong>为什么这段错误代码我只放在注释里、没接进页面？</strong>
@@ -205,7 +205,11 @@ const { count, text } = useShop(useShallow((s) => ({ count: s.count, text: s.tex
           </thead>
           <tbody>
             {[
-              ['能不能只订一部分', '❌ value 里任何一个字段变，所有消费者全渲染', '✅ selector 想订多细就多细'],
+              [
+                '能不能只订一部分',
+                '❌ value 里任何一个字段变，所有消费者全渲染',
+                '✅ selector 想订多细就多细',
+              ],
               ['提供者', '必须有 Provider 包住', '没有 Provider'],
               ['状态活在哪', 'Provider 组件的 useState 里', '模块级 store，React 之外'],
               ['组件卸载后', '状态没了', '还在'],
@@ -213,7 +217,15 @@ const { count, text } = useShop(useShallow((s) => ({ count: s.count, text: s.tex
             ].map(([a, b, c]) => (
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{c}</td>
               </tr>
             ))}

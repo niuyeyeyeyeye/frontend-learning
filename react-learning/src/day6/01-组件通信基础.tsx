@@ -93,10 +93,10 @@ function ResultList({ keyword }: { keyword: string }) {
 // 唯一能存"温度"的地方，就是它们的公共父组件。
 
 function toFahrenheit(c: number): number {
-  return c * 9 / 5 + 32
+  return (c * 9) / 5 + 32
 }
 function toCelsius(f: number): number {
-  return (f - 32) * 5 / 9
+  return ((f - 32) * 5) / 9
 }
 // 显示时保留 1 位小数，避免 25 → 77.0000000001 这种
 const round1 = (n: number) => Math.round(n * 10) / 10
@@ -178,8 +178,8 @@ function PropDrillingDemo() {
       {/* ⬇️ theme 要穿过 3 层才到 Level3 */}
       <Level1 theme={theme} onToggle={toggle} />
       <p className="hint">
-        👆 Level1 和 Level2 <strong>完全不用 theme</strong>，却必须声明它、接住它、再传下去。
-        这就是 <strong>props 钻地</strong>。
+        👆 Level1 和 Level2 <strong>完全不用 theme</strong>，却必须声明它、接住它、再传下去。 这就是{' '}
+        <strong>props 钻地</strong>。
       </p>
     </div>
   )
@@ -210,7 +210,9 @@ function Level3({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
       <p>
         我的背景是 <strong>{theme}</strong>
       </p>
-      <button className="btn-ghost" onClick={onToggle}>我也能改</button>
+      <button className="btn-ghost" onClick={onToggle}>
+        我也能改
+      </button>
     </div>
   )
 }

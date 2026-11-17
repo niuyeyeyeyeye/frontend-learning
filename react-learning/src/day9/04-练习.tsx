@@ -35,14 +35,14 @@ function ThreeStateList() {
     // TODO 1-b：成功 → setData(res.data)
     // TODO 1-c：失败 → setError(toFriendlyError(err).message)
     // TODO 1-d：不管成功失败，最后都要 setLoading(false)
-    try{
-      const response=await api.get(`/path${query}`)
+    try {
+      const response = await api.get(`/path${query}`)
       setData(response.data)
       return response.data
-    }catch(e){
+    } catch (e) {
       setError(toFriendlyError(e).message)
       return null
-    }finally{
+    } finally {
       setLoading(false)
     }
   }
@@ -91,20 +91,20 @@ const http2 = axios.create({
 })
 
 // TODO 2-a / 2-b：在这里加两个拦截器
-http2.interceptors.request.use((config)=>{
-  const token=localStorage.getItem('token')
-  if(token!==null){
-    config.headers.Authorization=`niuyeye${token}`
+http2.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token !== null) {
+    config.headers.Authorization = `niuyeye${token}`
   }
   return config
 })
 http2.interceptors.response.use(
-  (response)=>{
+  (response) => {
     return response.data
   },
-  (error)=>{
+  (error) => {
     return Promise.reject(error)
-  }
+  },
 )
 
 async function request2<T>(url: string): Promise<T> {
@@ -151,7 +151,7 @@ function SearchBox() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    let kw=keyword.trim()
+    let kw = keyword.trim()
     if (keyword.trim() === '') {
       setResult('')
       setError(null)
@@ -162,22 +162,21 @@ function SearchBox() {
     //                 （提示：结构见 03-竞态与取消.tsx 的"治法就三行"）
     setLoading(true)
     setError(null)
-    const controller=new AbortController()
-    
-    api.get<Post[]>(`/posts?_keyword=${kw}&_delay=300`,{signal:controller.signal})
-    .then(
-      (response)=>{
-        setResult(response.data.length===0?'0条':response.data.map((p)=>p.title).join('、'))
+    const controller = new AbortController()
+
+    api
+      .get<Post[]>(`/posts?_keyword=${kw}&_delay=300`, { signal: controller.signal })
+      .then((response) => {
+        setResult(response.data.length === 0 ? '0条' : response.data.map((p) => p.title).join('、'))
         setLoading(false)
-      }
-    )
-    .catch((error)=>{
-      if(error.code==='ERR_CANCELED')return
-      setError(toFriendlyError(error).message)
-      setLoading(false)
+      })
+      .catch((error) => {
+        if (error.code === 'ERR_CANCELED') return
+        setError(toFriendlyError(error).message)
+        setLoading(false)
       })
 
-    return ()=>{
+    return () => {
       controller.abort()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -139,13 +139,17 @@ export default function TodoWithZustand() {
       <div className="card">
         <h3 style={{ marginTop: 0 }}>动手验这四件事</h3>
         <ol style={{ margin: '0 0 8px', paddingLeft: 20, lineHeight: 1.9 }}>
-          <li>加几条待办 → 切到「1. 基础用法」→ 回来，<strong>数据还在</strong>（store 不随组件卸载）</li>
+          <li>
+            加几条待办 → 切到「1. 基础用法」→ 回来，<strong>数据还在</strong>（store 不随组件卸载）
+          </li>
           <li>看顶部「全局待办 N 条」也在同步变化（跨页面共享同一份数据）</li>
           <li>
             <strong>按 F5 刷新整个页面</strong> → 数据还在（<code>persist</code> 存了 localStorage；
             Day6 的 Context 版刷新就没了）
           </li>
-          <li>打开 F12 → Application → Local Storage → 找 <code>day8-todos</code>，能看到 JSON</li>
+          <li>
+            打开 F12 → Application → Local Storage → 找 <code>day8-todos</code>，能看到 JSON
+          </li>
         </ol>
         <button className="btn-ghost" onClick={resetStore}>
           重置成初始数据
@@ -162,22 +166,38 @@ export default function TodoWithZustand() {
           <thead>
             <tr style={{ textAlign: 'left', color: '#57606a' }}>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}></th>
-              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>Day6 Context 版</th>
-              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>今天 Zustand 版</th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>
+                Day6 Context 版
+              </th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>
+                今天 Zustand 版
+              </th>
             </tr>
           </thead>
           <tbody>
             {[
               ['要写 Provider 吗', '要：<TodoProvider>', '不用'],
               ['要给 value 做优化吗', '要：useMemo + useCallback', '不用'],
-              ['忘了包 Provider 会怎样', '运行时抛错（要靠自定义 hook 报）', '不可能忘，根本没 Provider'],
+              [
+                '忘了包 Provider 会怎样',
+                '运行时抛错（要靠自定义 hook 报）',
+                '不可能忘，根本没 Provider',
+              ],
               ['切路由后状态', '跟着 Provider 卸载 → 丢', '保留'],
               ['刷新页面后', '丢（除非自己写 localStorage）', '保持（persist）'],
               ['只订一个字段', '做不到', '能做到'],
             ].map(([a, b, c]) => (
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
                   <strong>{c}</strong>
                 </td>

@@ -28,9 +28,7 @@ function JsxBasics() {
       <p>1 + 1 = {1 + 1}</p>
       <p>调用函数：{userName.toUpperCase()}</p>
       <p>三元表达式：{isLoggedIn ? '已登录' : '未登录'}</p>
-      <p className="hint">
-        注意：{} 里只能放"表达式"（能算出值的东西），不能放 if / for 这种语句
-      </p>
+      <p className="hint">注意：{} 里只能放"表达式"（能算出值的东西），不能放 if / for 这种语句</p>
 
       {/* ---------- 2. 条件渲染 ---------- */}
       <h3>2. 条件渲染</h3>

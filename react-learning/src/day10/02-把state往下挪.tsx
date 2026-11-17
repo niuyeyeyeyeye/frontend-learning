@@ -98,7 +98,9 @@ function Shell({ children }: { children: ReactNode }) {
   renders.current += 1
   return (
     <div className="card" style={{ borderColor: '#0969da' }}>
-      <strong style={{ color: '#0969da' }}>✅ state 在外壳 Shell 里，大子树用 children 传进来</strong>
+      <strong style={{ color: '#0969da' }}>
+        ✅ state 在外壳 Shell 里，大子树用 children 传进来
+      </strong>
       <div style={{ fontSize: 12, color: '#57606a' }}>
         Shell 自己渲染了 <strong>{renders.current}</strong> 次（它确实在渲染）
       </div>
@@ -136,10 +138,12 @@ export default function StatePlacementDemo() {
         <h3 style={{ marginTop: 0 }}>实验：分别在这三个输入框里打字，看下面列表的渲染次数</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
-            在 <strong>A</strong> 里打字 → 列表渲染次数<strong>飞涨</strong>（每敲一个字整个列表重渲染）
+            在 <strong>A</strong> 里打字 → 列表渲染次数<strong>飞涨</strong>
+            （每敲一个字整个列表重渲染）
           </li>
           <li>
-            在 <strong>B</strong> 里打字 → 列表<strong>一动不动</strong>（state 已经挪到 SearchBox 里了）
+            在 <strong>B</strong> 里打字 → 列表<strong>一动不动</strong>（state 已经挪到 SearchBox
+            里了）
           </li>
           <li>
             在 <strong>C</strong> 里打字 → 列表也<strong>不动</strong>（children 技巧，同样的效果）
@@ -186,8 +190,8 @@ function Shell({ children }) {
   //        React 发现 children 还是同一个 element 对象 → 直接复用，不重渲染
 }`}</pre>
         <p className="hint" style={{ marginBottom: 0 }}>
-          这个技巧在真实项目里非常常用 —— 比如一个"带状态的 Modal / 带滚动位置的容器"，
-          里面的内容用 children 传进去，就不会被动重渲染。
+          这个技巧在真实项目里非常常用 —— 比如一个"带状态的 Modal / 带滚动位置的容器"， 里面的内容用
+          children 传进去，就不会被动重渲染。
           <strong>它不需要 memo、不需要 useMemo，只是把 element 的创建位置挪了一下。</strong>
         </p>
       </div>
@@ -213,7 +217,15 @@ function Shell({ children }) {
               <tr key={a}>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{a}</td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{b}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{c}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {c}
+                </td>
               </tr>
             ))}
           </tbody>

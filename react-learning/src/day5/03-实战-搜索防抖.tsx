@@ -34,7 +34,9 @@ function mockSearch(keyword: string): Promise<User[]> {
         resolve([])
       } else {
         resolve(
-          MOCK_USERS.filter((u) => u.name.toLowerCase().includes(kw) || u.bio.toLowerCase().includes(kw)),
+          MOCK_USERS.filter(
+            (u) => u.name.toLowerCase().includes(kw) || u.bio.toLowerCase().includes(kw),
+          ),
         )
       }
     }, 500)
@@ -125,7 +127,11 @@ export default function SearchDemo() {
       )}
       {!loading &&
         results.map((u) => (
-          <div key={u.id} className="card" style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div
+            key={u.id}
+            className="card"
+            style={{ display: 'flex', gap: 10, alignItems: 'center' }}
+          >
             <div
               style={{
                 width: 34,
@@ -156,7 +162,9 @@ export default function SearchDemo() {
           然后快速输入 5 个字母：
         </p>
         <ul style={{ paddingLeft: 20 }}>
-          <li>输入变化 5 次 → 实际搜索 <strong>5 次</strong>（每次输入都发请求）</li>
+          <li>
+            输入变化 5 次 → 实际搜索 <strong>5 次</strong>（每次输入都发请求）
+          </li>
           <li>而且返回顺序不确定（可能先发的后到）→ 竞态问题（Day4 学过）</li>
         </ul>
         <p className="hint">

@@ -98,11 +98,11 @@ export default function WhyZustand() {
         </div>
         <p className="hint" style={{ marginBottom: 0 }}>
           👆 <strong>Context 那个会归零</strong>（Provider 跟着页面一起卸载了），
-          <strong>Zustand 那个还是 3</strong>（store 住在 React 外面，没人卸载它）。
-          这就是 Day7 学的"切路由 = 卸载 + 挂载"的直接后果。
+          <strong>Zustand 那个还是 3</strong>（store 住在 React 外面，没人卸载它）。 这就是 Day7
+          学的"切路由 = 卸载 + 挂载"的直接后果。
           <br />
-          顶部「全局待办 {total} 条」也是同一个道理 —— 它在布局里，
-          和「3. 实战」页读的是同一个 store。
+          顶部「全局待办 {total} 条」也是同一个道理 —— 它在布局里， 和「3. 实战」页读的是同一个
+          store。
         </p>
       </div>
 
@@ -113,7 +113,9 @@ export default function WhyZustand() {
             <tr style={{ textAlign: 'left', color: '#57606a' }}>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>痛点</th>
               <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>具体表现</th>
-              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>Zustand 怎么解</th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>
+                Zustand 怎么解
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -135,10 +137,24 @@ export default function WhyZustand() {
               ],
             ].map(([a, b, c]) => (
               <tr key={a}>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', whiteSpace: 'nowrap' }}>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   {a}
                 </td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>{b}</td>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
+                  {b}
+                </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
                   <strong>{c}</strong>
                 </td>
@@ -147,7 +163,8 @@ export default function WhyZustand() {
           </tbody>
         </table>
         <p className="hint" style={{ marginBottom: 0 }}>
-          第 3 条是 Zustand 真正的价值所在 —— 在 <Link to="/day8/selector">第 2 节</Link> 用控制台日志让你看见。
+          第 3 条是 Zustand 真正的价值所在 —— 在 <Link to="/day8/selector">第 2 节</Link>{' '}
+          用控制台日志让你看见。
         </p>
       </div>
 
@@ -155,7 +172,8 @@ export default function WhyZustand() {
         <h3 style={{ marginTop: 0 }}>今天的路线（4 步，别跳）</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
-            <Link to="/day8/basics">1. 基础用法</Link> —— <code>create</code> + <code>set</code> + 在组件里读
+            <Link to="/day8/basics">1. 基础用法</Link> —— <code>create</code> + <code>set</code> +
+            在组件里读
           </li>
           <li>
             <Link to="/day8/selector">2. 选择性订阅</Link> —— 为什么只订一个字段，以及最容易踩的坑
@@ -172,13 +190,15 @@ export default function WhyZustand() {
       <div className="card">
         <h3 style={{ marginTop: 0 }}>什么时候**不要**用 Zustand（面试加分）</h3>
         <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
-          <li>状态只在一个组件里用 → 就用 <code>useState</code>，别搞全局</li>
+          <li>
+            状态只在一个组件里用 → 就用 <code>useState</code>，别搞全局
+          </li>
           <li>只有两三层传递 → props 或 Context 更简单</li>
           <li>服务器数据（列表、详情）→ 应该用 React Query / SWR 那类，不是 Zustand</li>
         </ul>
         <p className="hint" style={{ marginBottom: 0 }}>
-          <strong>判断标准</strong>：这个状态是不是"很多互不相干的组件都要读写"？
-          是 → Zustand；否 → 留在组件里。
+          <strong>判断标准</strong>：这个状态是不是"很多互不相干的组件都要读写"？ 是 → Zustand；否 →
+          留在组件里。
         </p>
       </div>
     </div>

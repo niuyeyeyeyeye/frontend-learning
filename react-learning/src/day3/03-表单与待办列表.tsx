@@ -114,10 +114,16 @@ export default function TodoApp() {
 
       {/* 列表 */}
       {visibleTodos.length === 0 ? (
-        <p className="hint">{todos.length === 0 ? '还没有待办，先添加一条吧' : '当前筛选下没有数据'}</p>
+        <p className="hint">
+          {todos.length === 0 ? '还没有待办，先添加一条吧' : '当前筛选下没有数据'}
+        </p>
       ) : (
         visibleTodos.map((todo) => (
-          <div key={todo.id} className={`card ${todo.done ? 'done' : ''}`} style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            key={todo.id}
+            className={`card ${todo.done ? 'done' : ''}`}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
             <input
               type="checkbox"
               checked={todo.done}

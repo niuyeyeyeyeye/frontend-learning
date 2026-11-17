@@ -20,8 +20,8 @@ export default function Day9Layout() {
     <div>
       <h1 style={{ marginBottom: 4 }}>Day9 · axios 与请求封装</h1>
       <p className="hint" style={{ marginTop: 0 }}>
-        当前地址：<code>{location.pathname}</code>　|　
-        这一天的数据来自本地假后端（<code>mock/mockApi.ts</code>），
+        当前地址：<code>{location.pathname}</code>　|　 这一天的数据来自本地假后端（
+        <code>mock/mockApi.ts</code>），
         <strong>除了“网络传输”是假的，拦截器、错误、取消全都是真的 axios。</strong>
       </p>
 

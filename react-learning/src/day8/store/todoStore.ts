@@ -86,5 +86,10 @@ export const useTodoStore = create<TodoStore>()(
 export function todoStats(todos: Todo[]) {
   const total = todos.length
   const done = todos.filter((t) => t.done).length
-  return { total, done, remaining: total - done, percent: total === 0 ? 0 : Math.round((done / total) * 100) }
+  return {
+    total,
+    done,
+    remaining: total - done,
+    percent: total === 0 ? 0 : Math.round((done / total) * 100),
+  }
 }

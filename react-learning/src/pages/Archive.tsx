@@ -37,9 +37,7 @@ export default function Archive() {
   return (
     <div>
       <h1>React 学习：JSX → 组件 → 事件 → 状态（Day1~Day6 归档）</h1>
-      <p className="hint">
-        这是 Day1~Day6 的全部内容堆在一页。想复习哪天就翻到对应标题。
-      </p>
+      <p className="hint">这是 Day1~Day6 的全部内容堆在一页。想复习哪天就翻到对应标题。</p>
 
       <div className="section">
         <h2>Day1 · 一、JSX 基础</h2>

@@ -96,17 +96,15 @@ export default function KeyBugDemo() {
 
       <div className="card" style={{ marginTop: 16 }}>
         <h4 style={{ marginTop: 0 }}>为什么会错位？</h4>
+        <p>假设你删掉了第 1 项。剩下的是「第 2 项、第 3 项」。</p>
         <p>
-          假设你删掉了第 1 项。剩下的是「第 2 项、第 3 项」。
+          <strong>用 index 做 key</strong>：key 变成 <code>0, 1</code>。 而 React 记得"key=0
+          那个元素里有个输入框" → 它**复用**了原来第 1 项那个 DOM 节点， 只是把文字改成了"第 2
+          项"。但输入框里你打的字是存在 DOM 里的，**不会被改** → 就错位了。
         </p>
         <p>
-          <strong>用 index 做 key</strong>：key 变成 <code>0, 1</code>。
-          而 React 记得"key=0 那个元素里有个输入框" → 它**复用**了原来第 1 项那个 DOM 节点，
-          只是把文字改成了"第 2 项"。但输入框里你打的字是存在 DOM 里的，**不会被改** → 就错位了。
-        </p>
-        <p>
-          <strong>用 id 做 key</strong>：key 是 <code>2, 3</code>。
-          React 知道"id=1 那个元素没了"，直接销毁它 → 剩下的 id=2、id=3 节点原封不动 → 正确。
+          <strong>用 id 做 key</strong>：key 是 <code>2, 3</code>。 React 知道"id=1
+          那个元素没了"，直接销毁它 → 剩下的 id=2、id=3 节点原封不动 → 正确。
         </p>
       </div>
 
@@ -121,8 +119,10 @@ export default function KeyBugDemo() {
             <code>{'{ id: nextId++, ...}'}</code>）
           </li>
           <li>
-            <strong>绝对不要用 <code>Math.random()</code></strong> —— 每次渲染 key 都变，
-            React 会把整个列表销毁重建（性能差 + 状态全丢）
+            <strong>
+              绝对不要用 <code>Math.random()</code>
+            </strong>{' '}
+            —— 每次渲染 key 都变， React 会把整个列表销毁重建（性能差 + 状态全丢）
           </li>
         </ol>
         <p className="hint">

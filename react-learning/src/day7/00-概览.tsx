@@ -30,8 +30,8 @@ export default function Day7Overview() {
       <div className="card">
         <h3 style={{ marginTop: 0 }}>你现在的位置</h3>
         <p>
-          <code>{location.pathname}</code> —— 这是 <code>/day7</code> 的 <strong>index 路由</strong>：
-          父路径本身就是它，所以配置里写 <code>index: true</code>，不用单独起名字。
+          <code>{location.pathname}</code> —— 这是 <code>/day7</code> 的 <strong>index 路由</strong>
+          ： 父路径本身就是它，所以配置里写 <code>index: true</code>，不用单独起名字。
         </p>
       </div>
 
@@ -79,7 +79,13 @@ export default function Day7Overview() {
                   <code>{row.name}</code>
                 </td>
                 <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>{row.use}</td>
-                <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa', color: '#57606a' }}>
+                <td
+                  style={{
+                    padding: '4px 8px',
+                    borderBottom: '1px solid #f6f8fa',
+                    color: '#57606a',
+                  }}
+                >
                   {row.where}
                 </td>
               </tr>
@@ -99,10 +105,12 @@ export default function Day7Overview() {
             <Link to="/day7/users">2. 动态路由</Link> —— 列表点进详情，<code>useParams</code> 取 id
           </li>
           <li>
-            <Link to="/day7/navigate">3. 编程式导航</Link> —— <code>useNavigate</code> + 把搜索词放进 URL
+            <Link to="/day7/navigate">3. 编程式导航</Link> —— <code>useNavigate</code> +
+            把搜索词放进 URL
           </li>
           <li>
-            <Link to="/day7/nested">4. 嵌套路由</Link> —— <code>Outlet</code>，以及"这一整页就是嵌套路由"
+            <Link to="/day7/nested">4. 嵌套路由</Link> —— <code>Outlet</code>
+            ，以及"这一整页就是嵌套路由"
           </li>
           <li>
             <Link to="/day7/practice">练习</Link> —— 3 个 TODO
