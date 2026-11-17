@@ -465,7 +465,23 @@ Vite在启动时hi把环境信息注入到`import.meta.env`对象
 
 ### 警告
 
-自定义对象还要补充类型
+自定义对象还要补充类型声明
+
+```typescript
+// src/vite-env.d.ts —— 补上声明，VITE_APP_TITLE 才有类型提示
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_APP_TITLE: string
+  readonly VITE_API_BASE_URL: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
+
 
 ## Link组件
 
