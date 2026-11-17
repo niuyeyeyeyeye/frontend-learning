@@ -21,7 +21,7 @@ export default function Day11Layout() {
   return (
     <div>
       <h1 style={{ marginBottom: 4 }}>Day11 · 工程化 + 部署</h1>
-      <p className="hint" style={{ marginTop: 0 }}>
+      <p className='hint' style={{ marginTop: 0 }}>
         当前地址：<code>{location.pathname}</code>　|　 当前模式：<code>MODE={mode}</code>
         {mode === 'development' && '（npm run dev）'}
         {mode === 'production' && '（npm run build + preview）'}

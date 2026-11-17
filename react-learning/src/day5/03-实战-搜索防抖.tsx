@@ -99,11 +99,11 @@ export default function SearchDemo() {
           setInput(e.target.value)
           setInputCount((c) => c + 1) // 每次输入都 +1
         }}
-        placeholder="快速输入几个字母，观察下面两个计数"
+        placeholder='快速输入几个字母，观察下面两个计数'
         style={{ padding: 6, width: '100%', maxWidth: 320, marginBottom: 10 }}
       />
 
-      <div className="card" style={{ display: 'flex', gap: 24, fontSize: 14 }}>
+      <div className='card' style={{ display: 'flex', gap: 24, fontSize: 14 }}>
         <span>
           输入变化：<strong>{inputCount}</strong> 次
         </span>
@@ -112,24 +112,24 @@ export default function SearchDemo() {
         </span>
       </div>
 
-      <p className="hint">
+      <p className='hint'>
         👉 快速输入 5 个字母：输入变化 = 5 次，但实际搜索 = 1 次（只搜最后那一下）。
         这就是防抖的价值：<strong>减少无效请求</strong>。
       </p>
-      <p className="hint">
+      <p className='hint'>
         ⚠️ 开发模式下搜索次数可能多算 1 次（StrictMode 会让 effect 多跑一次），生产构建不会。
       </p>
 
       {/* 三态渲染（Day4 学的） */}
-      {loading && <p className="hint">⏳ 搜索中…</p>}
+      {loading && <p className='hint'>⏳ 搜索中…</p>}
       {!loading && debouncedKeyword.trim() !== '' && results.length === 0 && (
-        <p className="hint">没有找到匹配的用户</p>
+        <p className='hint'>没有找到匹配的用户</p>
       )}
       {!loading &&
         results.map((u) => (
           <div
             key={u.id}
-            className="card"
+            className='card'
             style={{ display: 'flex', gap: 10, alignItems: 'center' }}
           >
             <div
@@ -150,13 +150,13 @@ export default function SearchDemo() {
             </div>
             <div>
               <strong>{u.name}</strong>
-              <div className="hint">{u.bio}</div>
+              <div className='hint'>{u.bio}</div>
             </div>
           </div>
         ))}
 
       <h3>对比：不用防抖会怎样？</h3>
-      <div className="card">
+      <div className='card'>
         <p>
           把上面代码里的 <code>useDebounce(input, 400)</code> 改成直接用 <code>input</code>，
           然后快速输入 5 个字母：
@@ -167,7 +167,7 @@ export default function SearchDemo() {
           </li>
           <li>而且返回顺序不确定（可能先发的后到）→ 竞态问题（Day4 学过）</li>
         </ul>
-        <p className="hint">
+        <p className='hint'>
           ⭐ 这就是为什么真实的搜索框都要防抖：<strong>省流量、省服务器、避免结果错乱</strong>。
         </p>
       </div>

@@ -28,7 +28,7 @@ export default function Day7Layout() {
   return (
     <div>
       <h1 style={{ marginBottom: 4 }}>Day7 · React Router</h1>
-      <p className="hint" style={{ marginTop: 0 }}>
+      <p className='hint' style={{ marginTop: 0 }}>
         当前地址：<code>{location.pathname}</code>
         {location.search && (
           <>

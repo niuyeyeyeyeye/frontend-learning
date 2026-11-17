@@ -97,7 +97,7 @@ function ContextDemo() {
         Outer（不用 theme，也不传 props）
       </div>
       <MiddleLayer />
-      <p className="hint">
+      <p className='hint'>
         👆 和上一节对比：MiddleLayer / InnerCard <strong>没有任何 theme props</strong>，
         但一样能读到、能改。
       </p>
@@ -107,7 +107,7 @@ function ContextDemo() {
 
 function MiddleLayer() {
   return (
-    <div className="card">
+    <div className='card'>
       <div style={{ color: '#999', fontSize: 12 }}>MiddleLayer（只负责包一层，什么都不传）</div>
       <InnerCard />
     </div>
@@ -117,11 +117,11 @@ function MiddleLayer() {
 function InnerCard() {
   const { theme, toggleTheme } = useTheme()
   return (
-    <div className="card" style={THEME_BG[theme]}>
+    <div className='card' style={THEME_BG[theme]}>
       <p>
         我在最里层，读到 theme = <strong>{theme}</strong>
       </p>
-      <button className="btn-ghost" onClick={toggleTheme}>
+      <button className='btn-ghost' onClick={toggleTheme}>
         点我切换（整个子树一起变）
       </button>
     </div>
@@ -156,26 +156,26 @@ function RerenderDemo() {
   const goodValue = useMemo<CountContextValue>(() => ({ count }), [count]) // ✅
 
   return (
-    <div className="card">
+    <div className='card'>
       <p>
         count = <strong>{count}</strong>，tick = <strong>{tick}</strong>
       </p>
-      <button className="btn" style={{ marginRight: 8 }} onClick={() => setCount((c) => c + 1)}>
+      <button className='btn' style={{ marginRight: 8 }} onClick={() => setCount((c) => c + 1)}>
         count +1（两个都会渲染，因为值真的变了）
       </button>
-      <button className="btn-ghost" onClick={() => setTick((t) => t + 1)}>
+      <button className='btn-ghost' onClick={() => setTick((t) => t + 1)}>
         tick +1（只有 ❌ 那个会渲染）
       </button>
 
       <CountContext.Provider value={badValue}>
-        <RenderLogger name="❌ 没 useMemo" />
+        <RenderLogger name='❌ 没 useMemo' />
       </CountContext.Provider>
 
       <CountContext.Provider value={goodValue}>
-        <RenderLogger name="✅ 用了 useMemo" />
+        <RenderLogger name='✅ 用了 useMemo' />
       </CountContext.Provider>
 
-      <p className="hint">
+      <p className='hint'>
         👆 打开 F12 控制台，然后<strong>只点"tick +1"</strong>：应该只出现{' '}
         <code>[❌ 没 useMemo]</code> 那一行。两个都出现 = <code>memo</code> 被去掉了。
       </p>
@@ -194,7 +194,7 @@ const RenderLogger = memo(function RenderLogger({ name }: { name: string }) {
     console.log(`[${name}] 渲染了一次，读到的 count = ${count}`)
   })
   return (
-    <div className="card" style={{ padding: '6px 10px' }}>
+    <div className='card' style={{ padding: '6px 10px' }}>
       {name}：count = <strong>{count}</strong>
     </div>
   )

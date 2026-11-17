@@ -17,7 +17,7 @@ function Badge({ name }: { name: string }) {
   const r = useRef(0)
   r.current += 1
   return (
-    <span className="tag" style={{ marginLeft: 8, fontSize: 11 }}>
+    <span className='tag' style={{ marginLeft: 8, fontSize: 11 }}>
       {name} {r.current} 次
     </span>
   )
@@ -32,9 +32,9 @@ function Badge({ name }: { name: string }) {
 
 function BigList() {
   return (
-    <div className="card" style={{ padding: 8 }}>
+    <div className='card' style={{ padding: 8 }}>
       100 项列表
-      <Badge name="BigList" />
+      <Badge name='BigList' />
       <div style={{ maxHeight: 70, overflow: 'auto', fontSize: 12, color: '#8b949e' }}>
         {Array.from({ length: 100 }, (_, i) => (
           <span key={i} style={{ marginRight: 6 }}>
@@ -52,14 +52,14 @@ function WrongPlace({ children }: { children: ReactNode }) {
   void setKeyword
 
   return (
-    <div className="card" style={{ borderColor: '#cf222e' }}>
+    <div className='card' style={{ borderColor: '#cf222e' }}>
       父组件 —— 打字时列表会跟着重渲染
-      <Badge name="WrongPlace" />
+      <Badge name='WrongPlace' />
       <p style={{ margin: '6px 0' }}>
         <input
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          placeholder="在大框里打字，看 BigList 的次数"
+          placeholder='在大框里打字，看 BigList 的次数'
           style={{ padding: 4, width: 260 }}
         />
       </p>
@@ -88,10 +88,10 @@ type Filters = { sort: 'asc' | 'desc' }
 const BadMemoList = memo(
   ({ filters, onPick }: { filters: Filters; onPick: (id: number) => void }) => {
     return (
-      <div className="card" style={{ padding: 8 }}>
+      <div className='card' style={{ padding: 8 }}>
         列表（排序：{filters.sort}）{/* 用一个 ref 计数，避免额外 state */}
         <Counter />
-        <button className="btn-ghost" style={{ marginLeft: 8 }} onClick={() => onPick(1)}>
+        <button className='btn-ghost' style={{ marginLeft: 8 }} onClick={() => onPick(1)}>
           pick 1
         </button>
       </div>
@@ -103,7 +103,7 @@ function Counter() {
   const r = useRef(0)
   r.current += 1
   return (
-    <span className="tag" style={{ fontSize: 11 }}>
+    <span className='tag' style={{ fontSize: 11 }}>
       BadMemoList {r.current} 次
     </span>
   )
@@ -121,14 +121,14 @@ function BadMemoListParent() {
   }, [])
 
   return (
-    <div className="card">
+    <div className='card'>
       父组件 tick = {tick}
-      <Badge name="父" />
-      <button className="btn" style={{ marginLeft: 8 }} onClick={() => setTick((t) => t + 1)}>
+      <Badge name='父' />
+      <button className='btn' style={{ marginLeft: 8 }} onClick={() => setTick((t) => t + 1)}>
         让父组件重渲染
       </button>
       <BadMemoList filters={filters} onPick={onPick} />
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         TODO：现在每点一次上面的按钮，BadMemoList 的次数都会 +1。修好之后它应该**不动**。
       </p>
     </div>
@@ -144,7 +144,7 @@ function BadMemoListParent() {
 
 function HeavyContent() {
   return (
-    <div className="card" style={{ padding: 8, borderColor: '#0969da' }}>
+    <div className='card' style={{ padding: 8, borderColor: '#0969da' }}>
       ✅ 我是懒加载进来的重内容（渲染了 500 项）
       <div style={{ maxHeight: 60, overflow: 'auto', fontSize: 12, color: '#8b949e' }}>
         {Array.from({ length: 500 }, (_, i) => (
@@ -166,14 +166,14 @@ function LazyPractice() {
   const [show, setShow] = useState(false)
 
   return (
-    <div className="card">
-      <button className="btn" onClick={() => setShow((s) => !s)}>
+    <div className='card'>
+      <button className='btn' onClick={() => setShow((s) => !s)}>
         {show ? '藏起来' : '加载重内容'}
       </button>
       <Suspense fallback={<p style={{ color: '#8b949e' }}>⏳ 加载中……</p>}>
         {show && <LazyContent />}
       </Suspense>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         TODO：做完之后，点按钮会先看到「加载中」（因为文件是点击时才请求的）。
       </p>
     </div>

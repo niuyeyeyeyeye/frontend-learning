@@ -12,8 +12,8 @@ export default function About() {
   return (
     <div>
       <h1>关于我</h1>
-      <div className="card">
-        <p className="hint" style={{ marginTop: 0 }}>
+      <div className='card'>
+        <p className='hint' style={{ marginTop: 0 }}>
           <p>名字：</p>
           <p>目标：前端实习</p>
           <p>学习进度：react到router路由了</p>

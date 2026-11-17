@@ -18,17 +18,17 @@ export default function NotFound() {
   return (
     <div>
       <h1>404 · 这个地址不存在</h1>
-      <div className="card">
+      <div className='card'>
         <p>
           你访问的是：
           <code style={{ background: '#f6f8fa', padding: '2px 6px' }}>{location.pathname}</code>
         </p>
-        <p className="hint">
+        <p className='hint'>
           这个地址没有在 <code>src/router.tsx</code> 里配过，所以落到了 <code>path: '*'</code>{' '}
           这条兜底路由。
         </p>
         <p>
-          <Link className="btn" to="/">
+          <Link className='btn' to='/'>
             回首页
           </Link>
         </p>

@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom'
 export default function EngineeringIntro() {
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>三个痛点，你现在每天都在经历</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -72,7 +72,7 @@ export default function EngineeringIntro() {
         </table>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 核心认知：机器能做的事，别靠人记</h3>
         <p style={{ marginTop: 0 }}>你可能觉得"格式不一致"是小问题。但在团队里它很贵：</p>
         <ul style={{ margin: '0 0 8px', paddingLeft: 20, lineHeight: 1.9 }}>
@@ -80,13 +80,13 @@ export default function EngineeringIntro() {
           <li>每次 code review 都要讨论"这里该不该换行" → **浪费时间且伤感情**</li>
           <li>新人入职第一天就要学"我们这儿怎么排版" → **完全没必要学的知识**</li>
         </ul>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           所以工程化的原则是：<strong>凡是能写成规则的，就不要写进"注意事项"。</strong>
           人只负责做机器判断不了的事（比如"这个抽象合不合理"）。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天的实际交付（诚实版）</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -121,26 +121,26 @@ export default function EngineeringIntro() {
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>ESLint 没装成不是偷懒</strong> —— 是遇到了真实的版本冲突。
           那一段反而是今天最值钱的内容，面试问"你踩过什么工程化问题"时可以直接讲。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天的路线</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
-            <Link to="/day11/prettier">1. Prettier 与那条真实的依赖冲突</Link>
+            <Link to='/day11/prettier'>1. Prettier 与那条真实的依赖冲突</Link>
           </li>
           <li>
-            <Link to="/day11/env">2. 环境变量</Link> —— 为什么密钥绝不能放前端
+            <Link to='/day11/env'>2. 环境变量</Link> —— 为什么密钥绝不能放前端
           </li>
           <li>
-            <Link to="/day11/deploy">3. 构建与部署</Link> —— 刷新页面 404 的坑
+            <Link to='/day11/deploy'>3. 构建与部署</Link> —— 刷新页面 404 的坑
           </li>
           <li>
-            <Link to="/day11/practice">练习</Link>
+            <Link to='/day11/practice'>练习</Link>
           </li>
         </ol>
       </div>

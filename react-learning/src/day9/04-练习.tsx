@@ -48,15 +48,15 @@ function ThreeStateList() {
   }
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
-        <button className="btn-ghost" style={{ marginRight: 6 }} onClick={() => load('')}>
+        <button className='btn-ghost' style={{ marginRight: 6 }} onClick={() => load('')}>
           正常
         </button>
-        <button className="btn-ghost" style={{ marginRight: 6 }} onClick={() => load('?_empty=1')}>
+        <button className='btn-ghost' style={{ marginRight: 6 }} onClick={() => load('?_empty=1')}>
           空数据
         </button>
-        <button className="btn-ghost" onClick={() => load('?_status=500')}>
+        <button className='btn-ghost' onClick={() => load('?_status=500')}>
           服务器 500
         </button>
       </p>
@@ -70,7 +70,7 @@ function ThreeStateList() {
           ))}
         </ul>
       )}
-      {!loading && error === null && data === null && <p className="hint">（点个按钮试试）</p>}
+      {!loading && error === null && data === null && <p className='hint'>（点个按钮试试）</p>}
     </div>
   )
 }
@@ -124,8 +124,8 @@ function RequestDemo() {
     )
   }
   return (
-    <div className="card">
-      <button className="btn" onClick={call}>
+    <div className='card'>
+      <button className='btn' onClick={call}>
         用 request2 请求
       </button>
       {msg !== '' && <p style={{ marginBottom: 0 }}>{msg}</p>}
@@ -183,11 +183,11 @@ function SearchBox() {
   }, [keyword])
 
   return (
-    <div className="card">
+    <div className='card'>
       <input
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="试试快速输入 React / key / 请求"
+        placeholder='试试快速输入 React / key / 请求'
         style={{ padding: 6, width: 260 }}
       />
       {loading && <p>⏳ 搜索中……</p>}
@@ -198,9 +198,9 @@ function SearchBox() {
         </p>
       )}
       {result === '' && error === null && !loading && keyword !== '' && (
-        <p className="hint">（还没实现，先看 TODO）</p>
+        <p className='hint'>（还没实现，先看 TODO）</p>
       )}
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         TODO 没做完之前，这里不会有结果。
       </p>
     </div>

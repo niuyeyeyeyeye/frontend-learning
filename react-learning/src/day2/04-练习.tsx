@@ -40,7 +40,7 @@ function Temperature() {
   const F = isNaN(Number(C)) || C === '' ? '--' : (Number(C) * 9) / 5 + 32
   return (
     <div>
-      <input onChange={(e) => setC(e.target.value)} value={C} placeholder="请输入摄氏温度"></input>
+      <input onChange={(e) => setC(e.target.value)} value={C} placeholder='请输入摄氏温度'></input>
       <p>{F}</p>
     </div>
   )

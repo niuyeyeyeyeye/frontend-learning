@@ -35,12 +35,12 @@ export default function UsersList() {
   return (
     <div>
       <h2>用户列表</h2>
-      <p className="hint" style={{ marginTop: 0 }}>
+      <p className='hint' style={{ marginTop: 0 }}>
         👆 点任意一个人进详情。注意地址从 <code>/day7/users</code> 变成了 <code>/day7/users/2</code>{' '}
         —— 页面没刷新。
       </p>
 
-      <div className="card">
+      <div className='card'>
         {USERS.map((u) => (
           // ⭐ to 里用模板字符串把 id 拼进地址
           <div key={u.id} style={{ padding: '6px 0', borderBottom: '1px solid #f6f8fa' }}>
@@ -52,16 +52,16 @@ export default function UsersList() {
         ))}
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>手写地址也试试</h3>
         <p>
-          <Link to="/day7/users/1">/day7/users/1</Link>
+          <Link to='/day7/users/1'>/day7/users/1</Link>
           {'　'}
-          <Link to="/day7/users/2">/day7/users/2</Link>
+          <Link to='/day7/users/2'>/day7/users/2</Link>
           {'　'}
-          <Link to="/day7/users/999">/day7/users/999（不存在的 id）</Link>
+          <Link to='/day7/users/999'>/day7/users/999（不存在的 id）</Link>
         </p>
-        <p className="hint">
+        <p className='hint'>
           直接在地址栏改数字回车也行 —— 因为地址是"真"的，不是内存里藏着的状态。 这就是"URL
           是数据源"的好处：能收藏、能分享、刷新不丢。
         </p>
@@ -85,15 +85,15 @@ export function UserDetail() {
     return (
       <div>
         <h2>用户详情</h2>
-        <div className="card">
+        <div className='card'>
           <p>
             找不到 id 为 <code>{String(rawId)}</code> 的用户。
           </p>
-          <p className="hint">
+          <p className='hint'>
             这是个常见场景：用户手改地址栏。真实项目里这里应该显示"没有这个资源"，
             而不是让页面白屏。
           </p>
-          <Link className="btn" to="/day7/users">
+          <Link className='btn' to='/day7/users'>
             回列表
           </Link>
         </div>
@@ -104,7 +104,7 @@ export function UserDetail() {
   return (
     <div>
       <h2>用户详情</h2>
-      <div className="card">
+      <div className='card'>
         <p style={{ marginTop: 0 }}>
           <strong style={{ fontSize: 18 }}>{user.name}</strong>
           <span style={{ color: '#8b949e', marginLeft: 8 }}>(id = {user.id})</span>
@@ -115,17 +115,17 @@ export function UserDetail() {
         <p>
           技能：
           {user.skills.map((s) => (
-            <span key={s} className="tag" style={{ marginRight: 6 }}>
+            <span key={s} className='tag' style={{ marginRight: 6 }}>
               {s}
             </span>
           ))}
         </p>
-        <p className="hint">
+        <p className='hint'>
           URL 里 id = <code>{rawId}</code>，类型是 <code>string</code>； 我用{' '}
           <code>String(u.id) === rawId</code> 来比较，就是因为一个是字符串一个是数字。 （用{' '}
           <code>Number(rawId)</code> 转成数字再比也行，但 <code>'='</code> 这种脏数据会变成 NaN。）
         </p>
-        <Link className="btn-ghost" to="/day7/users">
+        <Link className='btn-ghost' to='/day7/users'>
           ← 回列表
         </Link>
       </div>

@@ -10,7 +10,7 @@
 export default function LazyHeavy() {
   const items = Array.from({ length: 300 }, (_, i) => i + 1)
   return (
-    <div className="card" style={{ borderColor: '#0969da' }}>
+    <div className='card' style={{ borderColor: '#0969da' }}>
       <strong style={{ color: '#0969da' }}>我是被懒加载进来的组件</strong>
       <p style={{ margin: '6px 0' }}>这个文件刚才根本不在首屏的 JS 里。</p>
       <div style={{ maxHeight: 100, overflow: 'auto', fontSize: 12, color: '#8b949e' }}>

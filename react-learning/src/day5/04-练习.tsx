@@ -26,10 +26,10 @@ function AutoFocus() {
     <div>
       <input
         ref={ref}
-        placeholder="我应该在页面加载后自动获得焦点"
+        placeholder='我应该在页面加载后自动获得焦点'
         style={{ padding: 6, width: 320 }}
       />
-      <p className="hint">（如果没自动聚焦，说明还没实现）</p>
+      <p className='hint'>（如果没自动聚焦，说明还没实现）</p>
     </div>
   )
 }
@@ -51,7 +51,7 @@ function ToggleA() {
   // TODO 2-a：用你的 useToggle
   const { on, toggle } = useToggle(false)
   return (
-    <div className="card">
+    <div className='card'>
       <span>{on ? '开' : '关'}</span>
       <button onClick={toggle}>{'切换'}</button>
     </div>
@@ -62,7 +62,7 @@ function ToggleB() {
   // TODO 2-b：再写一个组件（各自独立）
   const { on, toggle } = useToggle(false)
   return (
-    <div className="card">
+    <div className='card'>
       <span>{on ? '开' : '关'}</span>
       <button onClick={toggle}>{'切换'}</button>
     </div>
@@ -102,7 +102,7 @@ function DebounceInput() {
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="快速输入"
+        placeholder='快速输入'
         style={{ padding: 4 }}
       />
       <p>

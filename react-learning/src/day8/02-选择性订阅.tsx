@@ -46,7 +46,7 @@ function CountOnly() {
     console.log('[① 只订 count] 渲染了')
   })
   return (
-    <div className="card" style={{ padding: '6px 10px' }}>
+    <div className='card' style={{ padding: '6px 10px' }}>
       ① 只订 <code>count</code>：{count}
     </div>
   )
@@ -59,7 +59,7 @@ function TextOnly() {
     console.log('[② 只订 text] 渲染了')
   })
   return (
-    <div className="card" style={{ padding: '6px 10px' }}>
+    <div className='card' style={{ padding: '6px 10px' }}>
       ② 只订 <code>text</code>：{text}
     </div>
   )
@@ -72,7 +72,7 @@ function WholeStore() {
     console.log('[③ 整店订阅] 渲染了')
   })
   return (
-    <div className="card" style={{ padding: '6px 10px', borderColor: '#cf222e' }}>
+    <div className='card' style={{ padding: '6px 10px', borderColor: '#cf222e' }}>
       ③ 整店订阅：count={state.count} / text={state.text} / list={state.list.length} 条
     </div>
   )
@@ -85,7 +85,7 @@ function TwoFieldsShallow() {
     console.log('[④ useShallow 拿两个字段] 渲染了')
   })
   return (
-    <div className="card" style={{ padding: '6px 10px', borderColor: '#1f883d' }}>
+    <div className='card' style={{ padding: '6px 10px', borderColor: '#1f883d' }}>
       ④ useShallow 拿 count+text：{count} / {text}
     </div>
   )
@@ -101,22 +101,22 @@ export default function SelectorDemo() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>实验：打开 F12 控制台，然后点下面三个按钮</h3>
-        <button className="btn" style={{ marginRight: 8 }} onClick={inc}>
+        <button className='btn' style={{ marginRight: 8 }} onClick={inc}>
           count +1
         </button>
         <button
-          className="btn-ghost"
+          className='btn-ghost'
           style={{ marginRight: 8 }}
           onClick={() => setText(new Date().toLocaleTimeString('zh-CN', { hour12: false }))}
         >
           改 text
         </button>
-        <button className="btn-ghost" onClick={addItem}>
+        <button className='btn-ghost' onClick={addItem}>
           往 list 加一条
         </button>
-        <p className="hint">
+        <p className='hint'>
           <strong>点 count +1</strong> 时，控制台应该只出现
           <code>[① 只订 count]</code> 和 <code>[③ 整店订阅]</code>；<code>[② 只订 text]</code>{' '}
           不出现。
@@ -132,7 +132,7 @@ export default function SelectorDemo() {
         <TwoFieldsShallow />
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>它凭什么能做到？看 zustand 源码就一行</h3>
         <pre
           style={{
@@ -161,7 +161,7 @@ const slice = React.useSyncExternalStore(
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⚠️ 最容易踩的坑：selector 返回了一个新对象</h3>
         <pre
           style={{
@@ -181,7 +181,7 @@ const text  = useShop((s) => s.text)
 
 // ✅ 办法二：要一次拿多个，就用 useShallow 包一层
 const { count, text } = useShop(useShallow((s) => ({ count: s.count, text: s.text })))`}</pre>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>为什么上面④用了 useShallow 就没事？</strong>因为它内部用 <code>useRef</code>{' '}
           记住了上一次的结果，浅比较（每个字段都相等）成立时
           <strong>返回上一次那个对象的同一个引用</strong> —— React 一比较，引用没变，就不渲染。
@@ -193,7 +193,7 @@ const { count, text } = useShop(useShallow((s) => ({ count: s.count, text: s.tex
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>和 Context 对比：为什么 Context 做不到</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -231,7 +231,7 @@ const { count, text } = useShop(useShallow((s) => ({ count: s.count, text: s.tex
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           Context 想减少重渲染，只能"拆成多个小 Context"或"用 memo 包消费者" ——
           能缓解，但本质上做不到"只订一个字段"。这就是 Zustand 存在的意义。
         </p>

@@ -28,7 +28,7 @@ export default function RefBasics() {
   return (
     <div>
       <h3>1. useRef 不触发渲染（对比 useState）</h3>
-      <div className="card">
+      <div className='card'>
         <p>
           这个组件已经渲染了 <strong>{renderCount.current}</strong> 次
         </p>
@@ -36,11 +36,11 @@ export default function RefBasics() {
           count = <strong>{count}</strong>，上一次是{' '}
           <strong>{prevCount === null ? '（无）' : prevCount}</strong>
         </p>
-        <button className="btn" onClick={() => setCount(count + 1)}>
+        <button className='btn' onClick={() => setCount(count + 1)}>
           setCount + 1（触发渲染）
         </button>{' '}
         <button
-          className="btn-ghost"
+          className='btn-ghost'
           onClick={() => {
             renderCount.current += 100 // ❌ 改 ref 不会让页面更新
             console.log('我把 renderCount.current 改成', renderCount.current, '但页面数字不会变')
@@ -48,29 +48,29 @@ export default function RefBasics() {
         >
           改 ref（不触发渲染，看数字变不变）
         </button>
-        <p className="hint">
+        <p className='hint'>
           👉 点第二个按钮：控制台里的数字变了，但页面上"渲染了 N 次"不变 —— 因为 ref 不触发渲染。
           下一次任何 state 更新（比如点第一个按钮）时，页面才会同步显示新值。
         </p>
       </div>
 
       <h3>2. 访问 DOM：控制输入框焦点</h3>
-      <div className="card">
-        <input ref={inputRef} placeholder="点下面按钮让我聚焦" style={{ padding: 4 }} />{' '}
-        <button className="btn" onClick={() => inputRef.current?.focus()}>
+      <div className='card'>
+        <input ref={inputRef} placeholder='点下面按钮让我聚焦' style={{ padding: 4 }} />{' '}
+        <button className='btn' onClick={() => inputRef.current?.focus()}>
           聚焦输入框
         </button>{' '}
-        <button className="btn-ghost" onClick={() => inputRef.current?.blur()}>
+        <button className='btn-ghost' onClick={() => inputRef.current?.blur()}>
           失焦
         </button>
-        <p className="hint">
+        <p className='hint'>
           注意 <code>inputRef.current?.focus()</code> 里的 <code>?.</code>： 因为 current 可能是
           null（首次渲染时元素还没挂载）—— 你 Day3 学的可选链正好用上。
         </p>
       </div>
 
       <h3>3. useRef vs useState（背下来）</h3>
-      <div className="card">
+      <div className='card'>
         <table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
           <tbody>
             <tr>
@@ -111,8 +111,8 @@ export default function RefBasics() {
       </div>
 
       <h3>4. 一个非常重要的用途：定时器 id</h3>
-      <div className="card">
-        <p className="hint">
+      <div className='card'>
+        <p className='hint'>
           你 Day4 写定时器时用的是 <code>let id = setInterval(...)</code> 写在 effect 里。 如果要在
           <strong>别的函数</strong>里清除它（比如按钮点击），就需要用 ref 存：
         </p>

@@ -27,10 +27,10 @@ export default function LazyDemo() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>实验：点按钮，看"加载中"和"加载完成"</h3>
         <p style={{ marginTop: 0 }}>
-          <button className="btn" onClick={() => setShow((s) => !s)}>
+          <button className='btn' onClick={() => setShow((s) => !s)}>
             {show ? '卸载它' : '加载那个重组件'}
           </button>
         </p>
@@ -38,7 +38,7 @@ export default function LazyDemo() {
         {/* ⭐ Suspense 必须有：lazy 组件还没加载完时，它的位置放 fallback */}
         <Suspense
           fallback={
-            <div className="card" style={{ color: '#8b949e' }}>
+            <div className='card' style={{ color: '#8b949e' }}>
               ⏳ 正在加载组件文件……（这就是 fallback）
             </div>
           }
@@ -46,7 +46,7 @@ export default function LazyDemo() {
           {show && <LazyHeavy />}
         </Suspense>
 
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           👆 点一下会先看到「正在加载组件文件……」，1.2 秒后变成真正的内容。
           <br />
           再点「卸载它」→ 再点「加载」→ <strong>这次立刻就出来了</strong>
@@ -55,7 +55,7 @@ export default function LazyDemo() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>代码长这样（就三行）</h3>
         <pre
           style={{
@@ -84,7 +84,7 @@ const Chart = lazy(() => import('./Chart'))
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 最高收益的用法：路由级懒加载</h3>
         <p style={{ marginTop: 0 }}>
           你 Day7 写的路由表，现在每打开首页都会把{' '}
@@ -112,7 +112,7 @@ const Day9Layout = lazy(() => import('./day9/Layout'))
     <Outlet />
   </Suspense>
 </div>`}</pre>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           这在真实项目里几乎是标配：一个后台管理系统几十个页面， 用户打开首页只要几百
           KB，而不是把几十个页面的代码全拉下来。
           <br />
@@ -122,7 +122,7 @@ const Day9Layout = lazy(() => import('./day9/Layout'))
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>三种"优化"分别治什么病</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -164,7 +164,7 @@ const Day9Layout = lazy(() => import('./day9/Layout'))
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>先分症状，再选工具。</strong> 这是性能优化最容易弄反的一步。
         </p>
       </div>

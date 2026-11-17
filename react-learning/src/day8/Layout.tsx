@@ -25,7 +25,7 @@ export default function Day8Layout() {
   return (
     <div>
       <h1 style={{ marginBottom: 4 }}>Day8 · Zustand 状态管理</h1>
-      <p className="hint" style={{ marginTop: 0 }}>
+      <p className='hint' style={{ marginTop: 0 }}>
         当前地址：<code>{location.pathname}</code>　|　
         {/* 这个数字和「3. 实战」页里的待办是同一份数据 —— 就在证明"跨页面共享" */}
         全局待办：<strong>{stats.total}</strong> 条（其中已完成 {stats.done}）

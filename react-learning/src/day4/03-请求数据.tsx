@@ -75,26 +75,26 @@ export default function FetchDemo() {
       </div>
 
       {/* ---------- 三种状态 + 空白态 ---------- */}
-      <div className="card">
+      <div className='card'>
         {loading && <p>⏳ 加载中…（最多 0.8 秒）</p>}
         {error !== null && <p style={{ color: '#cf222e' }}>❌ {error}</p>}
         {!loading && error === null && user !== null && (
           <div>
             <p>✅ 加载成功</p>
             <p>
-              <strong>{user.name}</strong>　<span className="hint">{user.email}</span>
+              <strong>{user.name}</strong>　<span className='hint'>{user.email}</span>
             </p>
           </div>
         )}
-        {!loading && error === null && user === null && <p className="hint">（还没有数据）</p>}
+        {!loading && error === null && user === null && <p className='hint'>（还没有数据）</p>}
       </div>
 
       <h3>2. ⚠️ 竞态问题（race condition）</h3>
-      <div className="card">
+      <div className='card'>
         <p>
           <b>快速连点 "用户 1" 和 "用户 2"</b>，观察会不会显示错的数据。
         </p>
-        <p className="hint">
+        <p className='hint'>
           如果没有 <code>cancelled</code> 这个标记：先发的请求可能后返回，把后发请求的结果
           <strong>覆盖掉</strong> → 你点了"用户 2"，却显示了"用户 1"的数据。
           <br />
@@ -102,7 +102,7 @@ export default function FetchDemo() {
           <br />
           我加了 <code>cancelled</code> 标记（清理函数里置 true），保证"过期的请求结果直接丢弃"。
         </p>
-        <p className="hint">
+        <p className='hint'>
           真实项目里另一种做法是用 <code>AbortController</code> 取消请求（axios 支持 signal）。
         </p>
       </div>

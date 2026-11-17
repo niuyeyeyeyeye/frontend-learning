@@ -24,7 +24,7 @@ export default function EnvDemo() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>你现在这个环境，变量长这样</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -67,18 +67,18 @@ export default function EnvDemo() {
             ))}
           </tbody>
         </table>
-        <p className="hint">
+        <p className='hint'>
           👆 按 F12 执行 <code>import.meta.env.MODE</code> 看不到（浏览器的 import.meta 没这个）——
           要在代码里打日志才行。
         </p>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>DEV / PROD 最实用的场景</strong>：要不要打印调试日志。
           <code>if (import.meta.env.DEV) console.log(...)</code> —— 构建时这段代码会被整段删掉，
           生产包里一个字都不留。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 唯一必须记住的规则：VITE_ 前缀</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -112,7 +112,7 @@ export default function EnvDemo() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0, color: '#cf222e' }}>⚠️ 最重要的一条：VITE_ 变量会打包进 JS</h3>
         <pre
           style={{
@@ -165,7 +165,7 @@ VITE_API_SECRET=sk-live-abcdef123456
         </table>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>.env 文件的层级（谁覆盖谁）</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -205,7 +205,7 @@ VITE_API_SECRET=sk-live-abcdef123456
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           优先级（高的覆盖低的）：<code>.env.local</code> ＞ 模式文件（<code>.env.production</code>
           ）＞ <code>.env</code>。
           <br />
@@ -217,7 +217,7 @@ VITE_API_SECRET=sk-live-abcdef123456
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>自定义变量还要补类型（否则 tsc 会报错）</h3>
         <pre
           style={{

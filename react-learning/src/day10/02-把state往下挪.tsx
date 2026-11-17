@@ -19,7 +19,7 @@ function HeavyList() {
   renders.current += 1
   const items = Array.from({ length: 100 }, (_, i) => `条目 ${i + 1}`)
   return (
-    <div className="card" style={{ padding: 8 }}>
+    <div className='card' style={{ padding: 8 }}>
       <div style={{ fontSize: 12, color: '#57606a', marginBottom: 4 }}>
         100 项的列表 —— 渲染了 <strong>{renders.current}</strong> 次
       </div>
@@ -40,13 +40,13 @@ function HeavyList() {
 function StateAtTop() {
   const [keyword, setKeyword] = useState('')
   return (
-    <div className="card" style={{ borderColor: '#cf222e' }}>
+    <div className='card' style={{ borderColor: '#cf222e' }}>
       <strong style={{ color: '#cf222e' }}>❌ state 放在顶层</strong>
       <p style={{ margin: '6px 0' }}>
         <input
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          placeholder="在这里打字，看列表的渲染次数"
+          placeholder='在这里打字，看列表的渲染次数'
           style={{ padding: 4, width: 240 }}
         />
       </p>
@@ -67,7 +67,7 @@ function SearchBox() {
       <input
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="在这里打字，列表不动"
+        placeholder='在这里打字，列表不动'
         style={{ padding: 4, width: 240 }}
       />
     </p>
@@ -76,7 +76,7 @@ function SearchBox() {
 
 function StateDown() {
   return (
-    <div className="card" style={{ borderColor: '#1f883d' }}>
+    <div className='card' style={{ borderColor: '#1f883d' }}>
       <strong style={{ color: '#1f883d' }}>✅ state 下移到 SearchBox</strong>
       {/* 打字只让 SearchBox 重渲染，兄弟 HeavyList 完全不受影响 */}
       <SearchBox />
@@ -97,7 +97,7 @@ function Shell({ children }: { children: ReactNode }) {
   const renders = useRef(0)
   renders.current += 1
   return (
-    <div className="card" style={{ borderColor: '#0969da' }}>
+    <div className='card' style={{ borderColor: '#0969da' }}>
       <strong style={{ color: '#0969da' }}>
         ✅ state 在外壳 Shell 里，大子树用 children 传进来
       </strong>
@@ -108,7 +108,7 @@ function Shell({ children }: { children: ReactNode }) {
         <input
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
-          placeholder="在这里打字，看列表的渲染次数"
+          placeholder='在这里打字，看列表的渲染次数'
           style={{ padding: 4, width: 240 }}
         />
       </p>
@@ -134,7 +134,7 @@ function StateTopWithChildren() {
 export default function StatePlacementDemo() {
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>实验：分别在这三个输入框里打字，看下面列表的渲染次数</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
@@ -160,7 +160,7 @@ export default function StatePlacementDemo() {
       <h3>C：state 必须留在顶层时，用 children 技巧</h3>
       <StateTopWithChildren />
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>为什么 children 能救？</h3>
         <pre
           style={{
@@ -189,14 +189,14 @@ function Shell({ children }) {
   return <div><input ... />{children}</div>
   //        React 发现 children 还是同一个 element 对象 → 直接复用，不重渲染
 }`}</pre>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           这个技巧在真实项目里非常常用 —— 比如一个"带状态的 Modal / 带滚动位置的容器"， 里面的内容用
           children 传进去，就不会被动重渲染。
           <strong>它不需要 memo、不需要 useMemo，只是把 element 的创建位置挪了一下。</strong>
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>优化的优先级（从高到低）</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>

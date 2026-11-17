@@ -25,7 +25,7 @@ function ContextCounterPanel() {
   const [count, setCount] = useState(0)
   return (
     <CounterContext.Provider value={{ count, inc: () => setCount((c) => c + 1) }}>
-      <div className="card" style={{ borderColor: '#cf222e' }}>
+      <div className='card' style={{ borderColor: '#cf222e' }}>
         <strong style={{ color: '#cf222e' }}>❌ Context 版</strong>
         <ContextCounterDisplay />
       </div>
@@ -39,7 +39,7 @@ function ContextCounterDisplay() {
   return (
     <p style={{ marginBottom: 0 }}>
       count = <strong>{ctx.count}</strong>{' '}
-      <button className="btn-ghost" onClick={ctx.inc}>
+      <button className='btn-ghost' onClick={ctx.inc}>
         +1
       </button>
     </p>
@@ -63,11 +63,11 @@ function ZustandCounterPanel() {
   const inc = useZustandCounter((s) => s.inc)
 
   return (
-    <div className="card" style={{ borderColor: '#1f883d' }}>
+    <div className='card' style={{ borderColor: '#1f883d' }}>
       <strong style={{ color: '#1f883d' }}>✅ Zustand 版</strong>
       <p style={{ marginBottom: 0 }}>
         count = <strong>{count}</strong>{' '}
-        <button className="btn-ghost" onClick={inc}>
+        <button className='btn-ghost' onClick={inc}>
           +1
         </button>
       </p>
@@ -83,12 +83,12 @@ export default function WhyZustand() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>先做这个实验（30 秒）</h3>
         <ol style={{ margin: '0 0 8px', paddingLeft: 20, lineHeight: 1.9 }}>
           <li>把左边两个计数器各点 3 下</li>
           <li>
-            点上面的 <Link to="/day8/basics">「1. 基础用法」</Link> 切走
+            点上面的 <Link to='/day8/basics'>「1. 基础用法」</Link> 切走
           </li>
           <li>再点回「为什么要它」看这两个数字</li>
         </ol>
@@ -96,7 +96,7 @@ export default function WhyZustand() {
           <ContextCounterPanel />
           <ZustandCounterPanel />
         </div>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           👆 <strong>Context 那个会归零</strong>（Provider 跟着页面一起卸载了），
           <strong>Zustand 那个还是 3</strong>（store 住在 React 外面，没人卸载它）。 这就是 Day7
           学的"切路由 = 卸载 + 挂载"的直接后果。
@@ -106,7 +106,7 @@ export default function WhyZustand() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>Context 的三个痛点</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -162,32 +162,32 @@ export default function WhyZustand() {
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
-          第 3 条是 Zustand 真正的价值所在 —— 在 <Link to="/day8/selector">第 2 节</Link>{' '}
+        <p className='hint' style={{ marginBottom: 0 }}>
+          第 3 条是 Zustand 真正的价值所在 —— 在 <Link to='/day8/selector'>第 2 节</Link>{' '}
           用控制台日志让你看见。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天的路线（4 步，别跳）</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
-            <Link to="/day8/basics">1. 基础用法</Link> —— <code>create</code> + <code>set</code> +
+            <Link to='/day8/basics'>1. 基础用法</Link> —— <code>create</code> + <code>set</code> +
             在组件里读
           </li>
           <li>
-            <Link to="/day8/selector">2. 选择性订阅</Link> —— 为什么只订一个字段，以及最容易踩的坑
+            <Link to='/day8/selector'>2. 选择性订阅</Link> —— 为什么只订一个字段，以及最容易踩的坑
           </li>
           <li>
-            <Link to="/day8/todo">3. 实战：重写待办</Link> —— 干掉 Provider，加上本地持久化
+            <Link to='/day8/todo'>3. 实战：重写待办</Link> —— 干掉 Provider，加上本地持久化
           </li>
           <li>
-            <Link to="/day8/practice">练习</Link> —— 3 个 TODO（购物车 store 就是练习 2）
+            <Link to='/day8/practice'>练习</Link> —— 3 个 TODO（购物车 store 就是练习 2）
           </li>
         </ol>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>什么时候**不要**用 Zustand（面试加分）</h3>
         <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
@@ -196,7 +196,7 @@ export default function WhyZustand() {
           <li>只有两三层传递 → props 或 Context 更简单</li>
           <li>服务器数据（列表、详情）→ 应该用 React Query / SWR 那类，不是 Zustand</li>
         </ul>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>判断标准</strong>：这个状态是不是"很多互不相干的组件都要读写"？ 是 → Zustand；否 →
           留在组件里。
         </p>

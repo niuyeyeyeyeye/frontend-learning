@@ -52,20 +52,20 @@ export default function KeyBugDemo() {
   return (
     <div>
       <div style={{ marginBottom: 12 }}>
-        <button className="btn" onClick={addItem}>
+        <button className='btn' onClick={addItem}>
           添加一项
         </button>
         {'　'}
-        <button className="btn-ghost" onClick={removeFirst}>
+        <button className='btn-ghost' onClick={removeFirst}>
           删除第一项
         </button>
         {'　'}
-        <button className="btn-ghost" onClick={reset}>
+        <button className='btn-ghost' onClick={reset}>
           重置
         </button>
       </div>
 
-      <p className="hint" style={{ color: '#cf222e' }}>
+      <p className='hint' style={{ color: '#cf222e' }}>
         👉 操作：先在两个列表的前两个输入框里打字，然后点"删除第一项"，对比两边
       </p>
 
@@ -74,7 +74,7 @@ export default function KeyBugDemo() {
         <div style={{ flex: 1, minWidth: 240 }}>
           <h4 style={{ color: '#cf222e' }}>❌ 用 index 做 key</h4>
           {items.map((item, index) => (
-            <div key={index} className="card">
+            <div key={index} className='card'>
               <div>{item.text}</div>
               {/* 这个输入框是"非受控"的：它的值存在 DOM 里，不受 React 管理 */}
               <input defaultValue={item.text} style={{ width: '100%', marginTop: 4 }} />
@@ -86,7 +86,7 @@ export default function KeyBugDemo() {
         <div style={{ flex: 1, minWidth: 240 }}>
           <h4 style={{ color: '#1f883d' }}>✅ 用 id 做 key</h4>
           {items.map((item) => (
-            <div key={item.id} className="card">
+            <div key={item.id} className='card'>
               <div>{item.text}</div>
               <input defaultValue={item.text} style={{ width: '100%', marginTop: 4 }} />
             </div>
@@ -94,7 +94,7 @@ export default function KeyBugDemo() {
         </div>
       </div>
 
-      <div className="card" style={{ marginTop: 16 }}>
+      <div className='card' style={{ marginTop: 16 }}>
         <h4 style={{ marginTop: 0 }}>为什么会错位？</h4>
         <p>假设你删掉了第 1 项。剩下的是「第 2 项、第 3 项」。</p>
         <p>
@@ -108,7 +108,7 @@ export default function KeyBugDemo() {
         </p>
       </div>
 
-      <div className="card" style={{ borderColor: '#d4a72c', background: '#fff8c5' }}>
+      <div className='card' style={{ borderColor: '#d4a72c', background: '#fff8c5' }}>
         <h4 style={{ marginTop: 0 }}>⭐ 三条 key 的规则</h4>
         <ol style={{ paddingLeft: 20 }}>
           <li>
@@ -125,7 +125,7 @@ export default function KeyBugDemo() {
             —— 每次渲染 key 都变， React 会把整个列表销毁重建（性能差 + 状态全丢）
           </li>
         </ol>
-        <p className="hint">
+        <p className='hint'>
           什么时候可以用 index 当 key？**列表不会增删、不会重排**的时候（比如静态展示的配置列表）。
           一旦有"添加 / 删除 / 排序"，就必须用稳定 id。
         </p>

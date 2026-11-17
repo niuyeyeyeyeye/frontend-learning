@@ -141,10 +141,10 @@ function TodoInput() {
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="写点什么，回车添加"
+        placeholder='写点什么，回车添加'
         style={{ padding: 6, width: 260, marginRight: 8 }}
       />
-      <button className="btn" type="submit">
+      <button className='btn' type='submit'>
         添加
       </button>
     </form>
@@ -155,7 +155,7 @@ function TodoStats() {
   const { stats, clearDone } = useTodos()
 
   return (
-    <div className="card">
+    <div className='card'>
       <div style={{ marginBottom: 6 }}>
         共 <strong>{stats.total}</strong> 条，已完成 <strong>{stats.done}</strong> 条，还剩{' '}
         <strong>{stats.remaining}</strong> 条（{stats.percent}%）
@@ -172,7 +172,7 @@ function TodoStats() {
         />
       </div>
       <button
-        className="btn-ghost"
+        className='btn-ghost'
         onClick={clearDone}
         disabled={stats.done === 0}
         style={{ marginTop: 8 }}
@@ -187,7 +187,7 @@ function TodoList() {
   const { todos } = useTodos()
 
   if (todos.length === 0) {
-    return <p className="hint">列表是空的，上面加一条试试。</p>
+    return <p className='hint'>列表是空的，上面加一条试试。</p>
   }
 
   return (
@@ -207,10 +207,10 @@ function TodoItem({ todo }: { todo: Todo }) {
   return (
     <li className={todo.done ? 'card done' : 'card'} style={{ marginBottom: 6 }}>
       <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-        <input type="checkbox" checked={todo.done} onChange={() => toggleTodo(todo.id)} />
+        <input type='checkbox' checked={todo.done} onChange={() => toggleTodo(todo.id)} />
         <span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>{todo.text}</span>
       </label>
-      <button className="btn-ghost" onClick={() => removeTodo(todo.id)} style={{ float: 'right' }}>
+      <button className='btn-ghost' onClick={() => removeTodo(todo.id)} style={{ float: 'right' }}>
         删除
       </button>
     </li>
@@ -240,7 +240,7 @@ export default function TodoWithContext() {
       <TodoProvider>
         <TodoLayout />
       </TodoProvider>
-      <p className="hint">
+      <p className='hint'>
         👆 TodoInput / TodoStats / TodoList / TodoItem 之间<strong>没有一个 props</strong>，
         数据全靠 useTodos()。
       </p>

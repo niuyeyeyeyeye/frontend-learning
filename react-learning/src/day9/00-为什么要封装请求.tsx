@@ -15,53 +15,53 @@ import { Link } from 'react-router-dom'
 export default function WhyWrapRequest() {
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 一个列表页，其实有 4 种样子</h3>
-        <p className="hint">
+        <p className='hint'>
           👆 下面三张卡是<strong>静态示意</strong>：真实项目里这三种状态你都要写，
           而且要考虑"用户看到它时的感受"。
         </p>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
-          <div className="card" style={{ padding: 10 }}>
+          <div className='card' style={{ padding: 10 }}>
             <div style={{ color: '#57606a', fontSize: 12, marginBottom: 6 }}>
               ① loading（加载中）
             </div>
             <div style={{ background: '#eaeef2', height: 10, borderRadius: 4, marginBottom: 6 }} />
             <div style={{ background: '#eaeef2', height: 10, borderRadius: 4, marginBottom: 6 }} />
             <div style={{ background: '#eaeef2', height: 10, borderRadius: 4, width: '60%' }} />
-            <p className="hint" style={{ marginBottom: 0, marginTop: 8 }}>
+            <p className='hint' style={{ marginBottom: 0, marginTop: 8 }}>
               骨架屏 / 转圈。**别让用户对着空白猜。**
             </p>
           </div>
 
-          <div className="card" style={{ padding: 10, borderColor: '#cf222e' }}>
+          <div className='card' style={{ padding: 10, borderColor: '#cf222e' }}>
             <div style={{ color: '#cf222e', fontSize: 12, marginBottom: 6 }}>② error（出错）</div>
             <p style={{ margin: '0 0 6px', color: '#cf222e' }}>网络异常，请重试</p>
-            <button className="btn-ghost">重试</button>
-            <p className="hint" style={{ marginBottom: 0, marginTop: 8 }}>
+            <button className='btn-ghost'>重试</button>
+            <p className='hint' style={{ marginBottom: 0, marginTop: 8 }}>
               要有**原因 + 重试按钮**，不是只有一句"加载失败"。
             </p>
           </div>
 
-          <div className="card" style={{ padding: 10 }}>
+          <div className='card' style={{ padding: 10 }}>
             <div style={{ color: '#57606a', fontSize: 12, marginBottom: 6 }}>③ empty（空数据）</div>
             <p style={{ margin: '0 0 6px', color: '#8b949e' }}>还没有内容</p>
-            <button className="btn-ghost">去创建</button>
-            <p className="hint" style={{ marginBottom: 0, marginTop: 8 }}>
+            <button className='btn-ghost'>去创建</button>
+            <p className='hint' style={{ marginBottom: 0, marginTop: 8 }}>
               空 ≠ 错。要说清"为什么空"并给出下一步动作。
             </p>
           </div>
         </div>
 
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           ⚠️ 最常见的三个坑：① 只判断 `data.length &gt; 0`，忘了 loading 时也是 0 →
           会闪一下"暂无数据"；② 出错后 loading 没关 → 一直转圈； ③ 空数据当成错误提示 →
           用户以为系统坏了。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>为什么不用 fetch？</h3>
         <p style={{ marginTop: 0 }}>fetch 能用，但每写一个接口你都要重复这四件事：</p>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
@@ -96,14 +96,14 @@ export default function WhyWrapRequest() {
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>第一条最关键</strong>：fetch 在 404/500 时<strong>不会</strong>
           抛错，只有断网才抛。 所以你写 <code>fetch().then(r =&gt; r.json())</code> 拿到 500 的报错
           JSON，还以为成功了。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>“封装请求”到底封装了什么（3 层）</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
@@ -119,26 +119,26 @@ export default function WhyWrapRequest() {
             <code>data.title</code> 有提示、写错了编译期就报
           </li>
         </ol>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           今天这三层都会写一遍。最后一节（竞态）才是<strong>真正的新东西</strong>，前两节是换工具。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天的路线</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
-            <Link to="/day9/basics">2. axios 与错误分类</Link> —— 点按钮，把 4 种错误都撞一遍
+            <Link to='/day9/basics'>2. axios 与错误分类</Link> —— 点按钮，把 4 种错误都撞一遍
           </li>
           <li>
-            <Link to="/day9/interceptor">3. 拦截器与封装</Link> —— 自动带 token、自动剥 data、401
+            <Link to='/day9/interceptor'>3. 拦截器与封装</Link> —— 自动带 token、自动剥 data、401
             统一处理
           </li>
           <li>
-            <Link to="/day9/race">4. ⭐ 竞态与取消</Link> —— 快速切页时"旧结果覆盖新结果"怎么治
+            <Link to='/day9/race'>4. ⭐ 竞态与取消</Link> —— 快速切页时"旧结果覆盖新结果"怎么治
           </li>
           <li>
-            <Link to="/day9/practice">练习</Link> —— 3 个 TODO
+            <Link to='/day9/practice'>练习</Link> —— 3 个 TODO
           </li>
         </ol>
       </div>

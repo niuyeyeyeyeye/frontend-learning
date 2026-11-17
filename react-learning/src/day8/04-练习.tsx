@@ -46,9 +46,9 @@ function CounterA() {
   const count = useCountStore((s) => s.count)
   const inc = useCountStore((s) => s.inc)
   return (
-    <div className="card">
+    <div className='card'>
       A 看到的数字：<strong>{count}</strong>{' '}
-      <button className="btn" onClick={inc}>
+      <button className='btn' onClick={inc}>
         A 的 +1
       </button>
     </div>
@@ -59,9 +59,9 @@ function CounterB() {
   const count = useCountStore((s) => s.count)
   const reset = useCountStore((s) => s.reset)
   return (
-    <div className="card">
+    <div className='card'>
       B 看到的数字：<strong>{count}</strong>{' '}
-      <button className="btn-ghost" onClick={reset}>
+      <button className='btn-ghost' onClick={reset}>
         B 的重置
       </button>
     </div>
@@ -137,33 +137,33 @@ function CartDemo() {
   const totalPrice = items.reduce((sum, n) => (sum += n.count * n.price), 0)
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         {PRODUCTS.map((p) => (
           <button
             key={p.id}
-            className="btn-ghost"
+            className='btn-ghost'
             style={{ marginRight: 6 }}
             onClick={() => addItem(p)}
           >
             加 {p.name}（¥{p.price}）
           </button>
         ))}
-        <button className="btn-ghost" onClick={clear}>
+        <button className='btn-ghost' onClick={clear}>
           清空
         </button>
       </p>
 
       <p>
         共 <strong>{totalCount}</strong> 件，合计 <strong>¥{totalPrice}</strong>
-        <span className="hint">　（现在全是 0，说明 TODO 还没做完）</span>
+        <span className='hint'>　（现在全是 0，说明 TODO 还没做完）</span>
       </p>
 
       <ul style={{ margin: 0, paddingLeft: 20 }}>
         {items.map((it) => (
           <li key={it.id}>
             {it.name} ¥{it.price} × {it.count}{' '}
-            <button className="btn-ghost" onClick={() => removeItem(it.id)}>
+            <button className='btn-ghost' onClick={() => removeItem(it.id)}>
               删
             </button>
           </li>
@@ -194,7 +194,7 @@ function PriceOnly() {
   })
 
   return (
-    <div className="card" style={{ padding: '6px 10px', borderColor: '#1f883d' }}>
+    <div className='card' style={{ padding: '6px 10px', borderColor: '#1f883d' }}>
       只订阅总价：<strong>¥{total}</strong>
     </div>
   )
@@ -218,10 +218,10 @@ function NoteBox() {
   const note = useNoteStore((s) => s.note)
   const setNote = useNoteStore((s) => s.setNote)
   return (
-    <div className="card">
+    <div className='card'>
       备注（跟价格无关）：
       <input value={note} onChange={(e) => setNote(e.target.value)} />
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         TODO 3-b：改这里的时候，上面 PriceOnly 不该重新渲染（看控制台）。它现在其实是对的 ——
         但你要能说出为什么。
       </p>
@@ -245,7 +245,7 @@ export default function PracticeDay8() {
       <h2>练习 3 ⭐⭐⭐：选择性订阅 + 持久化</h2>
       <PriceOnly />
       <NoteBox />
-      <p className="hint">做完 3-c 之后刷新页面，购物车里的东西应该还在。</p>
+      <p className='hint'>做完 3-c 之后刷新页面，购物车里的东西应该还在。</p>
     </div>
   )
 }

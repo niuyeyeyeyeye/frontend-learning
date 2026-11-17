@@ -101,12 +101,12 @@ export function ArticleList() {
     <div>
       <h2>文章列表</h2>
       <input
-        placeholder="搜索"
+        placeholder='搜索'
         value={input}
         onChange={(e) => keyDownChange(e.target.value)}
       ></input>
-      <div className="card">
-        <p className="hint" style={{ marginTop: 0 }}>
+      <div className='card'>
+        <p className='hint' style={{ marginTop: 0 }}>
           TODO 2-a：还没写。目标是 6 条链接，点进 /day7/articles/:id。
         </p>
         {pageItems.map((item) => (
@@ -153,8 +153,8 @@ export function ArticleDetail() {
   return (
     <div>
       <h2>{cur.title}</h2>
-      <div className="card">
-        <p className="hint" style={{ marginTop: 0 }}>
+      <div className='card'>
+        <p className='hint' style={{ marginTop: 0 }}>
           TODO 2-b：还没写。现在地址里的 id 是 <code>{String(params.id)}</code>。
           <br />
           {cur.body}
@@ -166,7 +166,7 @@ export function ArticleDetail() {
         {next && <Link to={`/day7/articles/${next.id}`}>下一篇</Link>}
 
         <div>
-          <button className="btn-ghost" onClick={() => navigate(-1)}>
+          <button className='btn-ghost' onClick={() => navigate(-1)}>
             ← 返回（navigate(-1)）
           </button>
         </div>
@@ -198,7 +198,7 @@ function SearchHint() {
   void setTyped
   return (
     <div>
-      <p className="hint">
+      <p className='hint'>
         练习 3 目标：让地址变成 <code>/day7/articles?q={typed || 'react'}</code>； 当前 URL 的 q ={' '}
         <code>{searchParams.get('q') ?? '（空）'}</code>
       </p>
@@ -214,7 +214,7 @@ export default function PracticeDay7() {
     <div>
       <SearchHint />
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>三个练习</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -259,11 +259,11 @@ export default function PracticeDay7() {
           </tbody>
         </table>
         <p style={{ marginBottom: 0 }}>
-          做完练习 2 就能去这里看：<Link to="/day7/articles">/day7/articles</Link>
+          做完练习 2 就能去这里看：<Link to='/day7/articles'>/day7/articles</Link>
           {'　'}
-          <Link to="/day7/articles/2">/day7/articles/2</Link>
+          <Link to='/day7/articles/2'>/day7/articles/2</Link>
           {'　'}
-          <Link to="/day7/articles/999">/day7/articles/999（应该显示"不存在"）</Link>
+          <Link to='/day7/articles/999'>/day7/articles/999（应该显示"不存在"）</Link>
         </p>
       </div>
     </div>

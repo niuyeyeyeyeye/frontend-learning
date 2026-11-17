@@ -56,13 +56,13 @@ function WithoutCancel() {
   const mismatch = clicked !== '' && shownKw !== '' && clicked !== shownKw
 
   return (
-    <div className="card" style={{ borderColor: '#cf222e' }}>
+    <div className='card' style={{ borderColor: '#cf222e' }}>
       <strong style={{ color: '#cf222e' }}>❌ 不取消</strong>
       <p style={{ margin: '8px 0' }}>
         {KEYWORDS.map((k) => (
           <button
             key={k.kw}
-            className="btn-ghost"
+            className='btn-ghost'
             style={{ marginRight: 6, marginBottom: 6 }}
             onClick={() => search(k.kw, k.delay)}
           >
@@ -80,7 +80,7 @@ function WithoutCancel() {
       <p style={{ margin: '4px 0', color: mismatch ? '#cf222e' : '#1f883d', fontWeight: 600 }}>
         {mismatch ? '⚠️ 不一致！旧请求把新结果覆盖了（竞态）' : '✅ 目前一致'}
       </p>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         试：<strong>先点「慢 900ms」，0.3 秒内再点「快 120ms」</strong>。
         快的结果先显示，然后慢的结果迟到，把它覆盖 → 上面那行会变红。
       </p>
@@ -128,13 +128,13 @@ function WithCancel() {
   const mismatch = kw !== '' && shownKw !== '' && kw !== shownKw
 
   return (
-    <div className="card" style={{ borderColor: '#1f883d' }}>
+    <div className='card' style={{ borderColor: '#1f883d' }}>
       <strong style={{ color: '#1f883d' }}>✅ 用 AbortController 取消</strong>
       <p style={{ margin: '8px 0' }}>
         {KEYWORDS.map((k) => (
           <button
             key={k.kw}
-            className="btn-ghost"
+            className='btn-ghost'
             style={{ marginRight: 6, marginBottom: 6 }}
             onClick={() => setKw(k.kw)}
           >
@@ -152,7 +152,7 @@ function WithCancel() {
       <p style={{ margin: '4px 0', color: mismatch ? '#cf222e' : '#1f883d', fontWeight: 600 }}>
         {mismatch ? '⚠️ 不一致（不该发生）' : '✅ 永远一致'}
       </p>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         同样的操作顺序：<strong>先点慢的，再快速点快的</strong>。 慢的请求在点快的瞬间就被 abort
         了，所以永远不会覆盖。
         <br />
@@ -174,7 +174,7 @@ export default function RaceDemo() {
         <WithCancel />
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>治法就三行</h3>
         <pre
           style={{
@@ -204,7 +204,7 @@ export default function RaceDemo() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>四个必须知道的细节</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -254,7 +254,7 @@ export default function RaceDemo() {
         </table>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>面试会怎么问</h3>
         <p style={{ marginTop: 0 }}>
           <strong>Q：搜索框快速输入，结果错乱，你怎么排查和修复？</strong>

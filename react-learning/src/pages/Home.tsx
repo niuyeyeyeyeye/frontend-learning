@@ -92,9 +92,9 @@ export default function Home() {
   return (
     <div>
       <h1>React 学习 · 首页</h1>
-      <p className="hint">从今天（Day7）开始，这个项目是一个真正的 SPA：地址栏变了，页面不刷新。</p>
+      <p className='hint'>从今天（Day7）开始，这个项目是一个真正的 SPA：地址栏变了，页面不刷新。</p>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>当前路由表</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -128,15 +128,15 @@ export default function Home() {
         </table>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>开始今天的学习</h3>
         <p>
-          <Link className="btn" to="/day7">
+          <Link className='btn' to='/day7'>
             进入 Day7：React Router →
           </Link>
         </p>
-        <p className="hint">
-          想复习前面的：<Link to="/archive">Day1~6 归档</Link>
+        <p className='hint'>
+          想复习前面的：<Link to='/archive'>Day1~6 归档</Link>
         </p>
       </div>
     </div>

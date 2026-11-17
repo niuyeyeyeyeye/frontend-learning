@@ -20,17 +20,17 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 // ============================================================
 function LinkVsAnchor() {
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         <strong>怎么做这个实验：</strong>先记住页面右上角「本次启动：xx:xx:xx」那个时间，
         然后分别点下面两个链接，回到本页再看那个时间。
       </p>
 
       <p>
-        <a className="btn-ghost" href="/day7/users" style={{ marginRight: 8 }}>
+        <a className='btn-ghost' href='/day7/users' style={{ marginRight: 8 }}>
           ❌ 用 &lt;a href&gt; 跳转
         </a>
-        <Link className="btn" to="/day7/users">
+        <Link className='btn' to='/day7/users'>
           ✅ 用 &lt;Link to&gt; 跳转
         </Link>
       </p>
@@ -45,7 +45,7 @@ function LinkVsAnchor() {
           没有白闪，Network 里没有文档请求。
         </li>
       </ul>
-      <p className="hint">
+      <p className='hint'>
         ⚠️ 注意：<code>&lt;a href="/day7/users"&gt;</code> 在开发服务器上也会"能跳"，
         所以很多人以为没问题 —— 但它是把整个应用重启了一遍，所有内存里的状态都没了。
       </p>
@@ -70,22 +70,22 @@ function MountLogger() {
   }, [])
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         计数器：<strong>{count}</strong>
       </p>
-      <button className="btn" onClick={() => setCount((c) => c + 1)}>
+      <button className='btn' onClick={() => setCount((c) => c + 1)}>
         +1
       </button>
-      <p className="hint">
+      <p className='hint'>
         👆 加几次，然后点下面的链接切走再切回来 —— 数字归零了。 打开 F12 能看到「挂载 /
         卸载」两条日志。<strong>切路由 = 卸载 + 挂载</strong>， 不是"把页面藏起来"。
       </p>
       <p>
-        <Link to="/day7/basics" style={{ marginRight: 12 }}>
+        <Link to='/day7/basics' style={{ marginRight: 12 }}>
           切走（去别的页）
         </Link>
-        <NavLink to="/day7" end style={{ color: '#0969da' }}>
+        <NavLink to='/day7' end style={{ color: '#0969da' }}>
           回概览
         </NavLink>
       </p>
@@ -98,7 +98,7 @@ function MountLogger() {
 // ============================================================
 function NavLinkDemo() {
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         普通 <code>Link</code> 不会告诉你"我是不是当前页"，<code>NavLink</code> 会 ——
         下面这三个链接和上面的子导航区用的是同一套逻辑：
@@ -126,7 +126,7 @@ function NavLinkDemo() {
           </NavLink>
         ))}
       </div>
-      <p className="hint">
+      <p className='hint'>
         ⚠️ <code>end</code> 的作用：<code>/day7</code> 是 <code>/day7/basics</code> 的前缀， 不加{' '}
         <code>end</code> 的话，你在子页面时"概览"也会一直亮着。
       </p>
@@ -141,15 +141,15 @@ function NavigateIntro() {
   const navigate = useNavigate()
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         <code>useNavigate()</code> 给你一个 <code>navigate</code> 函数，可以在任何函数里跳转 ——
         比如"提交表单成功后跳到列表页"。完整用法在第 3 节，这里先试一下：
       </p>
-      <button className="btn" style={{ marginRight: 8 }} onClick={() => navigate('/day7/users')}>
+      <button className='btn' style={{ marginRight: 8 }} onClick={() => navigate('/day7/users')}>
         代码跳到用户列表
       </button>
-      <button className="btn-ghost" onClick={() => navigate(-1)}>
+      <button className='btn-ghost' onClick={() => navigate(-1)}>
         返回上一页（navigate(-1)）
       </button>
     </div>

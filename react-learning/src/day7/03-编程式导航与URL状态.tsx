@@ -25,34 +25,34 @@ function NavigateIntroCard() {
   const navigate = useNavigate()
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>三种最常见的用法：</p>
 
       <p style={{ marginBottom: 6 }}>
         <strong>① 跳固定地址</strong>（提交成功后跳列表）：
       </p>
-      <button className="btn" style={{ marginBottom: 12 }} onClick={() => navigate('/day7/users')}>
+      <button className='btn' style={{ marginBottom: 12 }} onClick={() => navigate('/day7/users')}>
         navigate('/day7/users')
       </button>
 
       <p style={{ marginBottom: 6 }}>
         <strong>② 后退 / 前进</strong>（"返回"按钮，比 Link 更自然）：
       </p>
-      <button className="btn-ghost" style={{ marginRight: 8 }} onClick={() => navigate(-1)}>
+      <button className='btn-ghost' style={{ marginRight: 8 }} onClick={() => navigate(-1)}>
         navigate(-1) 后退
       </button>
-      <button className="btn-ghost" style={{ marginBottom: 12 }} onClick={() => navigate(1)}>
+      <button className='btn-ghost' style={{ marginBottom: 12 }} onClick={() => navigate(1)}>
         navigate(1) 前进
       </button>
 
       <p style={{ marginBottom: 6 }}>
         <strong>③ replace：替换历史记录</strong>（登录后跳首页，用户按"后退"不该回到登录页）：
       </p>
-      <button className="btn-ghost" onClick={() => navigate('/day7/basics', { replace: true })}>
+      <button className='btn-ghost' onClick={() => navigate('/day7/basics', { replace: true })}>
         navigate('/day7/basics', {'{ replace: true }'})
       </button>
 
-      <p className="hint">
+      <p className='hint'>
         验证 replace：点上面那个按钮 → 到路由基础页 → 按<strong>浏览器后退</strong>。
         你会发现"回不到刚才这一页"（因为这一页被替换掉了）。这就是 replace 的用途。
       </p>
@@ -107,7 +107,7 @@ function UrlStateDemo() {
   }
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         搜索框 + 分页，<strong>状态全在 URL 里</strong>。地址现在是：{' '}
         <code>
@@ -119,7 +119,7 @@ function UrlStateDemo() {
       <input
         value={input}
         onChange={(e) => onKeywordChange(e.target.value)}
-        placeholder="输入「1」「2」试试（只有 23 条数据）"
+        placeholder='输入「1」「2」试试（只有 23 条数据）'
         style={{ padding: 6, width: 240, marginBottom: 8 }}
       />
 
@@ -131,14 +131,14 @@ function UrlStateDemo() {
       </ul>
 
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-        <button className="btn-ghost" disabled={safePage <= 1} onClick={() => goPage(safePage - 1)}>
+        <button className='btn-ghost' disabled={safePage <= 1} onClick={() => goPage(safePage - 1)}>
           ← 上一页
         </button>
         <span style={{ fontSize: 13, color: '#57606a' }}>
           第 {safePage} / {totalPages} 页（共 {filtered.length} 条）
         </span>
         <button
-          className="btn-ghost"
+          className='btn-ghost'
           disabled={safePage >= totalPages}
           onClick={() => goPage(safePage + 1)}
         >
@@ -146,12 +146,12 @@ function UrlStateDemo() {
         </button>
       </div>
 
-      <p className="hint">
+      <p className='hint'>
         👆 <strong>验证三件事</strong>：① 搜索 + 翻页后按 F5 刷新，条件还在； ②
         把地址复制到新标签页打开，条件还在；③ 按浏览器后退，能回到上一页（因为翻页用的是 push）。
       </p>
 
-      <p className="hint">
+      <p className='hint'>
         ⚠️ 注意 <code>setSearchParams(p, {'{ replace: true }'})</code> 和{' '}
         <code>setSearchParams(p)</code> 的区别：<strong>打字用 replace，翻页用 push</strong>。
         这个细节没人教你，但你一上手就会发现不加 replace 的历史记录有多恶心。
@@ -165,7 +165,7 @@ function UrlStateDemo() {
 // ============================================================
 function WhenToUseWhat() {
   return (
-    <div className="card">
+    <div className='card'>
       <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
         <thead>
           <tr style={{ textAlign: 'left', color: '#57606a' }}>
@@ -191,7 +191,7 @@ function WhenToUseWhat() {
           ))}
         </tbody>
       </table>
-      <p className="hint">
+      <p className='hint'>
         最后一条是个很实际的判断标准：
         <strong>链接用 Link（可右键新开），动作/流程用 navigate。</strong>
       </p>
@@ -211,8 +211,8 @@ export default function NavigateDemo() {
       <h2>3. Link 还是 navigate？</h2>
       <WhenToUseWhat />
 
-      <p className="hint">
-        想回到列表看动态路由：<Link to="/day7/users">点这里</Link>
+      <p className='hint'>
+        想回到列表看动态路由：<Link to='/day7/users'>点这里</Link>
       </p>
     </div>
   )

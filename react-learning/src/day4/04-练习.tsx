@@ -26,11 +26,11 @@ function TitleSync() {
   }, [todos])
   return (
     <div>
-      <p className="hint">看浏览器标签，应该显示"待办（2）"；点下面按钮后数字要跟着变</p>
+      <p className='hint'>看浏览器标签，应该显示"待办（2）"；点下面按钮后数字要跟着变</p>
       {todos.map((t) => (
-        <div key={t.id} className="card">
+        <div key={t.id} className='card'>
           <input
-            type="checkbox"
+            type='checkbox'
             checked={t.done}
             onChange={() =>
               setTodos(todos.map((x) => (x.id === t.id ? { ...x, done: !x.done } : x)))
@@ -67,7 +67,7 @@ function Countdown() {
         剩余：<strong>{seconds}</strong> 秒 {seconds === 0 ? '⏰ 时间到！' : ''}
       </p>
       <button
-        className="btn"
+        className='btn'
         onClick={() => {
           setSeconds(10)
           setRunning(true)
@@ -75,7 +75,7 @@ function Countdown() {
       >
         开始倒计时
       </button>{' '}
-      <button className="btn-ghost" onClick={() => setRunning(false)}>
+      <button className='btn-ghost' onClick={() => setRunning(false)}>
         暂停
       </button>
     </div>
@@ -102,8 +102,8 @@ function KeyLogger() {
   }, [])
   return (
     <div>
-      <p className="hint">随便按几个键，看下面</p>
-      <div className="card">
+      <p className='hint'>随便按几个键，看下面</p>
+      <div className='card'>
         <input />
         {keys.map((n) => (
           <span>{n}</span>

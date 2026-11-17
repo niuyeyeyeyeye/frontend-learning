@@ -59,20 +59,20 @@ function TodoCore() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="输入待办"
+          placeholder='输入待办'
           style={{ flex: 1, padding: 4 }}
         />
-        <button className="btn" type="submit">
+        <button className='btn' type='submit'>
           添加
         </button>
       </form>
 
-      {todos.length === 0 && <p className="hint">（还没有待办）</p>}
+      {todos.length === 0 && <p className='hint'>（还没有待办）</p>}
 
       {todos.map((t) => (
-        <div key={t.id} className="card" style={{ display: 'flex', alignItems: 'center' }}>
+        <div key={t.id} className='card' style={{ display: 'flex', alignItems: 'center' }}>
           <input
-            type="checkbox"
+            type='checkbox'
             checked={t.done}
             onChange={() => toggle(t.id)}
             style={{ marginRight: 8 }}
@@ -81,7 +81,7 @@ function TodoCore() {
             {t.text}
           </span>
           <button
-            className="btn-ghost"
+            className='btn-ghost'
             style={{ fontSize: 12, padding: '2px 8px' }}
             onClick={() => remove(t.id)}
           >
@@ -117,21 +117,21 @@ function TodoFilter() {
   return (
     <div>
       <div style={{ marginBottom: 8 }}>
-        <button className="btn-ghost" onClick={() => setFilter('all')}>
+        <button className='btn-ghost' onClick={() => setFilter('all')}>
           全部
         </button>
-        <button className="btn-ghost" onClick={() => setFilter('active')}>
+        <button className='btn-ghost' onClick={() => setFilter('active')}>
           未完成
         </button>
-        <button className="btn-ghost" onClick={() => setFilter('done')}>
+        <button className='btn-ghost' onClick={() => setFilter('done')}>
           已完成
         </button>
       </div>
-      <p className="hint">
+      <p className='hint'>
         已完成 {doneCount} / 共 {todos.length}（当前筛选 {visibleTodos.length} 条）
       </p>
       {visibleTodos.map((t) => (
-        <div key={t.id} className="card">
+        <div key={t.id} className='card'>
           {t.done ? '✅' : '⬜'} {t.text}
         </div>
       ))}
@@ -168,7 +168,7 @@ function TodoEdit() {
   return (
     <div>
       {todos.map((t) => (
-        <div key={t.id} className="card">
+        <div key={t.id} className='card'>
           {editingId === t.id ? (
             <input
               autoFocus

@@ -41,7 +41,7 @@ export default function AxiosBasics() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>点不同的按钮，看同一个请求的 4 种结果</h3>
         <p style={{ marginTop: 0 }}>
           {[
@@ -55,7 +55,7 @@ export default function AxiosBasics() {
           ].map(([label, q]) => (
             <button
               key={label}
-              className="btn-ghost"
+              className='btn-ghost'
               style={{ marginRight: 6, marginBottom: 6 }}
               onClick={() => load(q)}
             >
@@ -64,13 +64,13 @@ export default function AxiosBasics() {
           ))}
         </p>
         {lastUrl !== '' && (
-          <p className="hint" style={{ marginBottom: 0 }}>
+          <p className='hint' style={{ marginBottom: 0 }}>
             实际请求：<code>{lastUrl}</code>
           </p>
         )}
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>结果区（这就是“三态”的写法）</h3>
         {state.loading && (
           <p style={{ color: '#57606a' }}>⏳ 加载中……（慢 1.5 秒那个按钮能看清）</p>
@@ -101,13 +101,13 @@ export default function AxiosBasics() {
         )}
 
         {!state.loading && state.error === null && state.data === null && (
-          <p className="hint" style={{ marginBottom: 0 }}>
+          <p className='hint' style={{ marginBottom: 0 }}>
             点上面任意一个按钮试试。
           </p>
         )}
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 错误分类表（这张表就是 catch 里的 if-else）</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -149,7 +149,7 @@ export default function AxiosBasics() {
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>判断顺序很重要</strong>：先看 <code>err.code</code>（网络/超时/取消都没有
           response）， 再在 <code>err.response.status</code> 里分 4xx / 5xx。
           <code>toFriendlyError()</code> 就是按这个顺序写的，你可以去 <code>mock/mockApi.ts</code>{' '}
@@ -157,7 +157,7 @@ export default function AxiosBasics() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>顺带：两个必会的写法</h3>
         <pre
           style={{

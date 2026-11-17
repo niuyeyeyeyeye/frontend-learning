@@ -28,7 +28,7 @@ function JsxBasics() {
       <p>1 + 1 = {1 + 1}</p>
       <p>调用函数：{userName.toUpperCase()}</p>
       <p>三元表达式：{isLoggedIn ? '已登录' : '未登录'}</p>
-      <p className="hint">注意：{} 里只能放"表达式"（能算出值的东西），不能放 if / for 这种语句</p>
+      <p className='hint'>注意：{} 里只能放"表达式"（能算出值的东西），不能放 if / for 这种语句</p>
 
       {/* ---------- 2. 条件渲染 ---------- */}
       <h3>2. 条件渲染</h3>
@@ -37,18 +37,18 @@ function JsxBasics() {
       {/* 写法 B：&&（只在条件为真时显示） */}
       {isLoggedIn && <p>这段只在登录后显示</p>}
       {/* 写法 C：提前 return（组件里最常用） */}
-      <p className="hint">写法 C：在组件函数里 if (!isLoggedIn) return null</p>
+      <p className='hint'>写法 C：在组件函数里 if (!isLoggedIn) return null</p>
 
       {/* ---------- 3. 列表渲染 ---------- */}
       <h3>3. 列表渲染 + key</h3>
       <div>
         {skills.map((skill) => (
-          <span key={skill} className="tag">
+          <span key={skill} className='tag'>
             {skill}
           </span>
         ))}
       </div>
-      <p className="hint">
+      <p className='hint'>
         key 是 React 用来识别"这一项是谁"的。⭐ 别用数组下标 index 当 key（后面会讲为什么）
       </p>
 
@@ -63,7 +63,7 @@ function JsxBasics() {
       {/* ---------- 4. 属性写法 ---------- */}
       <h3>4. 属性（HTML 和 JSX 的差异）</h3>
       {/* className 不是 class */}
-      <div className="card">
+      <div className='card'>
         <p>class → className</p>
         <p>for → htmlFor</p>
         <p>onclick → onClick（驼峰）</p>
@@ -74,7 +74,7 @@ function JsxBasics() {
 
       {/* ---------- 5. Fragment ---------- */}
       <h3>5. 多根元素用 Fragment</h3>
-      <p className="hint">
+      <p className='hint'>
         组件的 return 必须只有一个根元素。需要并列多个时，用 {'<>'}...{'</>'} 包起来
       </p>
       <>

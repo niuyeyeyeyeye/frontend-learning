@@ -14,7 +14,7 @@
 function SkillTag({ label, color = '#0969da' }: { label: string; color?: string }) {
   // TODO: 把下面这行换成真正的标签
   return (
-    <span className="tag" style={{ color: color }}>
+    <span className='tag' style={{ color: color }}>
       {label}
     </span>
   )
@@ -87,23 +87,23 @@ function Practice() {
     <div>
       <h3>练习 1：SkillTag</h3>
       <div>
-        <SkillTag label="HTML" />
-        <SkillTag label="CSS" color="#8250df" />
-        <SkillTag label="TypeScript" color="#cf222e" />
+        <SkillTag label='HTML' />
+        <SkillTag label='CSS' color='#8250df' />
+        <SkillTag label='TypeScript' color='#cf222e' />
       </div>
 
       <h3>练习 2：UserList</h3>
       <UserList users={users} />
 
       <h3>练习 3：Alert</h3>
-      <Alert type="info">这是一条普通提示</Alert>
-      <Alert type="warn">这是一条警告</Alert>
-      <Alert type="error">这是一条错误</Alert>
+      <Alert type='info'>这是一条普通提示</Alert>
+      <Alert type='warn'>这是一条警告</Alert>
+      <Alert type='error'>这是一条错误</Alert>
 
       <h3>练习 4：Stat</h3>
       <div>
-        <Stat label="已完成" value={12} />
-        <Stat label="完成率" value={75} unit="%" />
+        <Stat label='已完成' value={12} />
+        <Stat label='完成率' value={75} unit='%' />
       </div>
     </div>
   )

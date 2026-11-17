@@ -14,7 +14,7 @@
 export default function DeployDemo() {
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>npm run build 做了两件事</h3>
         <pre
           style={{
@@ -48,7 +48,7 @@ export default function DeployDemo() {
     ├── index-C3xK9pQa.js         ← 你写的所有 TS/TSX 打成一个包
     ├── index-Df8Lm2Zx.css       ← 所有 CSS
     └── vendor-Bq7Yt4Wn.js       ← （可选）第三方库单独一个包`}</pre>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>注意文件名里那串乱码</strong>（<code>C3xK9pQa</code>）：它是文件内容的哈希。
           内容一变，文件名就变 → 浏览器不会用旧缓存。这叫<strong>缓存失效</strong>
           ，是构建工具的核心价值之一。
@@ -58,7 +58,7 @@ export default function DeployDemo() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>为什么必须有 npm run preview</h3>
         <p style={{ marginTop: 0 }}>
           <code>npm run dev</code> 跑的是<strong>开发模式</strong>：不打包、不压缩、带热更新、
@@ -101,7 +101,7 @@ export default function DeployDemo() {
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>所以 Day10 那句"性能要 build 之后再看"，指的就是 preview 这个阶段。</strong>
           <br />
           ⚠️ 诚实说明：
@@ -114,7 +114,7 @@ export default function DeployDemo() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0, color: '#cf222e' }}>⭐ 上线后第一个坑：刷新页面 404</h3>
         <p style={{ marginTop: 0 }}>
           你 Day7 做的路由，<code>/day7/users/2</code> 这些地址在浏览器里跳转没问题
@@ -151,7 +151,7 @@ export default function DeployDemo() {
   "outputDirectory": "dist",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }`}</pre>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           这个配置在不同平台的写法不同，但概念一样：
           <strong>
             Nginx 叫<code>try_files $uri /index.html</code>
@@ -162,7 +162,7 @@ export default function DeployDemo() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>部署到 Vercel（3 步，都不花钱）</h3>
         <p style={{ marginTop: 0 }}>
           <strong>第一步：先本地验证</strong>（必须做，否则线上出错更难查）
@@ -218,13 +218,13 @@ git push -u origin main`}</pre>
             等 1~2 分钟 → 拿到 <code>https://xxx.vercel.app</code> 这样的链接
           </li>
         </ol>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>这个链接就是你简历上的"线上项目"</strong>。以后再 push 代码，Vercel 会自动重新部署
           —— 这就是 CI/CD 的最小形态。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>部署完之后，自查这 5 条</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>

@@ -96,9 +96,9 @@ export default function CustomHooks() {
   return (
     <div>
       <h3>1. useCounter：两个组件各用一份，状态互不影响</h3>
-      <CounterPanel label="计数器 A" />
-      <CounterPanel label="计数器 B" />
-      <p className="hint">
+      <CounterPanel label='计数器 A' />
+      <CounterPanel label='计数器 B' />
+      <p className='hint'>
         👆 两个计数器的数字互不影响 —— 这就是"<strong>复用逻辑，不复用状态</strong>"。
       </p>
 
@@ -120,17 +120,17 @@ export default function CustomHooks() {
 function CounterPanel({ label }: { label: string }) {
   const { count, increment, decrement, reset } = useCounter(0)
   return (
-    <div className="card">
+    <div className='card'>
       <span style={{ marginRight: 8 }}>
         {label}：<strong>{count}</strong>
       </span>
-      <button className="btn-ghost" style={{ marginRight: 4 }} onClick={increment}>
+      <button className='btn-ghost' style={{ marginRight: 4 }} onClick={increment}>
         +1
       </button>
-      <button className="btn-ghost" style={{ marginRight: 4 }} onClick={decrement}>
+      <button className='btn-ghost' style={{ marginRight: 4 }} onClick={decrement}>
         -1
       </button>
-      <button className="btn-ghost" onClick={reset}>
+      <button className='btn-ghost' onClick={reset}>
         重置
       </button>
     </div>
@@ -140,11 +140,11 @@ function CounterPanel({ label }: { label: string }) {
 function ThemePanel() {
   const [theme, setTheme] = useLocalStorage<string>('demo-theme', 'light')
   return (
-    <div className="card">
+    <div className='card'>
       <p>
         当前主题：<strong>{theme}</strong>（用 localStorage 存的，刷新不丢）
       </p>
-      <button className="btn-ghost" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+      <button className='btn-ghost' onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
         切换主题
       </button>
     </div>
@@ -154,11 +154,11 @@ function ThemePanel() {
 function TogglePanel() {
   const { on, toggle } = useToggle(false)
   return (
-    <div className="card">
+    <div className='card'>
       <p>
         状态：<strong>{on ? '开' : '关'}</strong>
       </p>
-      <button className="btn" onClick={toggle}>
+      <button className='btn' onClick={toggle}>
         切换
       </button>
     </div>
@@ -169,11 +169,11 @@ function DebouncePanel() {
   const [input, setInput] = useState('')
   const debouncedValue = useDebounce(input, 500)
   return (
-    <div className="card">
+    <div className='card'>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder="快速输入，看下面什么时候跟上"
+        placeholder='快速输入，看下面什么时候跟上'
         style={{ padding: 4, width: 260 }}
       />
       <p>
@@ -182,7 +182,7 @@ function DebouncePanel() {
       <p>
         防抖后的值：<strong style={{ color: '#1f883d' }}>{debouncedValue || '（空）'}</strong>
       </p>
-      <p className="hint">你停手 500ms 后，两行才一致。</p>
+      <p className='hint'>你停手 500ms 后，两行才一致。</p>
     </div>
   )
 }
@@ -191,12 +191,12 @@ function PreviousPanel() {
   const [count, setCount] = useState(0)
   const prev = usePrevious(count)
   return (
-    <div className="card">
+    <div className='card'>
       <p>
         当前：<strong>{count}</strong>　上一次：
         <strong>{prev === undefined ? '（无）' : prev}</strong>
       </p>
-      <button className="btn" onClick={() => setCount(count + 1)}>
+      <button className='btn' onClick={() => setCount(count + 1)}>
         +1
       </button>
     </div>

@@ -38,14 +38,14 @@ function ExpensiveDemo() {
   const costWithMemo = performance.now() - startB
 
   return (
-    <div className="card">
+    <div className='card'>
       <h3 style={{ marginTop: 0 }}>实验：一个"慢计算" + 一个无关的 tick</h3>
       <p style={{ marginTop: 0 }}>
         无关的 tick = <strong>{tick}</strong>{' '}
-        <button className="btn" style={{ marginRight: 6 }} onClick={() => setTick((t) => t + 1)}>
+        <button className='btn' style={{ marginRight: 6 }} onClick={() => setTick((t) => t + 1)}>
           点我（跟求和无关）
         </button>
-        <button className="btn-ghost" onClick={() => setN((x) => x + 1)}>
+        <button className='btn-ghost' onClick={() => setN((x) => x + 1)}>
           强制重算（n 不变）
         </button>
       </p>
@@ -86,7 +86,7 @@ function ExpensiveDemo() {
         </tbody>
       </table>
 
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         👆 <strong>连点几次「点我（跟求和无关）」</strong>
         ：上面那行的时间一直很高（每次渲染都白算一遍）， 下面那行接近 0。
         <br />
@@ -106,10 +106,10 @@ const Item = memo(function Item({ label, onPick }: { label: string; onPick: () =
   return (
     <div style={{ padding: '3px 0', fontSize: 13 }}>
       {label}
-      <span className="tag" style={{ marginLeft: 6, fontSize: 11 }}>
+      <span className='tag' style={{ marginLeft: 6, fontSize: 11 }}>
         渲染 {renders.current} 次
       </span>
-      <button className="btn-ghost" style={{ marginLeft: 6, padding: '0 6px' }} onClick={onPick}>
+      <button className='btn-ghost' style={{ marginLeft: 6, padding: '0 6px' }} onClick={onPick}>
         pick
       </button>
     </div>
@@ -126,25 +126,25 @@ function CallbackDemo() {
   const stablePick = useCallback(() => {}, [])
 
   return (
-    <div className="card">
+    <div className='card'>
       <h3 style={{ marginTop: 0 }}>实验：同样的 memo 子组件，一个拿到新函数，一个拿到稳定函数</h3>
       <p style={{ marginTop: 0 }}>
         父组件 tick = <strong>{tick}</strong>{' '}
-        <button className="btn" onClick={() => setTick((t) => t + 1)}>
+        <button className='btn' onClick={() => setTick((t) => t + 1)}>
           让父组件重渲染
         </button>
       </p>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-        <div className="card" style={{ padding: 8, borderColor: '#cf222e' }}>
+        <div className='card' style={{ padding: 8, borderColor: '#cf222e' }}>
           <div style={{ fontSize: 12, color: '#cf222e' }}>❌ 传内联函数 onPick={'() => {}'}</div>
-          <Item label="子组件 A" onPick={inlinePick} />
+          <Item label='子组件 A' onPick={inlinePick} />
         </div>
-        <div className="card" style={{ padding: 8, borderColor: '#1f883d' }}>
+        <div className='card' style={{ padding: 8, borderColor: '#1f883d' }}>
           <div style={{ fontSize: 12, color: '#1f883d' }}>✅ 传 useCallback 的函数</div>
-          <Item label="子组件 B" onPick={stablePick} />
+          <Item label='子组件 B' onPick={stablePick} />
         </div>
       </div>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         👆 连点几次按钮：<strong>A 的渲染次数一直涨，B 不动</strong>。
         <br />
         <strong>这就是 useCallback 的全部意义</strong>：不是为了"函数快一点"，而是为了让下游的 memo
@@ -172,35 +172,35 @@ function DepsTrapDemo() {
   const goodValue = useMemo(() => `count 是 ${count}`, [count])
 
   return (
-    <div className="card">
+    <div className='card'>
       <h3 style={{ marginTop: 0 }}>实验：三种依赖写法的下场</h3>
       <p style={{ marginTop: 0 }}>
         count = <strong>{count}</strong>{' '}
-        <button className="btn" style={{ marginRight: 6 }} onClick={() => setCount((c) => c + 1)}>
+        <button className='btn' style={{ marginRight: 6 }} onClick={() => setCount((c) => c + 1)}>
           count +1
         </button>
         <input
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="改这里也会触发重渲染"
+          placeholder='改这里也会触发重渲染'
           style={{ padding: 4 }}
         />
       </p>
       <ul style={{ margin: '0 0 8px', paddingLeft: 20 }}>
         <li>
           ❌ 漏写依赖 <code>[]</code>：<strong style={{ color: '#cf222e' }}>{staleValue}</strong>
-          <span className="hint">　→ 永远是第一次的 0（stale 闭包）</span>
+          <span className='hint'>　→ 永远是第一次的 0（stale 闭包）</span>
         </li>
         <li>
           ❌ 依赖是内联对象：<strong>{uselessValue}</strong>
-          <span className="hint">　→ 每次都"变"，缓存白存（结果对，但没省任何东西）</span>
+          <span className='hint'>　→ 每次都"变"，缓存白存（结果对，但没省任何东西）</span>
         </li>
         <li>
           ✅ 依赖是原始值 <code>[count]</code>：
           <strong style={{ color: '#1f883d' }}>{goodValue}</strong>
         </li>
       </ul>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         <strong>两种失败方式完全相反</strong>：漏依赖 → 结果错（更难查）； 多依赖/依赖不稳定 →
         结果对但白费（看不出来，只是没变快）。
       </p>
@@ -223,7 +223,7 @@ export default function MemoCallbackDemo() {
       <h2>③ 依赖数组写错的两种下场</h2>
       <DepsTrapDemo />
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 加之前先问这三句（面试官也会这么问）</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
@@ -239,7 +239,7 @@ export default function MemoCallbackDemo() {
             写错不会报错，只会悄悄出 bug
           </li>
         </ol>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>顺序永远是：先让它能跑 → 发现卡 → 定位到具体组件 → 才动手优化。</strong>
           反过来（先到处包一层）是新手最典型的浪费。
         </p>

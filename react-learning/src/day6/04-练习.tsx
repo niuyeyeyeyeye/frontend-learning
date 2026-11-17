@@ -52,7 +52,7 @@ function PriceCalc() {
   const [qty, setQty] = useState(2) // qty = quantity（数量）的缩写，前端很常用
 
   return (
-    <div className="card">
+    <div className='card'>
       {/* TODO 1-a / 1-b：把下面两个假的 props 换成真的 */}
       <PriceInput price={price} onChangePrice={setPrice} />
       <QtyInput qty={qty} onChangeQty={setQty} />
@@ -68,7 +68,7 @@ function PriceInput({ price, onChangePrice }: PriceInputProps) {
     <div style={{ marginBottom: 6 }}>
       单价（元）：
       <input
-        type="number"
+        type='number'
         value={price}
         onChange={(e) => onChangePrice(Number(e.target.value))}
         style={{ padding: 4, width: 100 }}
@@ -82,7 +82,7 @@ function QtyInput({ qty, onChangeQty }: QtyInputProps) {
     <div>
       数量：
       <input
-        type="number"
+        type='number'
         value={qty}
         onChange={(e) => onChangeQty(Number(e.target.value))}
         style={{ padding: 4, width: 100 }}
@@ -149,7 +149,7 @@ function UserProfileDemo() {
 
 function ProfileSection() {
   return (
-    <div className="card">
+    <div className='card'>
       <div style={{ color: '#999', fontSize: 12 }}>ProfileSection（也不许出现 user props）</div>
       <ProfileCard />
     </div>
@@ -160,11 +160,11 @@ function ProfileCard() {
   const { user, login, logout } = useUser()
 
   return (
-    <div className="card">
+    <div className='card'>
       {user === null ? (
         <>
           <p>当前未登录。</p>
-          <button className="btn" onClick={login}>
+          <button className='btn' onClick={login}>
             以「小明 / 前端实习生」登录
           </button>
         </>
@@ -173,12 +173,12 @@ function ProfileCard() {
           <p>
             当前用户：<strong>{user.name}</strong>（{user.role}）
           </p>
-          <button className="btn-ghost" onClick={logout}>
+          <button className='btn-ghost' onClick={logout}>
             登出
           </button>
         </>
       )}
-      <p className="hint">👆 如果点了没反应，说明 TODO 2-a / 2-b 还没做完（现在用的是假 hook）。</p>
+      <p className='hint'>👆 如果点了没反应，说明 TODO 2-a / 2-b 还没做完（现在用的是假 hook）。</p>
     </div>
   )
 }
@@ -301,9 +301,9 @@ function ProductCard({
   onAdd: (p: Omit<item, 'count'>) => void
 }) {
   return (
-    <div className="card">
+    <div className='card'>
       {product.name} ¥{product.price}
-      <button className="btn" onClick={() => onAdd(product)}>
+      <button className='btn' onClick={() => onAdd(product)}>
         加入购物车
       </button>
     </div>

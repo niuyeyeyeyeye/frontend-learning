@@ -28,7 +28,7 @@ function RenderBadge({ name, color }: { name: string; color?: string }) {
   renders.current += 1
   return (
     <span
-      className="tag"
+      className='tag'
       style={{ background: color ?? '#eaeef2', color: '#1f2328', marginLeft: 8, fontSize: 12 }}
     >
       {name} 渲染 {renders.current} 次
@@ -42,7 +42,7 @@ function RenderBadge({ name, color }: { name: string; color?: string }) {
 const ChildPlain = ({ label }: { label: string }) => (
   <div style={{ padding: '4px 0' }}>
     {label}
-    <RenderBadge name="普通子" />
+    <RenderBadge name='普通子' />
   </div>
 )
 
@@ -50,17 +50,17 @@ const ChildMemo = memo(function ChildMemo({ label }: { label: string }) {
   return (
     <div style={{ padding: '4px 0' }}>
       {label}
-      <RenderBadge name="memo 子" color="#dafbe1" />
+      <RenderBadge name='memo 子' color='#dafbe1' />
     </div>
   )
 })
 
 function RerenderBasics() {
   return (
-    <div className="card">
+    <div className='card'>
       <h3 style={{ marginTop: 0 }}>实验：点按钮让父组件重渲染，看哪些子组件跟着渲染</h3>
       <ParentDemo />
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         👆 每点一次「父组件 tick +1」：
         <strong>普通子组件必然 +1</strong>（父变它就变），
         <strong>memo 子组件不动</strong>（props 没变就跳过）。
@@ -77,13 +77,13 @@ function ParentDemo() {
     <div>
       <p style={{ marginTop: 0 }}>
         父组件的 tick = <strong>{tick}</strong>{' '}
-        <button className="btn" onClick={() => setTick((t) => t + 1)}>
+        <button className='btn' onClick={() => setTick((t) => t + 1)}>
           父组件 tick +1
         </button>
-        <RenderBadge name="父" color="#ddf4ff" />
+        <RenderBadge name='父' color='#ddf4ff' />
       </p>
-      <ChildPlain label="① 普通子组件（props 永远不变）" />
-      <ChildMemo label="② 被 memo 包住的子组件（props 永远不变）" />
+      <ChildPlain label='① 普通子组件（props 永远不变）' />
+      <ChildMemo label='② 被 memo 包住的子组件（props 永远不变）' />
     </div>
   )
 }
@@ -98,7 +98,7 @@ type Config = { role: string }
 const ChildPlain2 = ({ config }: { config: Config }) => (
   <div style={{ padding: '4px 0' }}>
     没包 memo
-    <RenderBadge name="对照组" />
+    <RenderBadge name='对照组' />
     <span style={{ color: '#8b949e', fontSize: 12 }}>（config.role = {config.role}）</span>
   </div>
 )
@@ -107,7 +107,7 @@ const ChildMemoOk = memo(function ChildMemoOk({ config }: { config: Config }) {
   return (
     <div style={{ padding: '4px 0' }}>
       memo + useMemo 的对象
-      <RenderBadge name="✅ 该跳过" color="#dafbe1" />
+      <RenderBadge name='✅ 该跳过' color='#dafbe1' />
       <span style={{ color: '#8b949e', fontSize: 12 }}>（config.role = {config.role}）</span>
     </div>
   )
@@ -117,7 +117,7 @@ const ChildMemoBadObject = memo(function ChildMemoBadObject({ config }: { config
   return (
     <div style={{ padding: '4px 0' }}>
       memo + 内联对象 {'{{ role: "admin" }}'}
-      <RenderBadge name="❌ 白包了" color="#ffebe9" />
+      <RenderBadge name='❌ 白包了' color='#ffebe9' />
       <span style={{ color: '#8b949e', fontSize: 12 }}>（config.role = {config.role}）</span>
     </div>
   )
@@ -127,8 +127,8 @@ const ChildMemoBadFn = memo(function ChildMemoBadFn({ onAction }: { onAction: ()
   return (
     <div style={{ padding: '4px 0' }}>
       memo + 内联函数 {'() => {}'}
-      <RenderBadge name="❌ 也白包了" color="#ffebe9" />
-      <button className="btn-ghost" style={{ marginLeft: 8 }} onClick={onAction}>
+      <RenderBadge name='❌ 也白包了' color='#ffebe9' />
+      <button className='btn-ghost' style={{ marginLeft: 8 }} onClick={onAction}>
         子组件按钮
       </button>
     </div>
@@ -144,11 +144,11 @@ function MemoTrapDemo() {
   const unstableConfig: Config = { role: 'admin' }
 
   return (
-    <div className="card">
+    <div className='card'>
       <h3 style={{ marginTop: 0 }}>四个 memo 子组件，只有两个真的能跳过</h3>
       <p style={{ marginTop: 0 }}>
         父组件 tick = <strong>{tick}</strong>{' '}
-        <button className="btn" onClick={() => setTick((t) => t + 1)}>
+        <button className='btn' onClick={() => setTick((t) => t + 1)}>
           让父组件重渲染
         </button>
       </p>
@@ -158,7 +158,7 @@ function MemoTrapDemo() {
       <ChildMemoBadObject config={unstableConfig} />
       <ChildMemoBadFn onAction={() => {}} />
 
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         👆 每点一次，<strong>只有第 2 个（用 useRef 稳住的对象）会跳过渲染</strong>。 第 3、4
         个虽然包了 memo，但拿到的是<strong>每次新建的对象/函数</strong>， memo 比较引用 → 永远"变了"
         → 白包。
@@ -175,7 +175,7 @@ function MemoTrapDemo() {
 export default function Day10Overview() {
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天要推翻两个迷信</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -226,7 +226,7 @@ export default function Day10Overview() {
       <h2>2. memo 的三种失效方式</h2>
       <MemoTrapDemo />
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>记住这张"什么时候该优化"的判据表</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -268,7 +268,7 @@ export default function Day10Overview() {
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           <strong>最后一行是全表最重要的。</strong> 没感觉到慢，就别优化 —— 你今天学这些东西，
           是为了"卡了知道该往哪查"，不是为了回去给所有组件包一层 memo。
         </p>

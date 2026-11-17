@@ -44,7 +44,7 @@ function Stopwatch() {
         {running ? '暂停' : '开始'}
       </button>{' '}
       <button
-        className="btn-ghost"
+        className='btn-ghost'
         onClick={() => {
           setRunning(false)
           setElapsed(0)
@@ -90,7 +90,7 @@ function MouseTracker() {
         </strong>
         　移动次数：<strong>{moves}</strong>
       </p>
-      <p className="hint">在页面上移动鼠标试试</p>
+      <p className='hint'>在页面上移动鼠标试试</p>
     </div>
   )
 }
@@ -130,7 +130,7 @@ function VisibilityTracker() {
         当前状态：<strong>{isHidden ? '已切走' : '当前页'}</strong>　 切走次数：
         <strong>{hiddenCount}</strong>
       </p>
-      <p className="hint">切到别的标签页再切回来，看数字变化（切回来时能看到）</p>
+      <p className='hint'>切到别的标签页再切回来，看数字变化（切回来时能看到）</p>
     </div>
   )
 }

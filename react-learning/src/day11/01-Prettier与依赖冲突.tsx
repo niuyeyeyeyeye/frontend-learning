@@ -13,7 +13,7 @@
 export default function PrettierDemo() {
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>已经配好了，两个命令</h3>
         <pre
           style={{
@@ -72,7 +72,7 @@ npm run format          # 真的格式化并写入（改文件）`}</pre>
         </table>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 我实测了一件事：存量债务</h3>
         <p style={{ marginTop: 0 }}>
           刚配好我就跑了一次 <code>format:check</code>，结果是：
@@ -147,7 +147,7 @@ Code style issues found in 50 files. Run Prettier with --write to fix.`}</pre>
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           我的建议：<strong>这个项目选 A</strong>（它是学习项目，没有协作者，diff 大也无所谓）。
           真实工作里如果是个老项目，通常选 B + 定个"新代码必须合规"的规矩。
           <br />
@@ -156,7 +156,7 @@ Code style issues found in 50 files. Run Prettier with --write to fix.`}</pre>
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>Prettier 和 ESLint 分工（别搞混）</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -189,13 +189,13 @@ Code style issues found in 50 files. Run Prettier with --write to fix.`}</pre>
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           一句话：<strong>Prettier 管"好不好看"，ESLint 管"对不对"。</strong>
           两个都要，但不要用 ESLint 管格式（那是历史包袱，会让配置变得极其复杂）。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⭐ 今天的真事：ESLint 装不上，以及为什么</h3>
         <p style={{ marginTop: 0 }}>我按计划执行了这条命令：</p>
         <pre
@@ -309,7 +309,7 @@ $ npx eslint src/_probe_tsx.tsx
             ))}
           </tbody>
         </table>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           我选了 <strong>③</strong>，因为你的 TypeScript 7 是项目基础（我所有验证都依赖它的 CLI），
           为装 lint 把编译器降级不划算。等哪天 typescript-eslint 支持了，装回来只要几分钟。
           <br />
@@ -319,13 +319,13 @@ $ npx eslint src/_probe_tsx.tsx
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>⚠️ 关于 --legacy-peer-deps</h3>
         <p style={{ marginTop: 0 }}>
           它能让你"装上去"，但<strong>只是让 npm 闭嘴，不解决不兼容</strong>。上面的报错就是证据：
           装成功了，一跑就崩。
         </p>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           所以看到有人用 <code>--legacy-peer-deps</code> / <code>--force</code>
           解决安装问题时，要问一句：<strong>装完之后它真的能跑吗？</strong>
           这两个参数适合"临时排查"，不适合写进文档让大家照抄。

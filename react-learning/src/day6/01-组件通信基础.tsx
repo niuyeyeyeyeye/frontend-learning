@@ -44,11 +44,11 @@ function SearchSection() {
   const [keyword, setKeyword] = useState('')
 
   return (
-    <div className="card">
+    <div className='card'>
       {/* ⬇️ 父 → 子：keyword 往下传；子 → 父：setKeyword 包成 onChange 往下传 */}
       <SearchInput keyword={keyword} onChange={setKeyword} />
       <ResultList keyword={keyword} />
-      <p className="hint">
+      <p className='hint'>
         👆 输入框和列表是<strong>兄弟</strong>，它们能联动，是因为 state 被提到了父组件。
       </p>
     </div>
@@ -65,7 +65,7 @@ function SearchInput({ keyword, onChange }: SearchInputProps) {
     <input
       value={keyword}
       onChange={(e) => onChange(e.target.value)} // ⭐ 子不能直接改父的 state，只能"请求"父改
-      placeholder="输入水果名试试"
+      placeholder='输入水果名试试'
       style={{ padding: 6, width: 240 }}
     />
   )
@@ -77,7 +77,7 @@ function ResultList({ keyword }: { keyword: string }) {
     <div style={{ marginTop: 8 }}>
       共 <strong>{list.length}</strong> 个：
       {list.map((f) => (
-        <span key={f} className="tag" style={{ marginRight: 6 }}>
+        <span key={f} className='tag' style={{ marginRight: 6 }}>
           {f}
         </span>
       ))}
@@ -105,10 +105,10 @@ function TemperatureConverter() {
   const [celsius, setCelsius] = useState(25)
 
   return (
-    <div className="card">
+    <div className='card'>
       <CelsiusInput value={celsius} onChange={setCelsius} />
       <FahrenheitInput celsius={celsius} onChangeCelsius={setCelsius} />
-      <p className="hint">
+      <p className='hint'>
         👆 两个输入框都<strong>不持有 state</strong>，它们只是"显示器 + 遥控器"。
       </p>
     </div>
@@ -120,7 +120,7 @@ function CelsiusInput({ value, onChange }: { value: number; onChange: (n: number
     <div style={{ marginBottom: 6 }}>
       摄氏 ℃：
       <input
-        type="number"
+        type='number'
         value={round1(value)}
         onChange={(e) => onChange(Number(e.target.value))}
         style={{ padding: 4, width: 100 }}
@@ -140,7 +140,7 @@ function FahrenheitInput({
     <div>
       华氏 ℉：
       <input
-        type="number"
+        type='number'
         value={round1(toFahrenheit(celsius))}
         // ⭐ 关键：别人给的是"华氏"，父组件存的是"摄氏" → 必须换算回去
         onChange={(e) => onChangeCelsius(toCelsius(Number(e.target.value)))}
@@ -172,12 +172,12 @@ function PropDrillingDemo() {
 
   return (
     <div>
-      <button className="btn" onClick={toggle} style={{ marginBottom: 8 }}>
+      <button className='btn' onClick={toggle} style={{ marginBottom: 8 }}>
         切换主题（现在是 {theme}）
       </button>
       {/* ⬇️ theme 要穿过 3 层才到 Level3 */}
       <Level1 theme={theme} onToggle={toggle} />
-      <p className="hint">
+      <p className='hint'>
         👆 Level1 和 Level2 <strong>完全不用 theme</strong>，却必须声明它、接住它、再传下去。 这就是{' '}
         <strong>props 钻地</strong>。
       </p>
@@ -187,7 +187,7 @@ function PropDrillingDemo() {
 
 function Level1({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
   return (
-    <div className="card">
+    <div className='card'>
       <div style={{ color: '#999', fontSize: 12 }}>Level1（我不用 theme，但得转发）</div>
       <Level2 theme={theme} onToggle={onToggle} />
     </div>
@@ -196,7 +196,7 @@ function Level1({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
 
 function Level2({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
   return (
-    <div className="card">
+    <div className='card'>
       <div style={{ color: '#999', fontSize: 12 }}>Level2（我不用 theme，但得转发）</div>
       <Level3 theme={theme} onToggle={onToggle} />
     </div>
@@ -205,12 +205,12 @@ function Level2({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
 
 function Level3({ theme, onToggle }: { theme: Theme; onToggle: () => void }) {
   return (
-    <div className="card" style={THEME_STYLE[theme]}>
+    <div className='card' style={THEME_STYLE[theme]}>
       <div style={{ color: '#999', fontSize: 12 }}>Level3（真正用 theme 的人）</div>
       <p>
         我的背景是 <strong>{theme}</strong>
       </p>
-      <button className="btn-ghost" onClick={onToggle}>
+      <button className='btn-ghost' onClick={onToggle}>
         我也能改
       </button>
     </div>

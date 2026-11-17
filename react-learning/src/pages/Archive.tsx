@@ -37,124 +37,124 @@ export default function Archive() {
   return (
     <div>
       <h1>React 学习：JSX → 组件 → 事件 → 状态（Day1~Day6 归档）</h1>
-      <p className="hint">这是 Day1~Day6 的全部内容堆在一页。想复习哪天就翻到对应标题。</p>
+      <p className='hint'>这是 Day1~Day6 的全部内容堆在一页。想复习哪天就翻到对应标题。</p>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day1 · 一、JSX 基础</h2>
         <JsxBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day1 · 二、组件与 props</h2>
         <ComponentsProps />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day1 · 三、练习（4 个 TODO）</h2>
         <Practice />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day2 · 一、事件处理</h2>
         <EventsBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day2 · 二、useState 入门（UI = f(state)）</h2>
         <UseStateBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day2 · 三、条件渲染</h2>
         <ConditionalBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day2 · 四、练习（3 个 TODO）</h2>
         <PracticeDay2 />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day3 · 一、⭐ key 的坑（先读这个，动手操作一遍）</h2>
         <KeyBugDemo />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day3 · 二、列表操作与不可变更新</h2>
         <ListOperations />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day3 · 三、完整版待办列表（看目标形态）</h2>
         <TodoApp />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day3 · 四、练习（3 个 TODO）</h2>
         <PracticeDay3 />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day4 · 一、useEffect 基础 + 依赖数组 + 闭包陷阱</h2>
         <EffectBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day4 · 二、清理函数（不写会出事）</h2>
         <CleanupBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day4 · 三、请求数据（loading / error / data 三态）</h2>
         <FetchDemo />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day4 · 四、练习（3 个 TODO）</h2>
         <PracticeDay4 />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day4 · 五、变式练习（验证你是不是真的会了）</h2>
         <PracticeDay4Variant />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day5 · 一、useRef（不触发渲染的容器）</h2>
         <RefBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day5 · 二、自定义 hook（复用逻辑，不复用状态）</h2>
         <CustomHooks />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day5 · 三、实战：用 useDebounce 重写搜索框</h2>
         <SearchDemo />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day5 · 四、练习（3 个 TODO）</h2>
         <PracticeDay5 />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day6 · 一、组件通信（父传子 / 子传父 / 状态提升 / props 钻地）</h2>
         <CommunicationBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day6 · 二、Context（跨层级共享 + value 不稳的坑）</h2>
         <ContextBasics />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day6 · 三、实战：用 Context 重写待办</h2>
         <TodoWithContext />
       </div>
 
-      <div className="section">
+      <div className='section'>
         <h2>Day6 · 四、练习（3 个 TODO）</h2>
         <PracticeDay6 />
       </div>

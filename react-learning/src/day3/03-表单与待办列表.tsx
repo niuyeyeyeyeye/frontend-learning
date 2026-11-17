@@ -77,10 +77,10 @@ export default function TodoApp() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="输入待办，按回车添加"
+          placeholder='输入待办，按回车添加'
           style={{ flex: 1, padding: '6px 10px' }}
         />
-        <button className="btn" type="submit">
+        <button className='btn' type='submit'>
           添加
         </button>
       </form>
@@ -98,23 +98,23 @@ export default function TodoApp() {
           </button>
         ))}
         {'　'}
-        <button className="btn-ghost" onClick={markAllDone}>
+        <button className='btn-ghost' onClick={markAllDone}>
           全部完成
         </button>
-        <button className="btn-ghost" onClick={clearDone}>
+        <button className='btn-ghost' onClick={clearDone}>
           清空已完成
         </button>
       </div>
 
       {/* 统计 */}
-      <p className="hint">
+      <p className='hint'>
         共 {todos.length} 条 · 未完成 {leftCount} 条 · 已完成 {doneCount} 条
         {filter !== 'all' && `（当前筛选显示 ${visibleTodos.length} 条）`}
       </p>
 
       {/* 列表 */}
       {visibleTodos.length === 0 ? (
-        <p className="hint">
+        <p className='hint'>
           {todos.length === 0 ? '还没有待办，先添加一条吧' : '当前筛选下没有数据'}
         </p>
       ) : (
@@ -125,14 +125,14 @@ export default function TodoApp() {
             style={{ display: 'flex', alignItems: 'center' }}
           >
             <input
-              type="checkbox"
+              type='checkbox'
               checked={todo.done}
               onChange={() => toggleTodo(todo.id)}
               style={{ marginRight: 10 }}
             />
             <span style={{ flex: 1 }}>{todo.text}</span>
             <button
-              className="btn-ghost"
+              className='btn-ghost'
               style={{ fontSize: 12, padding: '2px 8px' }}
               onClick={() => removeTodo(todo.id)}
             >

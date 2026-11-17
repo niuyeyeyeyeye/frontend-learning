@@ -50,23 +50,23 @@ function CounterDemo() {
   const addBy = useCounter((s) => s.addBy)
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         count = <strong style={{ fontSize: 20 }}>{count}</strong>
       </p>
-      <button className="btn-ghost" style={{ marginRight: 6 }} onClick={dec}>
+      <button className='btn-ghost' style={{ marginRight: 6 }} onClick={dec}>
         -1
       </button>
-      <button className="btn" style={{ marginRight: 6 }} onClick={inc}>
+      <button className='btn' style={{ marginRight: 6 }} onClick={inc}>
         +1
       </button>
-      <button className="btn-ghost" style={{ marginRight: 6 }} onClick={() => addBy(10)}>
+      <button className='btn-ghost' style={{ marginRight: 6 }} onClick={() => addBy(10)}>
         +10（用 get 读旧值）
       </button>
-      <button className="btn-ghost" onClick={reset}>
+      <button className='btn-ghost' onClick={reset}>
         重置（合并式 set）
       </button>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         这个 store 在别的页面也能读到 —— 去 <code>/day8/selector</code> 那条路我们用的是另一个
         store，互不影响。
       </p>
@@ -96,16 +96,16 @@ function ListDemo() {
   const [text, setText] = useState('')
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="水果名"
+          placeholder='水果名'
           style={{ padding: 4, marginRight: 8 }}
         />
         <button
-          className="btn"
+          className='btn'
           onClick={() => {
             add(text)
             setText('')
@@ -118,13 +118,13 @@ function ListDemo() {
         {fruits.map((f, i) => (
           <li key={f}>
             {f}{' '}
-            <button className="btn-ghost" onClick={() => removeAt(i)}>
+            <button className='btn-ghost' onClick={() => removeAt(i)}>
               删
             </button>
           </li>
         ))}
       </ul>
-      <p className="hint" style={{ marginBottom: 0 }}>
+      <p className='hint' style={{ marginBottom: 0 }}>
         ⚠️ 别写成 <code>s.fruits.push(name)</code> —— 数组引用没变，selector 比较不出来， 用{' '}
         <code>[...s.fruits, name]</code>。这条规矩从 Day3 到现在没变过。
       </p>
@@ -156,7 +156,7 @@ function OutsideComponentDemo() {
   renders.current += 1
 
   return (
-    <div className="card">
+    <div className='card'>
       <p style={{ marginTop: 0 }}>每 3 秒自动读一次最新 count（你可以不停点 +1 试试）：</p>
       <ul style={{ margin: '0 0 8px', paddingLeft: 20, minHeight: 64 }}>
         {log.length === 0 && <li style={{ color: '#8b949e' }}>（等一下，3 秒后出现）</li>}
@@ -165,7 +165,7 @@ function OutsideComponentDemo() {
         ))}
       </ul>
       <button
-        className="btn-ghost"
+        className='btn-ghost'
         onClick={() => useCounter.setState({ count: 100 })}
         style={{ marginRight: 8 }}
       >
@@ -191,7 +191,7 @@ export default function ZustandBasics() {
       <h2>3. 组件外读写：getState / setState</h2>
       <OutsideComponentDemo />
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>和 useState 对照着记</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>

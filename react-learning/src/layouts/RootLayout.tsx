@@ -44,11 +44,11 @@ export default function RootLayout() {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
           <NavLink
-            to="/"
+            to='/'
             end
             style={{ fontWeight: 700, fontSize: 16, color: '#1f2328', textDecoration: 'none' }}
           >
-            React 学习
+            {import.meta.env.VITE_APP_TITLE ?? 'React 学习'}
           </NavLink>
 
           <nav style={{ display: 'flex', gap: 12 }}>

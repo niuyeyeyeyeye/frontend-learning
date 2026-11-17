@@ -24,12 +24,12 @@ interface UserCardProps {
 
 function UserCard({ name, age, tags }: UserCardProps) {
   return (
-    <div className="card">
+    <div className='card'>
       <strong>{name}</strong>
-      <span className="hint">　{age} 岁</span>
+      <span className='hint'>　{age} 岁</span>
       <div style={{ marginTop: 6 }}>
         {tags?.map((t) => (
-          <span key={t} className="tag">
+          <span key={t} className='tag'>
             {t}
           </span>
         ))}
@@ -65,7 +65,7 @@ interface PanelProps {
 
 function Panel({ title, children }: PanelProps) {
   return (
-    <div className="card">
+    <div className='card'>
       <h3 style={{ marginTop: 0 }}>{title}</h3>
       {children}
     </div>
@@ -115,29 +115,29 @@ function ComponentsProps() {
       <Hello />
 
       <h3>2. 带 props 的组件</h3>
-      <UserCard name="小明" age={18} tags={['前端', 'TS']} />
+      <UserCard name='小明' age={18} tags={['前端', 'TS']} />
       {/* 没有 tags 也能用（因为它是可选的） */}
-      <UserCard name="小红" age={20} />
+      <UserCard name='小红' age={20} />
 
       <h3>3. props 默认值 + 字面量联合</h3>
       <p>
-        <Button text="主要按钮" />
+        <Button text='主要按钮' />
         {'　'}
-        <Button text="次要按钮" variant="ghost" />
+        <Button text='次要按钮' variant='ghost' />
         {'　'}
-        <Button text="点我弹提示" onClick={() => alert('props 传了函数！')} />
+        <Button text='点我弹提示' onClick={() => alert('props 传了函数！')} />
       </p>
-      <p className="hint">variant 只能是 'primary' 或 'ghost'，写别的 TS 会报错</p>
+      <p className='hint'>variant 只能是 'primary' 或 'ghost'，写别的 TS 会报错</p>
 
       <h3>4. children</h3>
-      <Panel title="我是标题">
+      <Panel title='我是标题'>
         <p>我是夹在标签中间的内容（children）</p>
-        <Button text="里面的按钮" variant="ghost" />
+        <Button text='里面的按钮' variant='ghost' />
       </Panel>
 
       <h3>5. 组件组合</h3>
       <TodoList todos={todoList} />
-      <p className="hint">
+      <p className='hint'>
         TodoList 里用了 TodoItem —— 小组件拼成小组件，再拼成页面，这就是 React 的组织方式
       </p>
     </div>

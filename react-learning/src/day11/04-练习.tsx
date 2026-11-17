@@ -69,17 +69,17 @@ export default function PracticeDay11() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>三个练习（都要改文件，页面上没有 TODO）</h3>
-        <p className="hint" style={{ marginTop: 0 }}>
+        <p className='hint' style={{ marginTop: 0 }}>
           点标题可以进行勾选，进度会记在下面（不持久化，刷新就没了）。
         </p>
 
         {tasks.map((t) => (
-          <div key={t.id} className="card" style={{ marginBottom: 10 }}>
+          <div key={t.id} className='card' style={{ marginBottom: 10 }}>
             <label style={{ cursor: 'pointer', display: 'block' }}>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={checked.includes(t.id)}
                 onChange={() => toggle(t.id)}
                 style={{ marginRight: 8 }}
@@ -96,7 +96,7 @@ export default function PracticeDay11() {
                 <li key={s}>{s}</li>
               ))}
             </ol>
-            <p className="hint" style={{ marginBottom: 0 }}>
+            <p className='hint' style={{ marginBottom: 0 }}>
               为什么做这个：{t.why}
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function PracticeDay11() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>练习 1 的对照参考</h3>
         <p style={{ marginTop: 0 }}>下面这段"脏代码"，跑 prettier 之后会变成什么样：</p>
         <pre
@@ -125,13 +125,13 @@ export default function PracticeDay11() {
         >
           {MESSY_EXAMPLE}
         </pre>
-        <p className="hint" style={{ marginBottom: 0 }}>
+        <p className='hint' style={{ marginBottom: 0 }}>
           你不需要手改它 —— <code>npx prettier --write src/day11/04-练习.tsx</code> 会处理。
           这个常量只是为了让你有个"前后对比"的对象。
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>做完之后该做的三件事</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
@@ -147,8 +147,8 @@ export default function PracticeDay11() {
         </ol>
       </div>
 
-      <p className="hint">
-        回 <Link to="/day11">Day11 首页</Link>
+      <p className='hint'>
+        回 <Link to='/day11'>Day11 首页</Link>
       </p>
     </div>
   )

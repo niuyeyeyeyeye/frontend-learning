@@ -27,7 +27,7 @@ export default function Day7Overview() {
 
   return (
     <div>
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>你现在的位置</h3>
         <p>
           <code>{location.pathname}</code> —— 这是 <code>/day7</code> 的 <strong>index 路由</strong>
@@ -35,7 +35,7 @@ export default function Day7Overview() {
         </p>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天的路由树</h3>
         <pre
           style={{
@@ -62,7 +62,7 @@ export default function Day7Overview() {
      └─ NotFound                  "*"         ← 兜底`}</pre>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>今天只需要记这 7 个 API</h3>
         <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
           <thead>
@@ -94,26 +94,26 @@ export default function Day7Overview() {
         </table>
       </div>
 
-      <div className="card">
+      <div className='card'>
         <h3 style={{ marginTop: 0 }}>建议的顺序</h3>
         <ol style={{ margin: 0, paddingLeft: 20, lineHeight: 1.9 }}>
           <li>
-            <Link to="/day7/basics">1. 路由基础</Link> —— 先搞清 <code>Link</code> 和{' '}
+            <Link to='/day7/basics'>1. 路由基础</Link> —— 先搞清 <code>Link</code> 和{' '}
             <code>&lt;a&gt;</code> 的区别（3 分钟，但最关键）
           </li>
           <li>
-            <Link to="/day7/users">2. 动态路由</Link> —— 列表点进详情，<code>useParams</code> 取 id
+            <Link to='/day7/users'>2. 动态路由</Link> —— 列表点进详情，<code>useParams</code> 取 id
           </li>
           <li>
-            <Link to="/day7/navigate">3. 编程式导航</Link> —— <code>useNavigate</code> +
+            <Link to='/day7/navigate'>3. 编程式导航</Link> —— <code>useNavigate</code> +
             把搜索词放进 URL
           </li>
           <li>
-            <Link to="/day7/nested">4. 嵌套路由</Link> —— <code>Outlet</code>
+            <Link to='/day7/nested'>4. 嵌套路由</Link> —— <code>Outlet</code>
             ，以及"这一整页就是嵌套路由"
           </li>
           <li>
-            <Link to="/day7/practice">练习</Link> —— 3 个 TODO
+            <Link to='/day7/practice'>练习</Link> —— 3 个 TODO
           </li>
         </ol>
       </div>

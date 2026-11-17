@@ -65,7 +65,7 @@ export default function ListOperations() {
   return (
     <div>
       <h3>1. 数组操作的"不可变"速查表</h3>
-      <div className="card">
+      <div className='card'>
         <table style={{ width: '100%', fontSize: 13, borderCollapse: 'collapse' }}>
           <tbody>
             <tr>
@@ -117,19 +117,19 @@ export default function ListOperations() {
 
       <h3>2. 试试这些操作</h3>
       <div style={{ marginBottom: 10 }}>
-        <button className="btn" onClick={add}>
+        <button className='btn' onClick={add}>
           ✅ 用 [...todos, x] 添加
         </button>
         {'　'}
-        <button className="btn-ghost" onClick={addByPush}>
+        <button className='btn-ghost' onClick={addByPush}>
           ❌ 用 push 添加（看会不会显示）
         </button>
         {'　'}
-        <button className="btn-ghost" onClick={clearDone}>
+        <button className='btn-ghost' onClick={clearDone}>
           清空已完成
         </button>
         {'　'}
-        <button className="btn-ghost" onClick={toggleAll}>
+        <button className='btn-ghost' onClick={toggleAll}>
           全部完成
         </button>
       </div>
@@ -138,10 +138,10 @@ export default function ListOperations() {
       <input
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder="搜索待办..."
+        placeholder='搜索待办...'
         style={{ padding: '4px 8px', width: 220, marginBottom: 8 }}
       />
-      <p className="hint">
+      <p className='hint'>
         {keyword.trim()
           ? `匹配到 ${visibleTodos.length} 条（共 ${todos.length} 条）`
           : `共 ${todos.length} 条`}
@@ -149,7 +149,7 @@ export default function ListOperations() {
 
       <h3>4. 渲染出来</h3>
       {visibleTodos.length === 0 ? (
-        <p className="hint">（没有匹配的待办）</p>
+        <p className='hint'>（没有匹配的待办）</p>
       ) : (
         visibleTodos.map((todo) => (
           <div key={todo.id} className={`card ${todo.done ? 'done' : ''}`}>
@@ -157,14 +157,14 @@ export default function ListOperations() {
               {todo.done ? '✅' : '⬜'} {todo.text}
             </span>
             <button
-              className="btn-ghost"
+              className='btn-ghost'
               style={{ fontSize: 12, padding: '2px 8px' }}
               onClick={() => toggle(todo.id)}
             >
               {todo.done ? '取消完成' : '完成'}
             </button>{' '}
             <button
-              className="btn-ghost"
+              className='btn-ghost'
               style={{ fontSize: 12, padding: '2px 8px' }}
               onClick={() => remove(todo.id)}
             >
@@ -173,7 +173,7 @@ export default function ListOperations() {
           </div>
         ))
       )}
-      <p className="hint">
+      <p className='hint'>
         ⭐ 注意这里同时用到了「过滤 + 渲染」：`visibleTodos` 是算出来的，不是改 todos。
         <br />
         原数组 `todos` 一直没被动过 —— 这就是"不可变"的好处：**你想怎么过滤排序都行，
