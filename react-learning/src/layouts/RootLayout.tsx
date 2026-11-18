@@ -24,6 +24,7 @@ const NAV_ITEMS = [
   { to: '/day9', label: 'Day9 请求', end: false },
   { to: '/day10', label: 'Day10 性能', end: false },
   { to: '/day11', label: 'Day11 工程化', end: false },
+  { to: '/extra', label: '补课', end: false },
   { to: '/archive', label: 'Day1~6 归档', end: false },
   { to: '/about', label: 'About 关于', end: false },
 ]

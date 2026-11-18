@@ -60,6 +60,9 @@ import EnvDemo from './day11/02-环境变量'
 import DeployDemo from './day11/03-构建与部署'
 import PracticeDay11 from './day11/04-练习'
 
+import ExtraLayout from './extra/Layout'
+import ErrorBoundaryAndPortal from './extra/01-ErrorBoundary与Portal'
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -139,6 +142,15 @@ export const routes: RouteObject[] = [
           { path: 'env', element: <EnvDemo /> }, //  /day11/env
           { path: 'deploy', element: <DeployDemo /> }, //  /day11/deploy
           { path: 'practice', element: <PracticeDay11 /> }, //  /day11/practice
+        ],
+      },
+
+      {
+        path: 'extra',
+        element: <ExtraLayout />,
+        children: [
+          { index: true, element: <ErrorBoundaryAndPortal /> }, //  /extra
+          // 后续：2-reducer / 3-react19 / 4-form-ime / 5-vite-css
         ],
       },
 

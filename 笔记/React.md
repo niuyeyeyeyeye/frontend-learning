@@ -483,6 +483,16 @@ interface ImportMeta {
 
 
 
+## ErrorBoundary
+
+包裹根app和每个路由，防止一个页面导致整个网站全白，高风险复杂组件包一层，其他不包，代码简洁
+
+
+
+## Portal
+
+弹窗放在容器里会被裁剪和隐藏，使用Portal可以把弹窗挂在DOM树上
+
 ## Link组件
 
 ## NavLink组件
