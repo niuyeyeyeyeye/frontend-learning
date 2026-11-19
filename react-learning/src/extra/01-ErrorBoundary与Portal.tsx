@@ -15,6 +15,7 @@
 import { Component, lazy, Suspense, useState } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'
 import { createPortal } from 'react-dom'
+import UiModal from '../components/Modal' // 项目里的公共弹窗（本文件里那个 Modal 是教学用的简化版）
 
 // ============================================================
 // 一、ErrorBoundary：React 唯一必须用 class 写的 API
@@ -349,6 +350,75 @@ function Demo4() {
 }
 
 // ============================================================
+// 五、真实用法：用项目里的 Modal 做"删除确认"
+// ============================================================
+type TaskItem = { id: number; text: string }
+
+function Demo5() {
+  const [items, setItems] = useState<TaskItem[]>([
+    { id: 1, text: '写项目 README' },
+    { id: 2, text: '把 Vercel 链接填进简历' },
+    { id: 3, text: '删掉这条试试' },
+  ])
+  const [pending, setPending] = useState<TaskItem | null>(null)
+
+  const confirmDelete = () => {
+    if (pending === null) return
+    setItems((list) => list.filter((x) => x.id !== pending.id))
+    setPending(null)
+  }
+
+  return (
+    <div className="card">
+      <h3 style={{ marginTop: 0 }}>
+        实验 5：用 <code>components/Modal</code> 做删除确认
+      </h3>
+      {items.length === 0 ? (
+        <p style={{ color: '#8b949e' }}>（列表空了，刷新页面恢复）</p>
+      ) : (
+        <ul style={{ margin: '0 0 8px', paddingLeft: 20 }}>
+          {items.map((it) => (
+            <li key={it.id} style={{ marginBottom: 4 }}>
+              {it.text}{' '}
+              <button className="btn-ghost" onClick={() => setPending(it)}>
+                删除
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <UiModal
+        open={pending !== null}
+        title="确认删除"
+        onClose={() => setPending(null)}
+        footer={
+          <>
+            <button className="btn-ghost" onClick={() => setPending(null)}>
+              取消
+            </button>
+            <button className="btn" onClick={confirmDelete}>
+              删除
+            </button>
+          </>
+        }
+      >
+        确定要删除「{pending?.text ?? ''}」吗？这个操作不能撤销。
+      </UiModal>
+
+      <p className="hint" style={{ marginBottom: 0 }}>
+        点「删除」→ 弹窗出现 → 试这<b>三件事</b>：
+        <br />
+        ① 按 <code>Esc</code> 关闭 ② 点遮罩（弹窗外面的灰底）关闭
+        ③ <strong>点弹窗内容区不该关闭</strong>（这条最容易写错）
+        <br />
+        另外：弹窗打开时<strong>背后页面滚不动</strong>（body 滚动被锁住了）。
+      </p>
+    </div>
+  )
+}
+
+// ============================================================
 // 页面
 // ============================================================
 export default function ErrorBoundaryAndPortal() {
@@ -365,6 +435,46 @@ export default function ErrorBoundaryAndPortal() {
 
       <h2>4. 两者结合：懒加载失败的白屏兜底</h2>
       <Demo4 />
+
+      <h2>5. ⭐ 现在它们是你项目里的组件了</h2>
+      <Demo5 />
+
+      <div className="card">
+        <h3 style={{ marginTop: 0 }}>这两个组件已经接进项目</h3>
+        <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: 14 }}>
+          <thead>
+            <tr style={{ textAlign: 'left', color: '#57606a' }}>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>文件</th>
+              <th style={{ padding: '4px 8px', borderBottom: '1px solid #eaeef2' }}>怎么用的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
+                <code>components/ErrorBoundary.tsx</code>
+              </td>
+              <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
+                已经包在 <code>RootLayout</code> 的 <code>&lt;Outlet /&gt;</code> 外面，并且
+                <code>resetKeys={'{[location.pathname]}'}</code> —— <strong>某页崩了不影响导航，
+                切个页面自动恢复</strong>
+              </td>
+            </tr>
+            <tr>
+              <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
+                <code>components/Modal.tsx</code>
+              </td>
+              <td style={{ padding: '4px 8px', borderBottom: '1px solid #f6f8fa' }}>
+                实验 5 就是用它做的；以后项目里任何弹窗直接 <code>import Modal</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p className="hint" style={{ marginBottom: 0 }}>
+          <strong>验证根布局的兜底</strong>：随便找个页面组件，在它的 JSX 前面加一行
+          <code>throw new Error('测试')</code>，然后刷新 —— 你会看到
+          <strong>顶部导航还在，只有内容区变成红色兜底</strong>，点导航切到别的页面就自动恢复了。
+        </p>
+      </div>
 
       <div className="card">
         <h3 style={{ marginTop: 0 }}>这几句要能背下来</h3>

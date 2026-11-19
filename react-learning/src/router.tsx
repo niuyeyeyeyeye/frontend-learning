@@ -62,6 +62,7 @@ import PracticeDay11 from './day11/04-练习'
 
 import ExtraLayout from './extra/Layout'
 import ErrorBoundaryAndPortal from './extra/01-ErrorBoundary与Portal'
+import UseReducerDemo from './extra/02-useReducer'
 
 export const routes: RouteObject[] = [
   {
@@ -150,7 +151,8 @@ export const routes: RouteObject[] = [
         element: <ExtraLayout />,
         children: [
           { index: true, element: <ErrorBoundaryAndPortal /> }, //  /extra
-          // 后续：2-reducer / 3-react19 / 4-form-ime / 5-vite-css
+          { path: '2-reducer', element: <UseReducerDemo /> }, //  /extra/2-reducer
+          // 后续：3-react19 / 4-form-ime / 5-vite-css
         ],
       },
 

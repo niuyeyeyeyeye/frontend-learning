@@ -249,6 +249,28 @@ function useRef<T>(initialValue: T | null): RefObject<T>;
 
 用法跟useMemo相同，语义不同
 
+### useReducer
+
+和`useState`类似，但是`useReducer`主要是在状态复杂时使用，通常状态是一个对象
+
+~~~ react
+const [count,setCount]=useReducer(reducer,initialState,init)
+~~~
+
+
+
+#### reducer函数
+
+useReducer的第一个参数，用来处理状态的变化
+
+#### initialState初始状态
+
+useReducer的第二个参数，状态的初始值
+
+#### init惰性初始化函数
+
+useReducer的第三个参数，可选，参数为initialState
+
 ## create方法
 
 是Zustand的入口，创建一个store，state是参数，有selector方法可以单独取需要的字段，selector方法具体就是

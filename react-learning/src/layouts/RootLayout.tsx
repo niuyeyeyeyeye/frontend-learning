@@ -12,7 +12,8 @@
 //    下面那行"本次启动时间"就是证据：用 <Link> 跳转它永远不变，
 //    用 <a href> 跳转就会变（整个应用重启了）。
 
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import ErrorBoundary from '../components/ErrorBoundary'
 
 // 模块级常量：整个应用生命周期里只算一次
 const APP_START = new Date().toLocaleTimeString('zh-CN', { hour12: false })
@@ -30,6 +31,7 @@ const NAV_ITEMS = [
 ]
 
 export default function RootLayout() {
+  const location = useLocation()
   return (
     <div>
       <header
@@ -77,8 +79,16 @@ export default function RootLayout() {
       </header>
 
       {/* ⭐ 所有子路由的页面都插在这里 */}
+      {/*
+        ⭐ ErrorBoundary 包在这里：
+        · 某一页崩了 → 只有内容区显示兜底 UI，顶部导航还能用（可以切去别的页面）
+        · resetKeys 传 pathname：用户一切换页面就自动重试，不用手动点"重试"
+        这就是"兜底要包在可能出事的区域外面"，而不是包在整页外面。
+      */}
       <div style={{ padding: '0 16px 40px' }}>
-        <Outlet />
+        <ErrorBoundary resetKeys={[location.pathname]}>
+          <Outlet />
+        </ErrorBoundary>
       </div>
     </div>
   )

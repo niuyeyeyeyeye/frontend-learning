@@ -10,7 +10,7 @@
 // 规则：补完 TODO → 保存 → 浏览器看效果
 // 每个练习 20 分钟左右；卡住看文件底部的答案，隔一晚闭卷重写
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useReducer } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 
@@ -29,6 +29,7 @@ type CountStore = {
   inc: () => void
   reset: () => void
 }
+type ACtion={type:'inc'}|{type:'reset'}
 
 const useCountStore = create<CountStore>()((set) => ({
   count: 0,
@@ -41,14 +42,21 @@ const useCountStore = create<CountStore>()((set) => ({
     set({ count: 0 })
   },
 }))
+function countReducer(state:number,action:ACtion){
+  switch(action.type){
+    case 'inc':return state+1
+    case 'reset':return 0
+  }
+}
 
 function CounterA() {
-  const count = useCountStore((s) => s.count)
-  const inc = useCountStore((s) => s.inc)
+  // const count = useCountStore((s) => s.count)
+  // const inc = useCountStore((s) => s.inc)
+  const [count,setCount]=useReducer(countReducer,0)
   return (
     <div className='card'>
       A 看到的数字：<strong>{count}</strong>{' '}
-      <button className='btn' onClick={inc}>
+      <button className='btn' onClick={()=>setCount({type:'inc'})}>
         A 的 +1
       </button>
     </div>
@@ -56,12 +64,13 @@ function CounterA() {
 }
 
 function CounterB() {
-  const count = useCountStore((s) => s.count)
-  const reset = useCountStore((s) => s.reset)
+  // const count = useCountStore((s) => s.count)
+  // const reset = useCountStore((s) => s.reset)
+  const [count,setCount]=useReducer(countReducer,0)
   return (
     <div className='card'>
       B 看到的数字：<strong>{count}</strong>{' '}
-      <button className='btn-ghost' onClick={reset}>
+      <button className='btn-ghost' onClick={()=>setCount({type:'reset'})}>
         B 的重置
       </button>
     </div>
