@@ -4,7 +4,7 @@
 // 这个文件把 Day4（useEffect + 清理 + 请求）和 Day5（自定义 hook）结合起来了。
 // 对比看：用防抖前 vs 用防抖后，"请求次数"差多少。
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState,useRef } from 'react'
 
 // ---------- 数据与模拟请求 ----------
 interface User {
@@ -27,6 +27,7 @@ const MOCK_USERS: User[] = [
 
 // 模拟后端搜索接口（500ms 延迟）
 function mockSearch(keyword: string): Promise<User[]> {
+
   return new Promise((resolve) => {
     setTimeout(() => {
       const kw = keyword.trim().toLowerCase()
@@ -58,7 +59,11 @@ function useDebounce<T>(value: T, delay: number = 300): T {
 // ---------- 主组件 ----------
 export default function SearchDemo() {
   const [input, setInput] = useState('')
-  const debouncedKeyword = useDebounce(input) // ⭐ 输入停下 400ms 才更新
+  const [searchKeyword, setSearchKeyword] = useState('')
+  const debouncedKeyword = useDebounce(searchKeyword) // ⭐ 输入停下 400ms 才更新
+
+
+  const composing=useRef(false)
 
   const [results, setResults] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
@@ -97,7 +102,16 @@ export default function SearchDemo() {
         value={input}
         onChange={(e) => {
           setInput(e.target.value)
+          if(!composing.current){
+          setSearchKeyword(e.target.value)
           setInputCount((c) => c + 1) // 每次输入都 +1
+          }
+        }}
+        onCompositionStart={()=>composing.current=true}
+        onCompositionEnd={(e)=>{
+          setInput(e.currentTarget.value),
+          composing.current=false,
+          setSearchKeyword(e.currentTarget.value)
         }}
         placeholder='快速输入几个字母，观察下面两个计数'
         style={{ padding: 6, width: '100%', maxWidth: 320, marginBottom: 10 }}

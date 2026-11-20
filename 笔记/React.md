@@ -515,6 +515,44 @@ interface ImportMeta {
 
 弹窗放在容器里会被裁剪和隐藏，使用Portal可以把弹窗挂在DOM树上
 
+
+
+## 中文拼词
+
+防止拼音触发事件
+
+### compositionstart
+
+开始拼词触发
+
+### compositionend
+
+结束拼词触发
+
+
+
+~~~ react
+        <input
+          value={draft}
+          onChange={(e) => {
+            setDraft(e.target.value)
+            // ⭐ 组字过程中不动关键词，等上屏再说
+            if (!composing.current) setKeyword(e.target.value)
+          }}
+          onCompositionStart={() => {
+            composing.current = true
+          }}
+          onCompositionEnd={(e) => {
+            composing.current = false
+            setKeyword(e.currentTarget.value) // 上屏后用最终值
+          }}
+          placeholder="用中文输入法打「苹果」"
+          style={{ padding: 4, width: 220 }}
+        />
+~~~
+
+
+
 ## Link组件
 
 ## NavLink组件
