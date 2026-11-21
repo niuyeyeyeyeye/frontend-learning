@@ -136,18 +136,18 @@
 > 详细的 6 周排期在 `大厂实习与春招计划.md` §0.1。这里只记 React 侧的收尾顺序。
 
 ```
-Day12 综合复习（0.5~1 天）
+Day12 综合复习（0.5~1 天）              ⬜ 排在 12 月底（面试前过一遍）
    ↓
-补课 5 节（约 6 小时，按优先级）
-   ① ErrorBoundary + createPortal（UI 基建两件套，做项目立刻用）
-   ② useReducer（+ Context 组合 = 手写 mini-Redux）
-   ③ React 19 新特性（Actions / use() / useOptimistic / ref 当 prop）
-   ④ 受控/非受控 + 中文输入法（IME）坑
-   ⑤ Vite（为什么快 + server.proxy）+ CSS 方案选型
+补课 5 节（约 6 小时）                  ✅ 2026-11-18 全部完成
+   ① ErrorBoundary + createPortal（UI 基建两件套）  ✅ → src/components/{ErrorBoundary,Modal}.tsx
+   ② useReducer（+ Context 组合 = mini-Redux）      ✅ → /extra/2-reducer
+   ③ 受控/非受控 + 中文输入法（IME）坑               ✅ → /extra/4-form-ime
+   ④ Vite（为什么快 + server.proxy）+ CSS 方案选型   ✅ → /extra/5-css
+   ⑤ React 19 新特性                                  ⏸ 移到 2027-01（面试准备期）
    ↓
-Next.js 入门（官方 tutorial 走一遍，约 12h）
+Next.js 入门（官方 tutorial 走一遍，约 12h）   ⬜ 11-24 开始
    ↓
-项目：Next + Prisma + 认证 + Vercel（约 65h）
+项目：Next + Prisma + 认证 + Vercel（约 65h）  ⬜ 11-24 ~ 12-31
 ```
 
 ### 为什么必须补这 5 节（核对代码后的缺口）

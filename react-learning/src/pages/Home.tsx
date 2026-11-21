@@ -7,6 +7,7 @@
 //   ROUTE_MAP  路由表（把 router.tsx 里的结构抄一份展示出来）
 
 import { Link } from 'react-router-dom'
+import styles from '../extra/styles/decision.module.css'
 
 type RouteRow = {
   path: string
@@ -128,7 +129,7 @@ export default function Home() {
         </table>
       </div>
 
-      <div className='card'>
+      <div className={styles.card}>
         <h3 style={{ marginTop: 0 }}>开始今天的学习</h3>
         <p>
           <Link className='btn' to='/day7'>

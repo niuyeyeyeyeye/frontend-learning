@@ -1,0 +1,46 @@
+/* ============================================================
+ * decision.module.css —— CSS Modules 的示范文件
+ * ============================================================
+ * 命名规则：文件名必须以 .module.css 结尾，Vite / Next 才会把它当"局部作用域"处理。
+ *
+ * ⭐ 你在 React 里 import 它，拿到的是一个对象：
+ *      import styles from './decision.module.css'
+ *      styles.card  →  编译后变成 "_card_a1b2c3" 这样带哈希的类名
+ *   所以两个不同文件里都写 .card 也不会打架 —— 这就是"局部作用域"。
+ */
+
+.card {
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+  margin-bottom: 10px;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0969da;
+  margin: 0 0 6px;
+}
+
+.hint {
+  color: #8b949e;
+  font-size: 12px;
+  margin: 6px 0 0;
+}
+
+.btn {
+  background: #0969da;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.15s;
+}
+
+.btn:hover {
+  background: #0550ae;
+}
